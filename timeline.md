@@ -26,7 +26,12 @@
     </tr>
     <tr>
         <td>10:57 AM</td>
-        <td>产生了一个堆叠柱状图case<br/>指向 documents->word->case</td>
+        <td>一个堆叠柱状图case<br/>指向 Documents->Word->Case<br/><strong>用来创建查看任务进度的参考</strong></td>
         <td>已完成</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>我有一个项目解读的想法</td>
+        <td></td>
     </tr> 
 </table>
