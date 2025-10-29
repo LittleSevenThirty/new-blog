@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
-import App from './App.vue'
-import router from '@/router'
+import App from './App.vue' // ts搞怪
+import router from '@/router'   // ts搞怪
 
 // 获取应用实例
 const app=createApp(App)
