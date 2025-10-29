@@ -4,11 +4,12 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
+  // 配置的内容
   "compilerOptions": {
-    "baseUrl": "./", // 解析非相对模块的基地址，默认是当前目录
+    "baseUrl": ".", // 解析非相对模块的基地址，默认是当前目录
     "paths": {
       //路径映射，相对于baseUrl
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
   },
 }
