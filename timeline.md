@@ -71,7 +71,7 @@
     </tr>    
     <tr>
         <td>13:49 PM</td>
-        <td>购买CDN服务加速网络资源的传递-<strong>来源</strong>-完成littleseventhirty-blog的index.html页面的link标签</td>
+        <td>⭐购买CDN服务加速网络资源的传递-<strong>来源</strong>-完成littleseventhirty-blog的index.html页面的link标签</td>
         <td>未完成-延迟时间-无限期</td>
     </tr>
     <tr>
@@ -81,7 +81,7 @@
     </tr>
     <tr>
         <td>23:00 PM</td>
-        <td>思考标题页的优化，动态的标题页，即切换到其它页面时，标题会动态更改增加趣味性</td>
+        <td>⭐思考标题页的优化，动态的标题页，即切换到其它页面时，标题会动态更改增加趣味性</td>
         <td>未完成-延迟时间-未知</td>
     </tr>
 </table>
@@ -128,5 +128,36 @@
         <td>关于vue标签<router-view>和<router-link>知识点复习-https://blog.csdn.net/qq_44163269/article/details/105185163
         </td>
         <td></td>
+    </tr>
+</table>
+
+**10/29/2025**
+<table>
+    <tr>
+        <th>时间</th>
+        <th>描述</th>
+        <th>状态</th>
+    </tr>    
+    <tr>
+        <td>13:30 PM</td>
+        <td>解决问题ts2307找不到对应模块或...
+        参考：<br>https://www.tslang.cn/docs/handbook/tsconfig-json.html和<br>https://www.tslang.cn/docs/handbook/compiler-options.html
+        </td>
+        <td>已解决</td>
+    </tr>
+</table>
+
+**10/30/2025**
+<table>
+    <tr>
+        <th>时间</th>
+        <th>描述</th>
+        <th>状态</th>
+    </tr>    
+    <tr>
+        <td>10:00 AM</td>
+        <td>⭐未来，前端项目使用萝莉体
+        </td>
+        <td>已解决</td>
     </tr>
 </table>

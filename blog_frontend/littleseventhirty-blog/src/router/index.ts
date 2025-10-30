@@ -1,6 +1,7 @@
 // 配置vue-router
 import {createRouter,createWebHistory} from 'vue-router';
-import {constantRouter} from "@/router/routers.ts"; // 不用管，能正常运行，ts搞怪呢
+// @ts-ignore
+import {constantRouter} from "@/router/routers.ts";
 
 const router = createRouter({
     history: createWebHistory(),

@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue'
+import {onMounted} from 'vue';
+import 
+
+onMounted(()=>{
+
+});
 </script>
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="./assets/vue.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <router-view></router-view>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <loading></loading>
+  <!-- 全局加载 -->
+  <!-- 1. 音乐组件 -->
+
+  <!-- 2. 阻拦开发者工具查看的组件 -->
+
+  <!-- 3. 内容菜单组件 -->
 </template>
 
 <style scoped>
