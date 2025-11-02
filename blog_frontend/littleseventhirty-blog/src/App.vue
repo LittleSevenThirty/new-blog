@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import {onMounted} from 'vue';
-import 
+// @ts-ignore
+import useWebsiteStore from "@/pinia/store/modules/website.ts";
 
+const websiteStore=useWebsiteStore();
+
+// @ts-ignore
 onMounted(()=>{
 
 });
@@ -13,6 +16,7 @@ onMounted(()=>{
   </div>
   <loading></loading>
   <!-- 全局加载 -->
+  <!-- <loading></loading> -->
   <!-- 1. 音乐组件 -->
 
   <!-- 2. 阻拦开发者工具查看的组件 -->
