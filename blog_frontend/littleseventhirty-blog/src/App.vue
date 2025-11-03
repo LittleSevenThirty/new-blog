@@ -1,19 +1,17 @@
 <script setup lang="ts">
-// @ts-ignore
-import useWebsiteStore from "@/pinia/store/modules/website.ts";
+// import useWebsiteStore from "./pinia/store/modules/website.ts";
+import HelloWorld from "@/components/HelloWorld.vue";
 
-const websiteStore=useWebsiteStore();
+// const websiteStore=useWebsiteStore();
 
-// @ts-ignore
-onMounted(()=>{
-
-});
 </script>
 
 <template>
   <div>
     <router-view></router-view>
   </div>
+  <HelloWorld/>
+  hello 看到我就说明显示没啥问题，但控制台还是得检查检查
   <loading></loading>
   <!-- 全局加载 -->
   <!-- <loading></loading> -->
