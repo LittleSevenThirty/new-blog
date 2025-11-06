@@ -32,3 +32,5 @@ interface HotArticles {
     // 访问数目
     visitedCount: number
 }
+
+export {ArticleSearch,HotArticles}

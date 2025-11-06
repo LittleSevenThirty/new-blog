@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import useWebsiteStore from "./pinia/store/modules/website.ts";
-import HelloWorld from "@/components/HelloWorld.vue";
+import HelloWorld from "./components/HelloWorld.vue";
 
 // const websiteStore=useWebsiteStore();
 
@@ -10,7 +10,7 @@ import HelloWorld from "@/components/HelloWorld.vue";
   <div>
     <router-view></router-view>
   </div>
-  <HelloWorld/>
+  <HelloWorld msg="世界，你好"/>
   hello 看到我就说明显示没啥问题，但控制台还是得检查检查
   <loading></loading>
   <!-- 全局加载 -->
