@@ -1,10 +1,12 @@
-import {defineStore} from "pinia";
+import { defineStore } from "pinia";
 import { shallowRef } from "vue";
-import {ArticleSearch} from "../../../apis/article/type.ts";
-import {WebsiteInfo} from "../../../apis/website/type.ts";
+import { ArticleSearch } from "../../../apis/article/type.ts";
+import { getSearchTitleList} from "../../../apis/article/index.ts"
+import { WebsiteInfo } from "../../../apis/website/type.ts";
 import { getWebsiteInfo } from "../../../apis/website/index.ts";
+import { returnTime } from "../../../utils/tools.ts";
 
-const useWebsiteStore=defineStore("website",()=>{
+const useWebsiteStore = defineStore("website", () => {
     //// states
     // 站点信息存储对象
     const webInfo = shallowRef<WebsiteInfo>();
@@ -13,13 +15,26 @@ const useWebsiteStore=defineStore("website",()=>{
     const articleSearch = shallowRef<Array<ArticleSearch>>();
 
     //// actions
-    const getInfo = async ()=>{
-        getWebsiteInfo().then(res=>{
-            // 经过测试res已经在响应拦截器里处理过了,res直接就是数据了
-            // 更新时间
-            res.lastUpdatetime=;
-            webInfo.value=res;
-        })
+    // const getInfo = async ()=>{
+    //     getWebsiteInfo().then(res=>{
+    //         // 经过测试res已经在响应拦截器里处理过了,res直接就是数据了
+    //         // 更新时间
+    //         res.lastUpdatetime=returnTime(res.lastUpdatetime) as string;
+    //         webInfo.value=res;
+    //     })
+    // }
+
+    //// getInfo获取网站信息改写，让其看起来更像线性代码
+    const getInfo = async () => {
+        let res = await getWebsiteInfo();
+        res.lastUpdatetime = returnTime(res.lastUpdatetime) as string;
+        webInfo.value = res;
+    }
+
+    // 获取网站标题
+    const getArticleTitleList = async () => {
+        const res = await getSearchTitleList();
+        articleSearch.value = res;
     }
 });
 

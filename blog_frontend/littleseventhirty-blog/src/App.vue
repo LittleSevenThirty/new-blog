@@ -1,13 +1,13 @@
 <script setup lang="ts">
-// import useWebsiteStore from "./pinia/store/modules/website.ts";
+import useWebsiteStore from "./pinia/store/modules/website.ts";
 import HelloWorld from "./components/HelloWorld.vue";
-import http from "./utils/http";
+import { onMounted } from "vue";
 
-// const websiteStore=useWebsiteStore();
+const websiteStore=useWebsiteStore();
 
-// http.get("https://jsonplaceholder.typicode.com/posts").then(res=>{
-//   console.log(res);
-// })
+onMounted(()=>{
+  websiteStore.getInfo();
+})
 </script>
 
 <template>
