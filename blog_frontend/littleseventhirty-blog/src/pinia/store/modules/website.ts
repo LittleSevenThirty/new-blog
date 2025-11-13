@@ -28,6 +28,7 @@ const useWebsiteStore = defineStore("website", () => {
     const getInfo = async () => {
         let res = await getWebsiteInfo();
         res.lastUpdatetime = returnTime(res.lastUpdatetime) as string;
+        console.log(res);
         webInfo.value = res;
     }
 
@@ -35,6 +36,14 @@ const useWebsiteStore = defineStore("website", () => {
     const getArticleTitleList = async () => {
         const res = await getSearchTitleList();
         articleSearch.value = res;
+    }
+
+    // 关键：返回需要暴露的状态和方法
+    return {
+        webInfo,
+        articleSearch,
+        getInfo,
+        getArticleTitleList
     }
 });
 

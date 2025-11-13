@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useWebsiteStore from "./pinia/store/modules/website.ts";
 import HelloWorld from "./components/HelloWorld.vue";
+import { useDark,useToggle } from "@vueuse/core";
 import { onMounted } from "vue";
 
 const websiteStore=useWebsiteStore();
@@ -8,6 +9,10 @@ const websiteStore=useWebsiteStore();
 onMounted(()=>{
   websiteStore.getInfo();
 })
+
+// useDark({
+//   useDarkOptions
+// })
 </script>
 
 <template>
