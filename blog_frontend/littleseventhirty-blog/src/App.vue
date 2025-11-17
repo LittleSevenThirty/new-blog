@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import ContextMenu from "./components/ContextMenu/index.vue";
 import useWebsiteStore from "./pinia/store/modules/website.ts";
-import HelloWorld from "./components/HelloWorld.vue";
 import { useDark,useToggle } from "@vueuse/core";
 import { onMounted } from "vue";
 
@@ -19,15 +19,16 @@ onMounted(()=>{
   <div>
     <router-view></router-view>
   </div>
-  <HelloWorld msg="世界，你好"/>
-  hello 看到我就说明显示没啥问题，但控制台还是得检查检查
+  <!-- <HelloWorld msg="世界，你好"/> -->
+  <!-- hello 看到我就说明显示没啥问题，但控制台还是得检查检查 -->
   <loading></loading>
   <!-- 全局加载 -->
   <!-- 1. 音乐组件 -->
-
+  <!-- <Music/> -->
   <!-- 2. 阻拦开发者工具查看的组件 -->
-
+  <!-- <DevToolsBlocker/> -->
   <!-- 3. 内容菜单组件 -->
+  <ContextMenu/>
 </template>
 
 <style scoped>
