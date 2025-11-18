@@ -11,8 +11,31 @@ import { useRouter } from 'vue-router';
 import useWebsiteStore from "../../pinia/store/modules/website.ts";
 
 // 初始化实例依赖
-const websiteStore = useWebsiteStore();
-const router = useRouter();
+const websiteStore = useWebsiteStore(); // 获取网站配置（如网站名称）
+const router = useRouter(); // 路由实例，用户页面跳转
+
+// 定义核心响应状态，控制菜单响应位置
+const isVisible=ref(false); // 菜单显示状态（默认隐藏）
+const x=ref(0); // 菜单左上角x坐标位置
+const y=ref(0); // 菜单左上角y坐标位置
+
+// 暗色模式检测
+const isDarkMode = computed(()=>{
+  // 结合tailwindcss的dark类属性器，从而判断html元素是否为暗模式
+  return document.documentElement.classList.contains("dark");
+})
+
+// 右键触发显示菜单
+const showMenu=(event: MouseEvent)=>{
+  event.preventDefault(); // 禁止鼠标右键菜单
+
+  // 菜单属性
+  const menuWidth=240;  // 菜单宽度
+  const submenuWidth=180; // 子菜单宽度
+  const menuHeight=370  // 菜单高度
+
+}
+
 
 </script>
 
