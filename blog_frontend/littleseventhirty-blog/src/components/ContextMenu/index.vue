@@ -1,3 +1,4 @@
+<!-- 自定义右键菜单组件 -->
 <template>
   <div class="context-menu" v-bind:style="{
     top: `${y}px`,
@@ -5,8 +6,11 @@
   }">
     <div class="menu-container"
       v-bind:style="isDarkMode ? 'background-color: #1e1b2d; color: #e2e0e7; border-color: #2d2644;' : 'background-color: #ffffff;'">
-      <div class="menu-header" v-bind:style="isDarkMode?'':''">
-
+      <div class="menu-header" v-bind:style="isDarkMode?'background: linear-gradient(to right, #312a48, #2d2644);border-color:#372f52;':'background: linear-gradient(to right, #f9f5ff, #f5f3ff);'">
+        <div class="menu-header-icon">
+          <svg t="1763626189359" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5330" width="20" height="20"><path d="M917.333333 512c0-223.850667-181.482667-405.333333-405.333333-405.333333S106.666667 288.149333 106.666667 512s181.482667 405.333333 405.333333 405.333333 405.333333-181.482667 405.333333-405.333333z m-425.984-5.333333a21.333333 21.333333 0 0 0 6.101334 20.928l124.8 116.394666a21.333333 21.333333 0 0 0 29.12-31.189333l-118.08-110.122667L533.333333 501.333333v-170.666666a21.333333 21.333333 0 0 0-42.666666 0v170.666666c0 1.834667 0.213333 3.626667 0.682666 5.333334zM149.333333 512c0-200.298667 162.368-362.666667 362.666667-362.666667s362.666667 162.368 362.666667 362.666667-162.368 362.666667-362.666667 362.666667S149.333333 712.298667 149.333333 512z m612.501334 305.002667a21.333333 21.333333 0 1 0-30.336 29.994666l74.304 75.157334a21.333333 21.333333 0 1 0 30.336-29.994667l-74.304-75.157333z m-480.362667 29.994666a21.333333 21.333333 0 0 0-30.336-29.994666L176.832 892.16a21.333333 21.333333 0 1 0 30.336 29.994667l74.304-75.157334zM778.496 128A117.525333 117.525333 0 0 1 896 245.333333a21.333333 21.333333 0 0 0 42.666667 0C938.666667 157.077333 866.901333 85.333333 778.496 85.333333h-20.992a21.333333 21.333333 0 1 0 0 42.666667h20.992zM245.504 85.333333C157.098667 85.333333 85.333333 157.077333 85.333333 245.333333a21.333333 21.333333 0 0 0 42.666667 0C128 180.629333 180.672 128 245.504 128h20.992a21.333333 21.333333 0 1 0 0-42.666667h-20.992z" stroke-width="60" stroke="black" fill="#3D3D3D" p-id="5331"></path></svg>
+        </div>
+        <span :style="isDarkMode ? 'color: #a78bfa;' : 'color: #8b5cf6;'">{{ websiteStore.webInfo?.websiteName }}</span>
       </div>
       <ul class="menu-items"></ul>
     </div>
@@ -122,5 +126,53 @@ onMounted(() => {
     opacity: 1;
     transform: translate(0px);
   }
+}
+
+html[class="dark"] .menu-container {
+  // 背景，字体，边框，阴影
+  background-color: #25234a;
+  border: 1px solid #1a1835;
+  color: #f2f2f6;
+}
+
+.menu-header {
+  // 内边距，下外边界，下边框，左右上的圆角，弹性布局-内居中，定位
+  position: relative;
+  padding: 14px 16px;
+  margin-bottom: 1px;
+  border-bottom: 1px solid #f9f9fc;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to right,hsl(240, 5%, 78%),lch(96.94% 1.03 290.33));
+}
+
+html[class="dark"] .menu-header {
+  background: linear-gradient(to right, #312a48, #2d2644);
+  border: 1px solid #312a48;
+}
+
+.menu-header-icon {
+  width:20px;
+  height:20px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  animation:alarm-clock 1s infinite;
+}
+
+/* 2. 优化闹钟 */
+@keyframes alarm-clock {
+  0% { transform: rotate(0deg) scale(1); }     /* 初始状态 */
+  12% { transform: rotate(1.5deg) scale(1.015)}
+  25% { transform: rotate(3deg) scale(1.03); } /* 顺时针摇晃+小幅放大 */
+  37% { transform: rotate(1.5deg) scale(1.05)}
+  50% { transform: rotate(0deg) scale(1.07); } /* 回到中间+最大放大 */
+  62% { transform: rotate(-1.5deg) scale(1.05)}
+  75% { transform: rotate(-3deg) scale(1.03); }/* 逆时针摇晃+小幅放大 */
+  87% { transform: rotate(1.5deg) scale(1.015)}
+  100% { transform: rotate(0deg) scale(1); }   /* 回到初始状态 */
 }
 </style>
