@@ -1,9 +1,16 @@
 import { createApp } from "vue";
+// 引入全局样式
 import './style.css';
+// 引入根组件
 import App from './App.vue';
+// 引入创建好的路由插件
 import router from './router';
+// 引入创建好的pinia插件
 import pinia from "./pinia/store";
+// 引入ElementPlus插件
 import ElementPlus from 'element-plus';
+// 引入ElementPlus样式
+import 'element-plus/dist/index.css';
 
 // 获取应用实例
 const app=createApp(App);
