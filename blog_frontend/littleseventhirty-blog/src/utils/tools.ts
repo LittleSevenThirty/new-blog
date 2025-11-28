@@ -17,3 +17,8 @@ export const returnTime = (time: string): string => {
     }
     return result;
 }
+
+// 获取安全字符串
+export function escapeRegExp(str: string) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}

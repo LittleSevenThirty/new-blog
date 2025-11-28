@@ -3,6 +3,7 @@ import axios, { AxiosInstance ,AxiosResponse,InternalAxiosRequestConfig} from "a
 
 // axios实例
 const http: AxiosInstance = axios.create({
+    // @ts-ignore
     baseURL: import.meta.env.VITE_APP_BASE_API ?? "/",
     timeout: 8000,
     headers: {
