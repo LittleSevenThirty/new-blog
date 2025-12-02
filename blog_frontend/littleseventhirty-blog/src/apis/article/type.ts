@@ -22,7 +22,7 @@ interface ArticleSearch {
 }
 
 // 提取接口，热门文章推荐
-interface HotArticles {
+interface HotArticle {
     // 文章编号
     articleId: string,
 
@@ -33,4 +33,4 @@ interface HotArticles {
     visitedCount: number
 }
 
-export {ArticleSearch,HotArticles}
+export {ArticleSearch,HotArticle}
