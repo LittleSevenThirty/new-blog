@@ -137,7 +137,7 @@ function historySearch(p: any) {
         </div>
         <div>
           <div v-for="hot in hotList" v-bind:key="hot.articleId" v-on:click="()=>{
-            emit();
+            
           }">
           </div>
         </div>
