@@ -18,7 +18,7 @@
           </el-button>
         </div>
       </template>
-      <Search />
+      <Search v-on:is-show-search=""/>
     </el-dialog>
   </div>
   <!-- 菜单栏 -->

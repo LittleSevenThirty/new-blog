@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 // 引入全局样式
-import './style.css';
+import './styles/index.scss';
+import './styles/tailwindcss.css'
 // 引入根组件
 import App from './App.vue';
 // 引入创建好的路由插件
