@@ -10,7 +10,7 @@ export function getSearchTitleList():Promise<Array<ArticleSearch>>{
 
 // 对内容进行文章搜索 文章 搜索 by 内容
 export function searchArticleByContent(content:string){
-    return http.get("",{
+    return http.get("/article/search/by/content",{
         params: {
             content
         },
