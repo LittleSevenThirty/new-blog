@@ -1,24 +1,18 @@
 <template>
   <!-- 搜索框 -->
   <div class="seacher_dialog_container">
-    <el-button type="primary" size="default" @click="dialogVisible=true"></el-button>
-    <el-dialog v-model="dialogVisible" 
-    :show-close="false" 
-    :close-on-click-model="false"
-    :lock-scroll="true"
-    :close-on-press-escape="false"
-    title="hello world">
+    <el-button type="primary" size="default" @click="dialogVisible = true"></el-button>
+    <el-dialog v-model="dialogVisible" :show-close="false" :close-on-click-model="false" :lock-scroll="true"
+      :close-on-press-escape="false" title="hello world">
       <template v-slot:header>
         <div style="display: flex;align-items: center;justify-content:space-between;">
           <span style="font-size:1.2rem;margin-left:1rem">搜索</span>
-          <el-button 
-          :icon="Close" 
-          style="margin-right:1rem;background:none;font-size:1.5rem;width:30px;border:none;" 
-          @click="dialogVisible=false">
+          <el-button :icon="Close" style="margin-right:1rem;background:none;font-size:1.5rem;width:30px;border:none;"
+            @click="dialogVisible = false">
           </el-button>
         </div>
       </template>
-      <Search v-on:is-show-search=""/>
+      <Search v-on:isShowSearch="dialogVisible=false" />
     </el-dialog>
   </div>
   <!-- 菜单栏 -->
@@ -59,17 +53,21 @@ const dialogVisible = ref(false);
   }
 }
 
-:deep(.el-dialog){
+:deep(.el-dialog) {
   transition: all 0.3s;
+
   @media screen and (max-width: 1400px) {
     width: 45%;
   }
+
   @media screen and (max-width: 1000px) {
     width: 60%;
   }
+
   @media screen and (max-width: 760px) {
     width: 70%;
   }
+
   @media screen and (max-width: 600px) {
     width: 90%;
   }

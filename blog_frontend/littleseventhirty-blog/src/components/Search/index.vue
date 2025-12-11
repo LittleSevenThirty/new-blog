@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Ref, ref, reactive } from 'vue';
+import router from '../../router/index.ts';
 import { Search, Delete, Loading } from '@element-plus/icons-vue';
 import { searchArticleByContent } from '../../apis/article/index';
 import { ArticleSearch, HotArticle } from '../../apis/article/type';
@@ -147,7 +148,7 @@ function clickSearchResult(event: any, articleId: string) {
           <div v-for="hot in hotList" v-bind:key="hot.articleId" v-on:click="() => {
             // 发出我触发了isShowSearch事件
             emits('isShowSearch');
-            $router.push('/article/' + hot.articleId);
+            $router.push('/article/'+hot.articleId);
           }">
             {{ hot.articleTitle }}
             <div>
