@@ -1,5 +1,8 @@
 package cn.edu.tjufe.zql.domain.entity;
 
+import cn.edu.tjufe.zql.domain.BaseData;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Data
-public class Article {
+public class Article implements BaseData {
     // 数据库表标识
     private String id;
 
@@ -40,9 +43,14 @@ public class Article {
     // 文章类型(1原创，2翻译，3转载）
     private Short articleType;
 
+    // 文章状态(1公开 2私密 3草稿）
+    private Integer status;
+
     // 创建时间
+    @TableField(fill= FieldFill.INSERT)
     private Date createTime;
 
     // 更新时间
+    @TableField(fill= FieldFill.INSERT_UPDATE)
     private Date updateTime;
 }
