@@ -3,6 +3,8 @@ package cn.edu.tjufe.zql.controller;
 import cn.edu.tjufe.zql.constants.SQLConst;
 import cn.edu.tjufe.zql.domain.entity.Article;
 import cn.edu.tjufe.zql.domain.entity.Category;
+import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.SearchArticleByContentVO;
 import cn.edu.tjufe.zql.service.IArticleService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +28,6 @@ public class ArticleController {
 
     @GetMapping("search/by/content")
     public void searchArticleByContent(String content){
-        articleService.searchArticleByContent(content);
+//        ResponseResult<List<SearchArticleByContentVO>>(articleService.searchArticleByContent(content));
     }
 }
