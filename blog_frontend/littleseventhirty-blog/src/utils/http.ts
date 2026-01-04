@@ -1,5 +1,5 @@
 // 封装axios
-import axios, { AxiosInstance ,AxiosResponse,InternalAxiosRequestConfig} from "axios";
+import axios, { AxiosError, AxiosInstance ,AxiosResponse,InternalAxiosRequestConfig} from "axios";
 
 // axios实例
 const http: AxiosInstance = axios.create({
@@ -17,7 +17,7 @@ http.interceptors.request.use(
         console.log("全局请求拦截器");
         return config;
     },
-    (error: any)=>{
+    (error: AxiosError)=>{
         return Promise.reject(error);
     }
 );
@@ -31,7 +31,7 @@ http.interceptors.response.use(
         // return response;
         return response.data;
     },
-    (error: any)=>{
+    (error: AxiosError)=>{
         return Promise.reject(error);
     }
 )

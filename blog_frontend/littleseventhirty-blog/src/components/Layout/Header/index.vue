@@ -1,9 +1,17 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Close } from '@element-plus/icons-vue';
+import Search from '../../Search/index.vue';
+
+const dialogVisible = ref(false);
+</script>
+
 <template>
   <!-- 搜索框 -->
   <div class="seacher_dialog_container">
     <el-button type="primary" size="default" @click="dialogVisible = true"></el-button>
     <el-dialog v-model="dialogVisible" :show-close="false" :close-on-click-model="false" :lock-scroll="true"
-      :close-on-press-escape="false" title="hello world">
+      :close-on-press-escape="false">
       <template v-slot:header>
         <div style="display: flex;align-items: center;justify-content:space-between;">
           <span style="font-size:1.2rem;margin-left:1rem">搜索</span>
@@ -21,14 +29,6 @@
   <div></div>
   <div></div>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-import { Close } from '@element-plus/icons-vue';
-import Search from '../../Search/index.vue';
-
-const dialogVisible = ref(false);
-</script>
 
 <style scoped lang="scss">
 .seacher_dialog_container {

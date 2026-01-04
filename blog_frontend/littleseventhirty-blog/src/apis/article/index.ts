@@ -17,3 +17,9 @@ export function searchArticleByContent(content:string){
         method: "get"
     })
 }
+
+export function getHotArticleRecommend(){
+    return http.get("/article/hot",{
+        method: "get"
+    });
+}

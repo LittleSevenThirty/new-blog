@@ -6,3 +6,8 @@ mybatis-plus:
 logging:
   level:
     com.example.mapper: debug
+
+# spring配置
+spring:
+  profiles:
+    active: "@profiles.active@"

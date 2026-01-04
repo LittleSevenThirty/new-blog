@@ -23,16 +23,16 @@ import java.util.Date;
 @Data
 public class Article implements BaseData {
     // 数据库表标识
-    private String id;
+    private Long id;
 
     // 文章标识
-    private String articleId;
+    private Long articleId;
 
     // 作者ID
-    private String userId;
+    private Long userId;
 
     // 分类ID
-    private String categoryId;
+    private Long categoryId;
 
     // 文章标题
     private String articleTitle;
@@ -47,10 +47,13 @@ public class Article implements BaseData {
     private Integer status;
 
     // 创建时间
-    @TableField(fill= FieldFill.INSERT)
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     // 更新时间
-    @TableField(fill= FieldFill.INSERT_UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+
+    // 是否删除（0未删除 1已删除）
+    private Short isDeleted;
 }

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { Ref, ref, reactive } from 'vue';
-import router from '../../router/index.ts';
+import { Ref, ref, onMounted } from 'vue';
 import { Search, Delete, Loading } from '@element-plus/icons-vue';
-import { searchArticleByContent } from '../../apis/article/index';
+import { getHotArticleRecommend, searchArticleByContent } from '../../apis/article/index';
 import { ArticleSearch, HotArticle } from '../../apis/article/type';
 import { useLocalStorage } from '@vueuse/core';
 import { escapeRegExp } from '../../utils/tools';
 import SvgIcon from '../SvgIcon/index.vue'
 import useWebsiteStore from '../../pinia/store/modules/website.ts';
+import { ElMessage } from 'element-plus';
 
 // 声明我的事件
-const emits = defineEmits(['isShowSearch'])
+const emits = defineEmits(['isShowSearch']);
 
 // 搜索内容
 const searchValue = ref('');
@@ -48,8 +48,11 @@ function handleSearch(_: any, isAutoFocus: boolean = false) {
     }
     searchArticleByContent(searchValue.value).then((res: any) => {
       // 补充：这里还有其它内容需要补充，比如怎么判断需不需要res数据
+      if(res.code==1004){
+        ElMessage.error(res.msg);
+        return;
+      }
       articleSearchList.value = res.data;
-
       articleSearchList.value = articleSearchList.value.map((item: ArticleSearch) => {
         const regex = new RegExp(`(${safeStr})`, 'gi');
         const articleContent = item.articleContent.replace(regex, '<span class="highlight">$1</span>')
@@ -60,6 +63,17 @@ function handleSearch(_: any, isAutoFocus: boolean = false) {
       })
     })
   }
+}
+
+onMounted(()=>{
+  getHot();
+});
+
+// 使用any，已经被intercepter处理过了，要不然老是容易被提示搞混
+function getHot(){
+  getHotArticleRecommend().then((res:any)=>{
+    hotList.value=res.data;
+  })
 }
 
 // 标题数据pinia存储站

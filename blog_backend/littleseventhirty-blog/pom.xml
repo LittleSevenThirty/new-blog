@@ -91,6 +91,25 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <!--设置为默认环境-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -98,5 +117,13 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <!--配置资源过滤操作-->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!--启占位符替换功能-->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 </project>
