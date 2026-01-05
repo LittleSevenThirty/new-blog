@@ -12,6 +12,9 @@ import { ElMessage } from 'element-plus';
 // 声明我的事件
 const emits = defineEmits(['isShowSearch']);
 
+// 标题数据pinia存储站
+const websiteStore = useWebsiteStore();
+
 // 搜索内容
 const searchValue = ref('');
 
@@ -28,7 +31,7 @@ const showSearch = ref(true);
 const inputRef: Ref<HTMLInputElement | null> = ref(null);
 
 // 搜索历史记录存放
-const searchHistoryList = useLocalStorage<string[]>('searchHistoryList', ['hello', 'world']);
+const searchHistoryList = useLocalStorage<string[]>('searchHistoryList', []);
 
 // 文章搜索列表
 const articleSearchList = ref<Array<ArticleSearch>>([]);
@@ -76,9 +79,6 @@ function getHot(){
   })
 }
 
-// 标题数据pinia存储站
-const websiteStore = useWebsiteStore();
-
 // 处理输入框获取焦点函数
 async function handleFocus(_: any) {
   if ((searchValue.value && optionsValue.value === '标题') && !websiteStore.articleSearch) {
@@ -110,7 +110,7 @@ function historySearch(value:string) {
 
 // 定位到搜索文章
 function clickSearchResult(event: any, articleId: string) {
-
+  
 }
 
 </script>
