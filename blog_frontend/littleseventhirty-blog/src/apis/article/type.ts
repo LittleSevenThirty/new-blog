@@ -1,6 +1,6 @@
 interface ArticleSearch {
     // id，默认生成数据比对
-    id: number,
+    // id: number,
 
     // 文章编号，真实查询文章的
     articleId: string,

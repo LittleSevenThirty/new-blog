@@ -1,8 +1,11 @@
 package cn.edu.tjufe.zql.service;
 
 import cn.edu.tjufe.zql.domain.entity.Article;
+import cn.edu.tjufe.zql.domain.vo.HotArticleVO;
+import cn.edu.tjufe.zql.domain.vo.InitSearchTitleVO;
 import cn.edu.tjufe.zql.domain.vo.SearchArticleByContentVO;
 import com.baomidou.mybatisplus.extension.service.IService;
+
 import java.util.List;
 
 /**
@@ -11,10 +14,26 @@ import java.util.List;
  * @date: 2025/12/11-17:22
  **/
 public interface IArticleService extends IService<Article> {
+
+    /**
+     * 初始化标题搜索接口
+     *
+     * @return
+     */
+    List<InitSearchTitleVO> initSearchByTitle();
+
     /**
      * 根据搜索内容返回对应结果
+     *
      * @param content 被搜索目标
      * @return
      */
-    List<SearchArticleByContentVO>  searchArticleByContent(String content);
+    List<SearchArticleByContentVO> searchArticleByContent(String content);
+
+    /**
+     * 获得前5热门文章
+     *
+     * @return 前五热门文章
+     */
+    List<HotArticleVO> getHotArticles();
 }

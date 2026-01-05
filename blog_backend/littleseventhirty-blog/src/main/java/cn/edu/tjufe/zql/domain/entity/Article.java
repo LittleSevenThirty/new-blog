@@ -1,6 +1,6 @@
 package cn.edu.tjufe.zql.domain.entity;
 
-import cn.edu.tjufe.zql.domain.BaseData;
+import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -21,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Data
-public class Article implements BaseData {
+public class Article implements ViewObjectConvertible {
     // 数据库表标识
     private Long id;
 
@@ -39,6 +39,9 @@ public class Article implements BaseData {
 
     // 文章内容
     private String articleContent;
+
+    // 文章被访问次数
+    private Long visitedCount;
 
     // 文章类型(1原创，2翻译，3转载）
     private Short articleType;

@@ -1,6 +1,6 @@
 package cn.edu.tjufe.zql.domain.entity;
 
-import cn.edu.tjufe.zql.domain.BaseData;
+import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -19,18 +19,19 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("t_category")
-public class Category implements BaseData {
-    private String id;
-
-    private String categoryId;
-
+public class Category implements ViewObjectConvertible {
+    // 数据库标识
+    private Long id;
+    // 分类ID
+    private Long categoryId;
+    // 分类名称
     private String categoryName;
-
-    @TableField(fill= FieldFill.INSERT)
+    // 创建时间
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-
-    @TableField(fill= FieldFill.INSERT_UPDATE)
+    // 更新时间
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-
+    // 是否删除（0：未删除，1：已删除）
     private Integer isDeleted;
 }

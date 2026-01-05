@@ -80,7 +80,7 @@ function getHot(){
 const websiteStore = useWebsiteStore();
 
 // 处理输入框获取焦点函数
-async function handleFocus(event: any) {
+async function handleFocus(_: any) {
   if ((searchValue.value && optionsValue.value === '标题') && !websiteStore.articleSearch) {
     await websiteStore.getArticleTitleList();
   }
@@ -94,12 +94,18 @@ function handleBlur(event: any) {
 
 // 删除历史记录函数
 function delAllHistory(event: any) {
+  searchHistoryList.value=[];
   console.log("删除历史记录")
 }
 
 // 历史搜索
-function historySearch(p: any) {
-  console.log(p);
+function historySearch(value:string) {
+  searchValue.value=value;
+  inputRef.value?.focus;
+  handleFocus('');
+  if(searchValue.value && optionsValue.value=="内容"){
+    handleSearch('',true);
+  }
 }
 
 // 定位到搜索文章
