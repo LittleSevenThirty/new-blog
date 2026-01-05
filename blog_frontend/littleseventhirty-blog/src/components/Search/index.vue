@@ -5,9 +5,11 @@ import { getHotArticleRecommend, searchArticleByContent } from '../../apis/artic
 import { ArticleSearch, HotArticle } from '../../apis/article/type';
 import { useLocalStorage } from '@vueuse/core';
 import { escapeRegExp } from '../../utils/tools';
+import router from '../../router/index.ts';
 import SvgIcon from '../SvgIcon/index.vue'
 import useWebsiteStore from '../../pinia/store/modules/website.ts';
 import { ElMessage } from 'element-plus';
+import { getRandomArticle } from '../../apis/home/index.ts';
 
 // 声明我的事件
 const emits = defineEmits(['isShowSearch']);
@@ -51,7 +53,7 @@ function handleSearch(_: any, isAutoFocus: boolean = false) {
     }
     searchArticleByContent(searchValue.value).then((res: any) => {
       // 补充：这里还有其它内容需要补充，比如怎么判断需不需要res数据
-      if(res.code==1004){
+      if (res.code == 1004) {
         ElMessage.error(res.msg);
         return;
       }
@@ -68,14 +70,14 @@ function handleSearch(_: any, isAutoFocus: boolean = false) {
   }
 }
 
-onMounted(()=>{
+onMounted(() => {
   getHot();
 });
 
 // 使用any，已经被intercepter处理过了，要不然老是容易被提示搞混
-function getHot(){
-  getHotArticleRecommend().then((res:any)=>{
-    hotList.value=res.data;
+function getHot() {
+  getHotArticleRecommend().then((res: any) => {
+    hotList.value = res.data;
   })
 }
 
@@ -94,23 +96,34 @@ function handleBlur(event: any) {
 
 // 删除历史记录函数
 function delAllHistory(event: any) {
-  searchHistoryList.value=[];
+  searchHistoryList.value = [];
   console.log("删除历史记录")
 }
 
 // 历史搜索
-function historySearch(value:string) {
-  searchValue.value=value;
+function historySearch(value: string) {
+  searchValue.value = value;
   inputRef.value?.focus;
   handleFocus('');
-  if(searchValue.value && optionsValue.value=="内容"){
-    handleSearch('',true);
+  if (searchValue.value && optionsValue.value == "内容") {
+    handleSearch('', true);
   }
 }
 
 // 定位到搜索文章
 function clickSearchResult(event: any, articleId: string) {
-  
+  if (searchValue.value && optionsValue.value == "标题") {
+    searchHistoryList.value.push(searchValue.value);
+  }
+  searchValue.value = '';
+  router.push("/article/" + articleId);
+  emits("isShowSearch");
+}
+
+function changeToggle(_: any) {
+  getRandomArticle().then(res => {
+    hotList.value = res.data;
+  });
 }
 
 </script>
@@ -157,7 +170,7 @@ function clickSearchResult(event: any, articleId: string) {
         <!-- 热门推荐 -->
         <div class="header_history">
           <div>热门推荐</div>
-          <div class="event_history" v-on:click="">
+          <div class="event_history" v-on:click="changeToggle($emit)">
             <el-icon>
               <Loading />
             </el-icon>
@@ -168,7 +181,7 @@ function clickSearchResult(event: any, articleId: string) {
           <div v-for="hot in hotList" v-bind:key="hot.articleId" v-on:click="() => {
             // 发出我触发了isShowSearch事件
             emits('isShowSearch');
-            $router.push('/article/'+hot.articleId);
+            $router.push('/article/' + hot.articleId);
           }">
             {{ hot.articleTitle }}
             <div>
@@ -232,7 +245,7 @@ function clickSearchResult(event: any, articleId: string) {
               <div v-html="item.articleTitle"></div>
               <div class="text-xs mt-1 dark:text-[#A3A3A3] p-1 flex">
                 <div>
-                  <el-tag type="info" size="small"  effect="light" class="mr-2">
+                  <el-tag type="info" size="small" effect="light" class="mr-2">
                     {{ item.categoryName }}
                   </el-tag>
                 </div>
