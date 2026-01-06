@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 // typescript类型增强，针对vite的env配置
 
 // 配置ImportMetaEnv，让ts知道有哪些vite_变量

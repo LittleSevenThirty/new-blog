@@ -15,7 +15,7 @@ interface ArticleSearch {
     visitedCount: number,
 
     // 高亮标题
-    hilightedTitle: string,
+    highlightedTitle: string,
 
     // 文章内容
     articleContent: string

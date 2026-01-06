@@ -4,6 +4,7 @@ import cn.edu.tjufe.zql.annotation.AccessIntercepter;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.HotArticleVO;
 import cn.edu.tjufe.zql.domain.vo.InitSearchTitleVO;
+import cn.edu.tjufe.zql.domain.vo.RandomArticleVO;
 import cn.edu.tjufe.zql.domain.vo.SearchArticleByContentVO;
 import cn.edu.tjufe.zql.service.IArticleService;
 import cn.edu.tjufe.zql.utils.ResponseWrapper;
@@ -73,5 +74,12 @@ public class ArticleController {
     @GetMapping("/hot")
     public ResponseResult<List<HotArticleVO>> getHotArticles() {
         return ResponseWrapper.handler(() -> articleService.getHotArticles());
+    }
+
+    @GetMapping("/random")
+    @AccessIntercepter(second = 60, maxCount = 5)
+    @Operation(description = "刷一刷获取随机文章")
+    public ResponseResult<List<RandomArticleVO>> getRandomArticles() {
+        return ResponseWrapper.handler(() -> articleService.getRandomArticles());
     }
 }

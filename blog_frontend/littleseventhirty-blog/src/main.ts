@@ -12,6 +12,7 @@ import pinia from "./pinia/store";
 import ElementPlus from 'element-plus';
 // 引入ElementPlus样式
 import 'element-plus/dist/index.css';
+import './mock/index.ts'; // 如果不想启动后端就想要数据需要将这段注释取消掉，配置mock是为了后端数据未准备好时提供假数据用的
 
 // 获取应用实例
 const app=createApp(App);

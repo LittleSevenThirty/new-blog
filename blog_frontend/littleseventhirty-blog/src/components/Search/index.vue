@@ -1,5 +1,7 @@
+<!-- 这一块有点乱，写到后面都有点搞不清写的对不对了 -->
+
 <script setup lang="ts">
-import { Ref, ref, onMounted } from 'vue';
+import { Ref, ref, onMounted, watchEffect,watch } from 'vue';
 import { Search, Delete, Loading } from '@element-plus/icons-vue';
 import { getHotArticleRecommend, searchArticleByContent } from '../../apis/article/index';
 import { ArticleSearch, HotArticle } from '../../apis/article/type';
@@ -77,6 +79,7 @@ onMounted(() => {
 // 使用any，已经被intercepter处理过了，要不然老是容易被提示搞混
 function getHot() {
   getHotArticleRecommend().then((res: any) => {
+    // console.log(res.data);
     hotList.value = res.data;
   })
 }
@@ -126,6 +129,31 @@ function changeToggle(_: any) {
   });
 }
 
+watchEffect(async ()=>{
+  if(!searchValue.value){
+    articleSearchList.value=[];
+  }
+  if(searchValue.value&&optionsValue.value=='标题'){
+    if(!websiteStore.articleSearch){
+      await websiteStore.getArticleTitleList();
+    }
+    const query=searchValue.value.toLowerCase();
+    articleSearchList.value=(websiteStore.articleSearch??[]).filter(item=>item.articleTitle?.toLowerCase().includes(query)).map((item)=>{
+      const safeStr = escapeRegExp(query);
+      const regex = new RegExp(`(${safeStr})`, 'gi');
+      const highlightedTitle = item.articleTitle.replace(regex, '<span class="highlight">$1</span>');
+      return {
+        ...item,
+        highlightedTitle
+      };
+    });
+  }
+})
+
+watch(optionsValue,()=>{
+  articleSearchList.value=[];
+  searchValue.value='';
+})
 </script>
 
 <template>
@@ -162,7 +190,7 @@ function changeToggle(_: any) {
         </div>
         <!-- 历史记录 -->
         <div>
-          <el-tag type="primary" style="margin: 5px;background-color: red;" v-for="(item) in searchHistoryList"
+          <el-tag type="primary" style="margin: 5px;" v-for="(item) in searchHistoryList"
             :key="item" checked @click="historySearch(item)">
             {{ item }}
           </el-tag>
@@ -177,8 +205,8 @@ function changeToggle(_: any) {
             <span>换一换</span>
           </div>
         </div>
-        <div>
-          <div v-for="hot in hotList" v-bind:key="hot.articleId" v-on:click="() => {
+        <div class="recommend_container">
+          <div class="item" v-for="hot in hotList" v-bind:key="hot.articleId" v-on:click="() => {
             // 发出我触发了isShowSearch事件
             emits('isShowSearch');
             $router.push('/article/' + hot.articleId);
@@ -214,7 +242,7 @@ function changeToggle(_: any) {
             @mousedown="clickSearchResult($event, item.articleId)">
             <div class="search_result_item">
               <div>
-                <div v-html="item.hilightedTitle"></div>
+                <div v-html="item.highlightedTitle"></div>
                 <div class="text-xs mt-1 dark:text-[#A3A3A3] p-1">
                   <el-tag type="info" size="small" effect="light" class="mr-2">
                     {{ item.categoryName }}
@@ -277,6 +305,12 @@ function changeToggle(_: any) {
 <style lang="scss" scoped>
 @use "../../styles/mixin.scss" as *;
 
+// 搜索关键字高亮
+:deep(.highlight){
+  background-color: yellow;
+  border-radius: 5px;
+}
+
 .content_container {
   height: 100%;
 
@@ -296,6 +330,16 @@ function changeToggle(_: any) {
         display: flex;
         align-items: center;
         justify-content: space-between
+      }
+    }
+
+    :deep(.el-tag){
+      padding: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s linear;
+
+      &:hover {
+        background-color: #e0e2e5;
       }
     }
 
@@ -322,9 +366,40 @@ function changeToggle(_: any) {
       }
     }
   }
+
+  // 热门推荐
+  .recommend_container{
+    .item {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 5px 10px;
+      font-size: 16px;
+      padding: 5px;
+      border-radius: 5px;
+    
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+
+        span {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    div:hover {
+      cursor: pointer;
+      color: #FE2C55FF;
+      background-color: #e0e2e5;
+      transition: background-color 0.3s linear;
+    }
+  }
 }
 
-:deep(.search) {
+:deep(.search .el-input__wrapper) {
   padding: 0.5px 5px 0.5px 5px;
 }
 
@@ -334,5 +409,16 @@ function changeToggle(_: any) {
   --el-border-radius-base: 16px;
   font-size: 0.9em;
   color: grey;
+}
+
+// 鼠标悬浮按钮上面
+:deep(.el-input-group__append:hover) {
+  // 背景颜色变化过渡
+  transition: background-color 0.3s linear;
+  background-color: #e0e2e5;
+}
+
+:deep(.el-input-group__append) {
+  padding: 0 10px;
 }
 </style>

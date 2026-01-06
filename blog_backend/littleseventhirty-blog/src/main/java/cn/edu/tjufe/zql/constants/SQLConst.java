@@ -9,5 +9,10 @@ public class SQLConst {
     /**
      * 公开文章的字段标识
      */
-    public static final Integer PUBLIC_APTICLE=1;
+    public static final Integer PUBLIC_APTICLE = 1;
+
+    /**
+     * 选取随机文章数目
+     */
+    public static final Integer RANDOM_ARTICLE_COUNT = 5;
 }

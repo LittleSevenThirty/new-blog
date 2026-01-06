@@ -1,6 +1,8 @@
 <h1 align="center">new-blog</h1>
 This project is a new blog transformed from an old one, and it is currently being improved gradually.
 
+<h1>写注释，搞清楚要干什么</h1>
+
 `我的做事风格就是
 想到啥，就写啥;
 想到啥，就干啥`

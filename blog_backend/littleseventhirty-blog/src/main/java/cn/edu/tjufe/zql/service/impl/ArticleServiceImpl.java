@@ -5,6 +5,7 @@ import cn.edu.tjufe.zql.domain.entity.Article;
 import cn.edu.tjufe.zql.domain.entity.Category;
 import cn.edu.tjufe.zql.domain.vo.HotArticleVO;
 import cn.edu.tjufe.zql.domain.vo.InitSearchTitleVO;
+import cn.edu.tjufe.zql.domain.vo.RandomArticleVO;
 import cn.edu.tjufe.zql.domain.vo.SearchArticleByContentVO;
 import cn.edu.tjufe.zql.mapper.ArticleMapper;
 import cn.edu.tjufe.zql.mapper.CategoryMapper;
@@ -54,7 +55,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                         .like(Article::getArticleContent, content)
                         .eq(Article::getStatus, SQLConst.PUBLIC_APTICLE));
         // 再从数据库中查询相关分类
-        Map<String, String> categoryMap = categoryMapper.selectList(null).stream().collect(Collectors.toMap(Category::getCategoryId, Category::getCategoryName));
+        Map<Long, String> categoryMap = categoryMapper.selectList(null).stream().collect(Collectors.toMap(Category::getCategoryId, Category::getCategoryName));
         // 将对应数据存放到对应实体中
         if (!articles.isEmpty()) {
             List<SearchArticleByContentVO> searchArticleByContentVOList = articles.stream().map(article -> {
@@ -89,6 +90,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             hotArticles.stream().map(article -> {
                 return article.asViewObject(HotArticleVO.class);
             }).toList();
+        }
+        return List.of();
+    }
+
+    @Override
+    public List<RandomArticleVO> getRandomArticles() {
+        List<Article> randomArticles = articleMapper.selectRandomArticle(SQLConst.PUBLIC_APTICLE, SQLConst.RANDOM_ARTICLE_COUNT);
+        if (!randomArticles.isEmpty()) {
+            return randomArticles.stream().map(article -> article.asViewObject(RandomArticleVO.class)).toList();
         }
         return List.of();
     }
