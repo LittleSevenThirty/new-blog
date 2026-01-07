@@ -26,7 +26,7 @@ import java.util.List;
 @Validated
 @RestController
 @Tag(name = "文章相关接口")
-@RequestMapping("article/")
+@RequestMapping("/article")
 public class ArticleController {
 
     @Resource(name = "articleService")
@@ -39,7 +39,7 @@ public class ArticleController {
      */
     @Operation(summary = "初始化标题搜索文章数据")
     @AccessIntercepter(second = 60, maxCount = 5)
-    @GetMapping("search/init/title")
+    @GetMapping("/search/init/title")
     public ResponseResult<List<InitSearchTitleVO>> initSearchByTitle() {
         return ResponseWrapper.handler(() -> articleService.initSearchByTitle());
     }
@@ -55,7 +55,7 @@ public class ArticleController {
             @Parameter(name = "content", description = "搜索文章内容片段", required = true)
     })
     @AccessIntercepter(second = 60, maxCount = 5)
-    @GetMapping("search/by/content")
+    @GetMapping("/search/by/content")
     public ResponseResult<List<SearchArticleByContentVO>> searchArticleByContent(
             @NotEmpty
             @Length(min = 1, max = 15, message = "搜索内容长度应不超过15字符")

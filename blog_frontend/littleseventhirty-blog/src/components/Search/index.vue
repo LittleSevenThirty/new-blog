@@ -1,9 +1,9 @@
 <!-- 这一块有点乱，写到后面都有点搞不清写的对不对了 -->
 
 <script setup lang="ts">
-import { Ref, ref, onMounted, watchEffect,watch } from 'vue';
+import { Ref, ref, onMounted, watchEffect, watch } from 'vue';
 import { Search, Delete, Loading } from '@element-plus/icons-vue';
-import { getHotArticleRecommend, searchArticleByContent } from '../../apis/article/index';
+import { getHotArticleRecommend, searchArticleByContent, getSearchTitleList } from '../../apis/article/index';
 import { ArticleSearch, HotArticle } from '../../apis/article/type';
 import { useLocalStorage } from '@vueuse/core';
 import { escapeRegExp } from '../../utils/tools';
@@ -129,16 +129,17 @@ function changeToggle(_: any) {
   });
 }
 
-watchEffect(async ()=>{
-  if(!searchValue.value){
-    articleSearchList.value=[];
+watchEffect(async () => {
+  if (!searchValue.value) {
+    articleSearchList.value = [];
   }
-  if(searchValue.value&&optionsValue.value=='标题'){
-    if(!websiteStore.articleSearch){
+  if (searchValue.value && optionsValue.value == '标题') {
+    if (websiteStore.articleSearch.length == 0) {
       await websiteStore.getArticleTitleList();
+      console.log("我是watchEffect.articleSearch.length==0");
     }
-    const query=searchValue.value.toLowerCase();
-    articleSearchList.value=(websiteStore.articleSearch??[]).filter(item=>item.articleTitle?.toLowerCase().includes(query)).map((item)=>{
+    const query = searchValue.value.toLowerCase();
+    articleSearchList.value = websiteStore.articleSearch.filter(item => item.articleTitle?.toLowerCase().includes(query)).map((item) => {
       const safeStr = escapeRegExp(query);
       const regex = new RegExp(`(${safeStr})`, 'gi');
       const highlightedTitle = item.articleTitle.replace(regex, '<span class="highlight">$1</span>');
@@ -150,9 +151,9 @@ watchEffect(async ()=>{
   }
 })
 
-watch(optionsValue,()=>{
-  articleSearchList.value=[];
-  searchValue.value='';
+watch(optionsValue, () => {
+  articleSearchList.value = [];
+  searchValue.value = '';
 })
 </script>
 
@@ -190,8 +191,8 @@ watch(optionsValue,()=>{
         </div>
         <!-- 历史记录 -->
         <div>
-          <el-tag type="primary" style="margin: 5px;" v-for="(item) in searchHistoryList"
-            :key="item" checked @click="historySearch(item)">
+          <el-tag type="primary" style="margin: 5px;" v-for="(item) in searchHistoryList" :key="item" checked
+            @click="historySearch(item)">
             {{ item }}
           </el-tag>
         </div>
@@ -214,7 +215,7 @@ watch(optionsValue,()=>{
             {{ hot.articleTitle }}
             <div>
               <svg t="1765170512296" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                xmlns="http://www.w3.org/2000/svg" p-id="7884" width="200" height="200">
+                xmlns="http://www.w3.org/2000/svg" p-id="7884" width="20" height="20">
                 <path d="M517.12 517.12m-460.8 0a460.8 460.8 0 1 0 921.6 0 460.8 460.8 0 1 0-921.6 0Z" fill="#FCE8D8"
                   p-id="7885"></path>
                 <path
@@ -306,7 +307,7 @@ watch(optionsValue,()=>{
 @use "../../styles/mixin.scss" as *;
 
 // 搜索关键字高亮
-:deep(.highlight){
+:deep(.highlight) {
   background-color: yellow;
   border-radius: 5px;
 }
@@ -333,7 +334,7 @@ watch(optionsValue,()=>{
       }
     }
 
-    :deep(.el-tag){
+    :deep(.el-tag) {
       padding: 5px;
       cursor: pointer;
       transition: background-color 0.3s linear;
@@ -368,7 +369,7 @@ watch(optionsValue,()=>{
   }
 
   // 热门推荐
-  .recommend_container{
+  .recommend_container {
     .item {
       display: flex;
       justify-content: space-around;
@@ -377,7 +378,7 @@ watch(optionsValue,()=>{
       font-size: 16px;
       padding: 5px;
       border-radius: 5px;
-    
+
       div {
         display: flex;
         justify-content: center;

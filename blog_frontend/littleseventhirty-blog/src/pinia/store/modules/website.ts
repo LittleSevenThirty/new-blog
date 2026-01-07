@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { shallowRef } from "vue";
 import { ArticleSearch } from "../../../apis/article/type.ts";
-import { getSearchTitleList} from "../../../apis/article/index.ts"
+import { getSearchTitleList } from "../../../apis/article/index.ts"
 import { WebsiteInfo } from "../../../apis/website/type.ts";
 import { getWebsiteInfo } from "../../../apis/website/index.ts";
 import { returnTime } from "../../../utils/tools.ts";
@@ -12,7 +12,7 @@ const useWebsiteStore = defineStore("website", () => {
     const webInfo = shallowRef<WebsiteInfo>();
 
     // 文章搜索数据存储对象
-    const articleSearch = shallowRef<Array<ArticleSearch>>();
+    const articleSearch = shallowRef<Array<ArticleSearch>>([]);
 
     //// actions
     // const getInfo = async ()=>{

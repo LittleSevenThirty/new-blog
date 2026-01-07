@@ -1,7 +1,7 @@
 server:
   port: 8080
 mybatis-plus:
-  config-location: classpath:mapper/*.xml
+  mapper-locations: classpath:mapper/*.xml
 
 logging:
   level:
@@ -11,3 +11,7 @@ logging:
 spring:
   profiles:
     active: "@profiles.active@"
+  datasource:
+    password: Zql@20040712
+    username: root
+    url: jdbc:mysql://localhost:3306/blog?characterEncoding=utf-8&serverTimezone=GMT%2B8

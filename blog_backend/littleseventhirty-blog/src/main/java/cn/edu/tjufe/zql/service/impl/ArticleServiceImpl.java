@@ -87,7 +87,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public List<HotArticleVO> getHotArticles() {
         List<Article> hotArticles = articleMapper.selectList(new LambdaQueryWrapper<Article>().eq(Article::getStatus, SQLConst.PUBLIC_APTICLE).orderByDesc(Article::getVisitedCount).last("LIMIT 5"));
         if (!hotArticles.isEmpty()) {
-            hotArticles.stream().map(article -> {
+            return hotArticles.stream().map(article -> {
                 return article.asViewObject(HotArticleVO.class);
             }).toList();
         }

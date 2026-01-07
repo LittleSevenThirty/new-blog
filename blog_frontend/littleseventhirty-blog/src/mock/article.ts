@@ -2,17 +2,48 @@
 import Mock from "mockjs"
 
 // 该接口测试可以使用
-Mock.mock("/api/article/hot","get",{
+// 调整后符合后端格式的Mock假数据
+Mock.mock("/api/article/hot", "get", {
+  code: "200", // 后端是字符串类型，这里改成"200"
+  msg: "success（成功）", // 同步后端的msg内容
+  data: [
+    {
+      "articleId|+1": 5, // 从5开始自增，匹配后端示例
+      "articleTitle": "test@cname", // 自动生成带test前缀的中文标题
+      "visitedCount|1-100": 32 // 随机生成1-100的访问量
+    },
+    {
+      "articleId|+1": 8,
+      "articleTitle": "test@cname",
+      "visitedCount|1-100": 25
+    },
+    {
+      "articleId|+1": 1,
+      "articleTitle": "test@cname",
+      "visitedCount|1-100": 20
+    },
+    {
+      "articleId|+1": 2,
+      "articleTitle": "test@cname",
+      "visitedCount|1-100": 15
+    },
+    {
+      "articleId|+1": 3,
+      "articleTitle": "test@cname",
+      "visitedCount|1-100": 34
+    }
+  ]
+})
+
+// 获取初始化标题数据
+Mock.mock("/api/article/search/init/title", "get", {
   code: 200,
   msg: 'success',
-  data: {
-    'list|5': [{
-      'articleId|+1': 1,
-      'articleTitle': '@cname',
-      'visitedCount|+1': 123 
-    }]
-  }
+  data: [
+
+  ]
 })
+
 
 // Mock.mock("/api/article/search/by/content","get",(options:Mock.MockjsRequestOptions)=>{
 //     // 从 options.url 中可以提取查询参数（如果需要）
@@ -56,18 +87,5 @@ Mock.mock('/api/article/search/by/content', 'get', (options) => {
     code: 200,
     message: 'success',
     data: articles
-  }
-})
-
-Mock.mock("api/article/search/init/title","get",{
-  code: 200,
-  msg: 'success',
-  data: {
-    'list|10': [{
-      'articleId|+1': 1,
-      'articleTitle': '@cname',
-      'categoryName': '@name',
-      'visitedCount|+1': 123 
-    }]
   }
 })
