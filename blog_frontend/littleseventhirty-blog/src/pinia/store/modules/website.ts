@@ -27,15 +27,14 @@ const useWebsiteStore = defineStore("website", () => {
     //// getInfo获取网站信息改写，让其看起来更像线性代码
     const getInfo = async () => {
         let res = await getWebsiteInfo();
-        res.lastUpdatetime = returnTime(res.lastUpdatetime) as string;
-        console.log(res);
-        webInfo.value = res;
+        res.data.lastUpdatetime = returnTime(res.data.lastUpdatetime) as string;
+        webInfo.value = res.data;
     }
 
     // 获取网站标题
     const getArticleTitleList = async () => {
         const res = await getSearchTitleList();
-        articleSearch.value = res;
+        articleSearch.value = res.data;
     }
 
     // 关键：返回需要暴露的状态和方法

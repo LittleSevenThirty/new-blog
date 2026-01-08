@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { Ref, ref, onMounted, watchEffect, watch } from 'vue';
 import { Search, Delete, Loading } from '@element-plus/icons-vue';
-import { getHotArticleRecommend, searchArticleByContent, getSearchTitleList } from '../../apis/article/index';
+import { getHotArticleRecommend, searchArticleByContent,getRandomArticle } from '../../apis/article/index';
 import { ArticleSearch, HotArticle } from '../../apis/article/type';
 import { useLocalStorage } from '@vueuse/core';
 import { escapeRegExp } from '../../utils/tools';
@@ -11,7 +11,6 @@ import router from '../../router/index.ts';
 import SvgIcon from '../SvgIcon/index.vue'
 import useWebsiteStore from '../../pinia/store/modules/website.ts';
 import { ElMessage } from 'element-plus';
-import { getRandomArticle } from '../../apis/home/index.ts';
 
 // 声明我的事件
 const emits = defineEmits(['isShowSearch']);
@@ -252,7 +251,7 @@ watch(optionsValue, () => {
               </div>
               <div class="flex space-x-2 text-xs text-[#475569] items-center justify-center">
                 <svg t="1765170512296" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="7884" width="200" height="200">
+                  xmlns="http://www.w3.org/2000/svg" p-id="7884" width="20" height="20">
                   <path d="M517.12 517.12m-460.8 0a460.8 460.8 0 1 0 921.6 0 460.8 460.8 0 1 0-921.6 0Z" fill="#FCE8D8"
                     p-id="7885"></path>
                   <path
@@ -283,7 +282,7 @@ watch(optionsValue, () => {
               </div>
               <div class="flex space-x-2 text-xs text-[#475569] items-center justify-center">
                 <svg t="1765170512296" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="7884" width="200" height="200">
+                  xmlns="http://www.w3.org/2000/svg" p-id="7884" width="20" height="20">
                   <path d="M517.12 517.12m-460.8 0a460.8 460.8 0 1 0 921.6 0 460.8 460.8 0 1 0-921.6 0Z" fill="#FCE8D8"
                     p-id="7885"></path>
                   <path

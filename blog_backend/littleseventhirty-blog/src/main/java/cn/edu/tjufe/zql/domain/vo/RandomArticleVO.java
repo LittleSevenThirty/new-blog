@@ -21,7 +21,7 @@ public class RandomArticleVO {
 
     @Schema(description = "文章被访问数量")
     private Long visitedCount;
-
+    
     @Schema(description = "文章创建时间")
     private Date createTime;
 }

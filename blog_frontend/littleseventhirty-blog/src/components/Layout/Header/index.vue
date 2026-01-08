@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Close } from '@element-plus/icons-vue';
 import Search from '../../Search/index.vue';
+import Menu from './Menu/index.vue';
 
 const dialogVisible = ref(false);
 </script>
@@ -9,7 +10,6 @@ const dialogVisible = ref(false);
 <template>
   <!-- 搜索框 -->
   <div class="seacher_dialog_container">
-    <el-button type="primary" size="default" @click="dialogVisible = true"></el-button>
     <el-dialog v-model="dialogVisible" :show-close="false" :close-on-click-model="false" :lock-scroll="true"
       :close-on-press-escape="false">
       <template v-slot:header>
@@ -24,7 +24,9 @@ const dialogVisible = ref(false);
     </el-dialog>
   </div>
   <!-- 菜单栏 -->
-  <div></div>
+  <div class="menu">
+    <Menu/>
+  </div>
   <!-- 移动端适配 -->
   <div></div>
   <div></div>
@@ -71,5 +73,9 @@ const dialogVisible = ref(false);
   @media screen and (max-width: 600px) {
     width: 90%;
   }
+}
+
+.menu {
+  // 先空着，没想好展示效果
 }
 </style>

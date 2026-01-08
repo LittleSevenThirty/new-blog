@@ -3,7 +3,7 @@ import http from "../../utils/http";
 import { ArticleSearch } from "./type.ts";
 
 // 获得初始化时标题搜索数据 文章 搜索 初始化 标题
-export function getSearchTitleList(): Promise<Array<ArticleSearch>> {
+export function getSearchTitleList() {
     return http.get("/article/search/init/title", {
         method: "get"
     });
@@ -14,8 +14,7 @@ export function searchArticleByContent(content: string) {
     return http.get("/article/search/by/content", {
         params: {
             content
-        },
-        method: "get"
+        }
     })
 }
 
@@ -27,4 +26,15 @@ export function getHotArticleRecommend() {
     return http.get("/article/hot", {
         method: "get"
     });
+}
+
+/**
+ * 
+ * @returns 获取随机文章
+ */
+export function getRandomArticle() {
+  return http({
+    url: "/article/random",
+    method: "get"
+  })
 }
