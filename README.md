@@ -5,7 +5,7 @@ This project is a new blog transformed from an old one, and it is currently bein
 
 `我的做事风格就是
 想到啥，就写啥;
-想到啥，就干啥`
+想到啥，就干啥`无
 
 <p> 万事开头难啊</p>
 <p>我对自己的定位是对自己要有清晰认知，不偏执还挺松弛的人</p>
