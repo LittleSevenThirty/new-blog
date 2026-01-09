@@ -15,4 +15,6 @@ public class SQLConst {
      * 选取随机文章数目
      */
     public static final Integer RANDOM_ARTICLE_COUNT = 5;
+
+    public static final String LIMIT_ONE_SQL = "LIMIT 1";
 }
