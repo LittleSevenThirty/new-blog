@@ -12,10 +12,12 @@ import pinia from "./pinia/store";
 import ElementPlus from 'element-plus';
 // 引入ElementPlus样式
 import 'element-plus/dist/index.css';
+// 这里不要使用动态加载，动态加载的mock是在所有页面后启动，所以axios会出现请求错误问题
 import './mock/index.ts'; // 如果不想启动后端就想要数据需要将这段注释取消掉，配置mock是为了后端数据未准备好时提供假数据用的
 
+
 // 获取应用实例
-const app=createApp(App);
+const app = createApp(App);
 // 注册全局指令1-
 // app.directive("",)
 

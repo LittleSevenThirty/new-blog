@@ -20,12 +20,12 @@ const dialogVisible = ref(false);
           </el-button>
         </div>
       </template>
-      <Search v-on:isShowSearch="dialogVisible=false" />
+      <Search v-on:isShowSearch="dialogVisible = false" />
     </el-dialog>
   </div>
   <!-- 菜单栏 -->
   <div class="menu">
-    <Menu/>
+    <Menu />
   </div>
   <!-- 移动端适配 -->
   <div></div>
@@ -73,9 +73,5 @@ const dialogVisible = ref(false);
   @media screen and (max-width: 600px) {
     width: 90%;
   }
-}
-
-.menu {
-  // 先空着，没想好展示效果
 }
 </style>
