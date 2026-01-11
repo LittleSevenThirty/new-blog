@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ArrowDown, ArrowDownBold, Clock, Close, DocumentCopy, Files, Fries, HomeFilled, Link, Postcard, PriceTag } from '@element-plus/icons-vue'
+import { ArrowDownBold, Clock, Close, DocumentCopy, Files, Fries, Headset, HomeFilled, Link, Picture, Postcard, PriceTag, Moon, Sunny, Search as ElSearch } from '@element-plus/icons-vue'
 import useWebsiteStore from '../../../../pinia/store/modules/website';
 import router from '../../../../router';
-import { File } from 'buffer';
+import { useColorMode } from '@vueuse/core';
+import Search from '../../../Search/index.vue';
+// 判断是否该有音乐组件
+//@ts-ignore
+const showMusic = import.meta.env.VITE_FRONTEND_URL;
+
+// 系统模式
+const mode = useColorMode();
 
 const websiteStore = useWebsiteStore();
 
@@ -12,6 +19,13 @@ const dialogVisible = ref(false);
 const isMenuVisible = ref(true);
 
 const isTransParent = ref(true);
+
+const themeChangeFlag = ref(true);
+
+function changeToggle(event: boolean) {
+  console.log(mode);
+  mode.value = event ? "light" : "dark";
+}
 </script>
 
 <template>
@@ -121,10 +135,52 @@ const isTransParent = ref(true);
               </li>
             </ul>
           </div>
+          <!-- 友链 -->
+          <div class="menu_item" v-on:click="router.push('/link')">
+            <span>
+              <el-icon>
+                <Link />
+              </el-icon>
+              <span>友链</span>
+            </span>
+          </div>
+          <!-- 音乐 -->
+          <div class="menu_item" v-on:click="router.push('/music')" v-if="showMusic">
+            <span>
+              <el-icon>
+                <Headset />
+              </el-icon>
+              <span>音乐</span>
+            </span>
+          </div>
+          <!-- 相册 -->
+          <div class="menu_item" v-on:click="router.push('/photo')">
+            <span>
+              <el-icon>
+                <Picture />
+              </el-icon>
+              <span>相册</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
-    <div id="menu_right"></div>
+    <div id="menu_right" style="background-color: red;">
+      <!-- 日夜切换，使用element-plus的switch组件，会触发change事件-->
+      <div style="margin-right: 1rem; margin-top: -0.25rem;">
+        <el-switch v-model="themeChangeFlag" :active-action-icon="Sunny" :inactive-action-icon="Moon"
+          v-on:change="changeToggle($event)" />
+      </div>
+      <!-- 搜索按钮 -->
+      <div id="search_button">
+        <div class="search" v-on:click="dialogVisible = true">
+          <el-icon>
+            <ElSearch />
+          </el-icon>
+        </div>
+      </div>
+      <div class="user_info"></div>
+    </div>
   </nav>
 </template>
 
@@ -284,6 +340,30 @@ nav {
         }
       }
     }
+  }
+
+  #menu_right {
+    flex: 1;
+    display: flex;
+    width: 100%;
+    background-color: #fff;
+    justify-content: right;
+    align-items: center;
+
+    #search_button .search {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 20px;
+      cursor: pointer;
+      transition: transform 0.3s linear;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .user_info {}
   }
 }
 </style>
