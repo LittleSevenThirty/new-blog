@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @description: 站点信息控制类
  * @date: 2026/1/9-10:05
  **/
-
 @Tag(name = "站点基本信息")
 @RequestMapping("/websiteInfo")
 @RestController
