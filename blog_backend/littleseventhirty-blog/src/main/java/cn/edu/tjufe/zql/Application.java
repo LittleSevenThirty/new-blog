@@ -6,11 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("cn.edu.tjufe.zql.mapper")
+@MapperScan("cn.edu.tjufe.zql.mapper")  // 有了这个就不用给每个mapper接口写@Mapper注解，当然写了也没啥
 @Slf4j
 public class Application {
-    public static void main(String[] args){
-        SpringApplication.run(Application.class,args);
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
         log.info(
                 "------------------------------------------------------------------------------" +
                         "\n" +

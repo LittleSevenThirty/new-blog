@@ -14,5 +14,5 @@ import org.springframework.stereotype.Service;
  **/
 @Slf4j
 @Service(value = "commentService")
-public class CommentService extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
+public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
 }

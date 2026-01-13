@@ -1,6 +1,7 @@
 package cn.edu.tjufe.zql.domain.entity;
 
 
+import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -19,13 +20,13 @@ import java.util.Date;
  * @date 2026/1/12
  * @github https://github.com/little-seven-thirty
  */
-@TableName(value="sys_user")
-@Accessors(chain=true)  // 修改已有实例对象时可链式调用setter函数
+@TableName(value = "sys_user")
+@Accessors(chain = true)  // 修改已有实例对象时可链式调用setter函数
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class User {
+public class User implements ViewObjectConvertible {
     // 表标识
     private Integer id;
     // 用户标识
@@ -52,7 +53,7 @@ public class User {
     @TableField(fill = FieldFill.INSERT)
     private Date createTIme;
     // 更新时间
-    @TableField(fill=FieldFill.INSERT_UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
     // 是否删除
     private Integer isDelete;

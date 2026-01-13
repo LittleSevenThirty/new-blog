@@ -26,7 +26,7 @@ import java.util.List;
  **/
 @Slf4j
 @Service(value = "websiteInfoService")
-public class WebsiteInfoService extends ServiceImpl<WebsiteInfoMapper, WebsiteInfo> implements IWebsiteInfoService {
+public class WebsiteInfoServiceImpl extends ServiceImpl<WebsiteInfoMapper, WebsiteInfo> implements IWebsiteInfoService {
     @Resource
     private WebsiteInfoMapper websiteInfoMapper;    // 网站信息映射类
 
