@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ArrowDownBold, Clock, Close, DocumentCopy, Files, Fries, Headset, HomeFilled, Link, Picture, Postcard, PriceTag, Moon, Sunny, Search as ElSearch } from '@element-plus/icons-vue'
+import { ArrowDownBold, Clock, Close, DocumentCopy, Files, Fries, Headset, HomeFilled, Link, Picture, Postcard, PriceTag, Moon, Sunny, Search as ElSearch, MoonNight } from '@element-plus/icons-vue'
 import useWebsiteStore from '../../../../pinia/store/modules/website';
 import router from '../../../../router';
 import { useColorMode } from '@vueuse/core';
 import Search from '../../../Search/index.vue';
+import useUserStore from '../../../../pinia/store/modules/user';
 // 判断是否该有音乐组件
 //@ts-ignore
 const showMusic = import.meta.env.VITE_FRONTEND_URL;
 
 // 系统模式
 const mode = useColorMode();
-
+// pinia
 const websiteStore = useWebsiteStore();
+const userStore=useUserStore();
 
 const dialogVisible = ref(false);
 
@@ -168,8 +170,14 @@ function changeToggle(event: boolean) {
     <div id="menu_right" style="background-color: red;">
       <!-- 日夜切换，使用element-plus的switch组件，会触发change事件-->
       <div style="margin-right: 1rem; margin-top: -0.25rem;">
-        <el-switch v-model="themeChangeFlag" :active-action-icon="Sunny" :inactive-action-icon="Moon"
-          v-on:change="changeToggle($event)" />
+        <el-switch v-model="themeChangeFlag" v-on:change="changeToggle($event)">
+          <template v-slot:active-action>
+            <el-icon><Sunny/></el-icon>
+          </template>
+          <template v-slot:inactive-action>
+            <el-icon><MoonNight/></el-icon>
+          </template>
+        </el-switch>
       </div>
       <!-- 搜索按钮 -->
       <div id="search_button">
@@ -179,7 +187,37 @@ function changeToggle(event: boolean) {
           </el-icon>
         </div>
       </div>
-      <div class="user_info"></div>
+      <div class="user_info">
+        <template v-if="!userStore.userInfo">
+          <el-tooltip content="点击登陆" placement="bottom" effect="dark" class="box-item">
+            <el-avatar @click="router.push('/welcome')" style="margin-right: 3rem">登录</el-avatar>
+          </el-tooltip>
+        </template>
+        <template v-else>
+          <!-- <div style="display:flex">
+            <div class="profile">
+              <div style="font-size:15px;font-weight: bold;color:black">{{ userStore.userInfo?.username }}</div>
+              <div style="font-size:14px;color:#363636;margin-top:3px;" v-if="userStore.userInfo?.registerType==0">
+                {{ userStore.userInfo?.email}}
+              </div>
+              <div style="font-size:14px;color:#363636;margin-top:3px;" v-else>
+                {{ userStore.userInfo?.registerType===1?"gitee":"github" }}
+              </div>
+            </div>
+            <el-dropdown trigger="click" size="default" split-button type="primary" @command="">
+            title
+              <template #dropdown>
+                <el-dropdown-menu>
+                <el-dropdown-item v-for="item in items"
+                :key="item.key" :command="item.command">
+              {{item.title}}
+              </el-dropdown-item>
+              </el-dropdown-menu>
+              </el-dropdown>
+              </template>
+          </div> -->
+        </template>
+      </div>
     </div>
   </nav>
 </template>
@@ -363,7 +401,11 @@ nav {
       }
     }
 
-    .user_info {}
+    .user_info {
+      &:hover{
+        cursor: pointer;
+      }
+    }
   }
 }
 </style>

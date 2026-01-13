@@ -7,7 +7,7 @@ export interface UserInfo{
     avater:string;
     // 介绍
     introduce:string;
-    // 注册类型（0手机号，1邮箱，2其它。。。）
+    // 注册类型（0邮箱，1gitee，2github。。。）
     registerType:number;
     // 邮件地址
     email:string

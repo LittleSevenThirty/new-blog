@@ -10,8 +10,10 @@ const useUserStore = defineStore("user", () => {
 
   // 获取用户信息
   async function getInfo(){
-    const res=await getUserInfo();
-    userInfo.value=res.data;
+    const res=await getUserInfo() as any;
+    if(res.code==200){
+      userInfo.value=res.data;
+    }
   }
 
   return {
