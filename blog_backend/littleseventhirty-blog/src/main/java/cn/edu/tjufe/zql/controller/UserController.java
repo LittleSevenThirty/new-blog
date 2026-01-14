@@ -1,10 +1,12 @@
 package cn.edu.tjufe.zql.controller;
 
+import cn.edu.tjufe.zql.annotation.AccessIntercepter;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.UserAccountVO;
 import cn.edu.tjufe.zql.service.IUserService;
 import cn.edu.tjufe.zql.utils.ResponseWrapper;
 import cn.edu.tjufe.zql.utils.SecurityUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -30,8 +32,12 @@ public class UserController {
      *
      * @return
      */
+    @Operation(summary = "当前用户登录信息")
+    @AccessIntercepter(second = 60, maxCount = 30)
     @RequestMapping("/auth/info")
     public ResponseResult<UserAccountVO> getUserInfo() {
         return ResponseWrapper.handler(() -> userService.getUserInfoById(SecurityUtils.getUserId()));
     }
+
+    
 }

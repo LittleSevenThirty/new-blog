@@ -3,9 +3,18 @@ import http from "../../utils/http";
 import { get } from "http";
 import { UserInfo } from "./type";
 
+// 获取登录用户信息
 export function getUserInfo():Promise<AxiosResponse<UserInfo>>{
   return http({
     url:"/user/auth/info",
     method:"get"
+  });
+}
+
+// 退出登录
+export function logout(){
+  return http({
+    url:"/user/logout",
+    method:"post"
   });
 }

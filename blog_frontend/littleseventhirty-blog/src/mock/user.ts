@@ -1,5 +1,6 @@
 import Mock from "mockjs";
 
+// 模拟用户信息接口
 Mock.mock("/user/auth/info","get",{
     // 昵称
     nickname:"littleseventhirty",
@@ -25,4 +26,11 @@ Mock.mock("/user/auth/info","get",{
     loginTime:"2026-1-12 12:00",
     // 账号创建时间（字符串）
     createTime:"2026-1-12 12:00",
+});
+
+// 用户登出接口
+Mock.mock("/api/user/logout","post",{
+  "code":200,
+  "msg":"操作成功",
+  "data":null
 });

@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { ArrowDownBold, Clock, Close, DocumentCopy, Files, Fries, Headset, HomeFilled, Link, Picture, Postcard, PriceTag, Moon, Sunny, Search as ElSearch, MoonNight } from '@element-plus/icons-vue'
+import { ArrowDownBold, Clock, Close, DocumentCopy, Files, Fries, Headset, HomeFilled, Link, Picture, Postcard, PriceTag, Moon, Sunny, Search as ElSearch, MoonNight, Setting, Promotion } from '@element-plus/icons-vue'
 import useWebsiteStore from '../../../../pinia/store/modules/website';
 import router from '../../../../router';
 import { useColorMode } from '@vueuse/core';
 import Search from '../../../Search/index.vue';
 import useUserStore from '../../../../pinia/store/modules/user';
+import { logout } from '../../../../apis/user';
+import { REMOVE_TOKEN } from '../../../../utils/auth';
+import { ElMessage } from 'element-plus';
 // 判断是否该有音乐组件
 //@ts-ignore
 const showMusic = import.meta.env.VITE_FRONTEND_URL;
@@ -25,8 +28,21 @@ const isTransParent = ref(true);
 const themeChangeFlag = ref(true);
 
 function changeToggle(event: boolean) {
-  console.log(mode);
   mode.value = event ? "light" : "dark";
+}
+
+async function logoutSub(){
+  console.log("点击了退出功能");
+  const res=await logout() as any;
+  if(res.code==200){
+    REMOVE_TOKEN();
+    userStore.userInfo=undefined;
+    ElMessage.success("退出登录成功");
+    router.push("/");
+  }
+  else{
+    ElMessage.error("退出登录失败");
+  }
 }
 </script>
 
@@ -194,7 +210,7 @@ function changeToggle(event: boolean) {
           </el-tooltip>
         </template>
         <template v-else>
-          <!-- <div style="display:flex">
+          <div style="display:flex">
             <div class="profile">
               <div style="font-size:15px;font-weight: bold;color:black">{{ userStore.userInfo?.username }}</div>
               <div style="font-size:14px;color:#363636;margin-top:3px;" v-if="userStore.userInfo?.registerType==0">
@@ -204,18 +220,26 @@ function changeToggle(event: boolean) {
                 {{ userStore.userInfo?.registerType===1?"gitee":"github" }}
               </div>
             </div>
-            <el-dropdown trigger="click" size="default" split-button type="primary" @command="">
-            title
-              <template #dropdown>
+            <el-dropdown>
+              <el-avater v-bind:src="userStore.userInfo?.avater" style="margin-right:2rem"></el-avater>
+              <template v-slot:dropdown>
                 <el-dropdown-menu>
-                <el-dropdown-item v-for="item in items"
-                :key="item.key" :command="item.command">
-              {{item.title}}
-              </el-dropdown-item>
-              </el-dropdown-menu>
-              </el-dropdown>
+                  <el-dropdown-item @click="router.push('/setting')">
+                    <template v-slot:default>
+                      <el-icon><Setting/></el-icon>
+                      <span>个人设置</span>
+                    </template>
+                  </el-dropdown-item>
+                  <el-dropdown-item @click="logoutSub()">
+                    <template v-slot:default>
+                      <el-icon><Promotion/></el-icon>
+                      <span>退出登录</span>
+                    </template>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
               </template>
-          </div> -->
+            </el-dropdown>
+          </div>
         </template>
       </div>
     </div>
