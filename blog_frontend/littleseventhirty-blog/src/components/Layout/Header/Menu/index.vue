@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { ArrowDownBold, Clock, Close, DocumentCopy, Files, Fries, Headset, HomeFilled, Link, Picture, Postcard, PriceTag, Moon, Sunny, Search as ElSearch, MoonNight, Setting, Promotion } from '@element-plus/icons-vue'
+import { onMounted, onUnmounted, ref } from 'vue';
+import { ArrowDownBold, Clock, Close, DocumentCopy, Files, Fries, Headset, HomeFilled, Link, Picture, Postcard, PriceTag, Moon, Sunny, Search as ElSearch, MoonNight, Setting, Promotion, IceCreamRound } from '@element-plus/icons-vue'
 import useWebsiteStore from '../../../../pinia/store/modules/website';
 import router from '../../../../router';
 import { useColorMode } from '@vueuse/core';
@@ -26,11 +26,11 @@ const isMenuVisible = ref(true);
 const isTransParent = ref(true);
 
 const themeChangeFlag = ref(true);
-
+// 日夜切换函数
 function changeToggle(event: boolean) {
   mode.value = event ? "light" : "dark";
 }
-
+// 登出函数
 async function logoutSub(){
   console.log("点击了退出功能");
   const res=await logout() as any;
@@ -44,9 +44,46 @@ async function logoutSub(){
     ElMessage.error("退出登录失败");
   }
 }
+
+// 滚动相关函数（向下滚动不显示菜单栏，向上滚动显示菜单栏）
+let lastScrollTop=0;
+let scrollTimeout:number|undefined;
+function scrollHandle(){
+  // 获取当前滚动条和top之间的高度差
+  const currentScrollTop=window.pageYOffset||document.documentElement.scrollTop;
+  // console.log(currentScollTop);
+  // 控制菜单显示和透明度
+  isMenuVisible.value=currentScrollTop<=lastScrollTop; // 原是currentScrollTop>=0取反
+  isTransParent.value=currentScrollTop===0;
+  lastScrollTop=currentScrollTop<= 0?0:currentScrollTop;
+}
+
+// 防抖
+function debounceBackground(){
+  if(scrollTimeout){
+    clearTimeout(scrollTimeout)
+  }
+  scrollTimeout=window.setTimeout(()=>{
+    const currentScrollTop=window.pageYOffset||document.documentElement.scrollTop;
+    isTransParent.value=currentScrollTop===0;
+  },100);
+}
+
+onMounted(()=>{
+  window.addEventListener("scroll",scrollHandle);
+  window.addEventListener("scroll",debounceBackground);
+});
+
+onUnmounted(()=>{
+  window.addEventListener("scroll",scrollHandle);
+  window.addEventListener("scroll",debounceBackground);
+});
 </script>
 
 <template>
+  <div style="height: 6000px; background: linear-gradient(to bottom, white, black);">
+  滚动测试区域（足够高）
+  </div>
   <div class="seacher_dialog_container">
     <el-dialog v-model="dialogVisible" :show-close="false" :close-on-click-model="false" :lock-scroll="true"
       :close-on-press-escape="false">
@@ -61,7 +98,7 @@ async function logoutSub(){
       <Search v-on:isShowSearch="dialogVisible = false" />
     </el-dialog>
   </div>
-  <nav v-bind:class="{ 'hidden': !isMenuVisible, 'transparent': isTransParent }" style="background:red;">
+  <nav v-bind:class="{ 'hidden': !isMenuVisible, 'transparent': isTransParent }">
     <div id="menu_left">
       <div id="menus">
         <span id="blog_info">
@@ -119,7 +156,7 @@ async function logoutSub(){
           <div class="menu_item">
             <span>
               <el-icon>
-                <IceCreamRound />
+                <IceCreamRound/>
               </el-icon>
               <span>其它</span>
               <el-icon class="arrow">
@@ -183,7 +220,7 @@ async function logoutSub(){
         </div>
       </div>
     </div>
-    <div id="menu_right" style="background-color: red;">
+    <div id="menu_right">
       <!-- 日夜切换，使用element-plus的switch组件，会触发change事件-->
       <div style="margin-right: 1rem; margin-top: -0.25rem;">
         <el-switch v-model="themeChangeFlag" v-on:change="changeToggle($event)">
@@ -221,7 +258,7 @@ async function logoutSub(){
               </div>
             </div>
             <el-dropdown>
-              <el-avater v-bind:src="userStore.userInfo?.avater" style="margin-right:2rem"></el-avater>
+              <el-avatar v-bind:src="userStore.userInfo?.avater" style="margin-right:2rem"></el-avatar>
               <template v-slot:dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="router.push('/setting')">
@@ -301,11 +338,11 @@ nav {
   transition: top 0.3s ease-in-out, background-color 0.3s ease-in-out; // 过渡属性
 
   &.hidden {
-    top: -50px;
+    top: -50px; // 隐藏菜单
   }
 
   &.transparent {
-    background-color: transparent;
+    background-color: transparent;  // 效果没实现
   }
 
   #menu_left {
@@ -408,7 +445,6 @@ nav {
     flex: 1;
     display: flex;
     width: 100%;
-    background-color: #fff;
     justify-content: right;
     align-items: center;
 
