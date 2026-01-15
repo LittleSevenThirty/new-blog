@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Close, Search as SearchIcon,Setting,Promotion } from '@element-plus/icons-vue';
+import { Close, Search as SearchIcon, Setting, Promotion, Sunny, Moon, Position } from '@element-plus/icons-vue';
 import Search from '../../Search/index.vue';
 import Menu from './Menu/index.vue';
 import { useColorMode } from '@vueuse/core';
@@ -9,6 +9,7 @@ import router from '../../../router';
 import { logout } from '../../../apis/user';
 import { REMOVE_TOKEN } from '../../../utils/auth';
 import { ElMessage } from 'element-plus';
+import MoveMenu from './MoveMenu/index.vue';
 
 const userStore = useUserStore();
 
@@ -71,7 +72,8 @@ async function logoutSub() {
       </div>
       <!-- 移动端日夜切换功能 -->
       <div style="margin-left: 1rem">
-        <el-button type="primary" size="default" @click="changeToggle"></el-button>
+        <el-button :icon="mode == 'light' ? Sunny : Moon" type="primary" size="default"
+          @click="changeToggle"></el-button>
       </div>
     </div>
     <!-- 搜索按钮 -->
@@ -129,7 +131,23 @@ async function logoutSub() {
       </div>
     </div>
   </div>
-  <div></div>
+  <div>
+    <el-drawer v-model="drawer" direction="ltr" size="40%" :show-close="false">
+      <template v-slot:header>
+        <div style="display: flex; justify-content: center;">
+          <span style="font-size:2rem;">
+            导航
+          </span>
+          <Position style="width:2em;height: 2em;margin-top: 10px;" />
+        </div>
+        <el-button :icon="Close" style="background: none;font-size: 1.5rem;width: 30px;border: none;margin-bottom: 10px;"
+                   @click="drawer = false"/>
+      </template>
+      <template v-slot:default>
+        <MoveMenu v-on:update:close-drawer="drawer=false"/>
+      </template>
+    </el-drawer>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -176,7 +194,7 @@ async function logoutSub() {
 }
 
 .user_info {
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 }
