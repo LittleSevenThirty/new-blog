@@ -191,3 +191,18 @@
         <td></td>
     </tr>
 </table>
+
+**16/1/2026**
+<table>
+    <tr>
+        <th>时间</th>
+        <th>描述</th>
+        <th>状态</th>
+    </tr>    
+    <tr>
+        <td>11:11 AM</td>
+        <td>目前前端菜单组件基本完善，后续计划同步第三方登录功能(gitee,github)
+        </td>
+        <td></td>
+    </tr>
+</table>

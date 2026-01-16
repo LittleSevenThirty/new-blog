@@ -1,7 +1,7 @@
 import Mock from "mockjs";
 
 // 模拟用户信息接口
-Mock.mock("/user/auth/info","get",{
+Mock.mock("/api/user/auth/info","get",{
     // 昵称
     nickname:"littleseventhirty",
     // 用户名

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { Close, Search as SearchIcon, Setting, Promotion, Sunny, Moon, Position } from '@element-plus/icons-vue';
 import Search from '../../Search/index.vue';
 import Menu from './Menu/index.vue';
@@ -10,6 +10,7 @@ import { logout } from '../../../apis/user';
 import { REMOVE_TOKEN } from '../../../utils/auth';
 import { ElMessage } from 'element-plus';
 import MoveMenu from './MoveMenu/index.vue';
+import DayNightToggleButton from '../../DayNightToggleButton/index.ts';
 
 const userStore = useUserStore();
 
@@ -18,6 +19,18 @@ const dialogVisible = ref(false);
 const mode = useColorMode();
 
 const drawer = ref(false);
+
+onMounted(async ()=>{
+  try{
+    // 获取指定标签元素，注册对应自定义组件
+    if(!customElements.get('toggle-button')){
+      customElements.define('toggle-button',DayNightToggleButton);
+    }
+    await userStore.getInfo();
+  }catch(e){
+    console.error("Error defining custom element or getting user info:", e);
+  }
+})
 
 function changeToggle() {
   mode.value = mode.value == 'light' ? 'dark' : 'light';
@@ -37,6 +50,8 @@ async function logoutSub() {
     ElMessage.error("退出登录失败");
   }
 }
+
+// 后续改进
 </script>
 
 <template>
@@ -55,7 +70,7 @@ async function logoutSub() {
       <Search v-on:isShowSearch="dialogVisible = false" />
     </el-dialog>
   </div>
-  <!-- 菜单栏 -->
+  <!-- PC端菜单栏 -->
   <div class="menu">
     <Menu />
   </div>
@@ -71,9 +86,8 @@ async function logoutSub() {
         </svg>
       </div>
       <!-- 移动端日夜切换功能 -->
-      <div style="margin-left: 1rem">
-        <el-button :icon="mode == 'light' ? Sunny : Moon" type="primary" size="default"
-          @click="changeToggle"></el-button>
+      <div style="margin-left: 2rem;">
+        <toggle-button move="true" @change="changeToggle" size="1"></toggle-button>
       </div>
     </div>
     <!-- 搜索按钮 -->
@@ -219,7 +233,7 @@ async function logoutSub() {
     .right_nav {
       display: flex;
 
-      .Search {
+      .search {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -236,7 +250,7 @@ async function logoutSub() {
 }
 
 // pc端
-@media screen and (min-width:1024px) {
+@media screen and (min-width:780px) {
   .move_menu_nav {
     display: none;
   }

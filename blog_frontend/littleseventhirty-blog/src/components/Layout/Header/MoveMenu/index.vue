@@ -1,7 +1,7 @@
 <script setup>
 import { defineEmits } from 'vue';
 import { Clock, DocumentCopy, Files, Fries, Headset, HomeFilled, Link, Picture, Postcard, PriceTag, IceCreamRound } from '@element-plus/icons-vue'
-const showMusic = import.meta.env.VITE_FRONTEND_URL;
+const showMusic = import.meta.env.VITE_MUSIC_FRONTEND_API;
 
 const emit = defineEmits(["update:closeDrawer"]);
 
@@ -22,7 +22,7 @@ function clickGoto() {
           <span>首页</span>
         </span>
       </el-menu-item>
-      <el-sub-menu :index="2">
+      <el-sub-menu index="1">
         <template v-slot:title>
           <span>
             <el-icon>
@@ -56,7 +56,7 @@ function clickGoto() {
           </span>
         </el-menu-item>
       </el-sub-menu>
-      <el-sub-menu :index="3">
+      <el-sub-menu index="2">
         <template v-slot:title>
           <el-icon>
             <IceCreamRound />

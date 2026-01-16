@@ -222,18 +222,11 @@ onUnmounted(()=>{
     </div>
     <div id="menu_right">
       <!-- 日夜切换，使用element-plus的switch组件，会触发change事件-->
-      <div style="margin-right: 1rem; margin-top: -0.25rem;">
-        <el-switch v-model="themeChangeFlag" v-on:change="changeToggle($event)">
-          <template v-slot:active-action>
-            <el-icon><Sunny/></el-icon>
-          </template>
-          <template v-slot:inactive-action>
-            <el-icon><MoonNight/></el-icon>
-          </template>
-        </el-switch>
+      <div style="margin-right: 2rem; margin-top: -0.25rem;">
+        <toggle-button @change="changeToggle" size="1"></toggle-button>
       </div>
       <!-- 搜索按钮 -->
-      <div id="search_button">
+      <div id="search_button" style="margin-left:1rem;">
         <div class="search" v-on:click="dialogVisible = true">
           <el-icon>
             <ElSearch />

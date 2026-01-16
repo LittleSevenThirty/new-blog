@@ -11,7 +11,7 @@ Mock.mock("/api/websiteInfo/front","get",{
     webMasterProfileBackground: "https://example.com/background.jpg",
     giteeLink: "https://gitee.com/zhangsan",
     githubLink: "https://github.com/zhangsan",
-    websiteName: "我的技术博客",
+    websiteName: "小小七的博客",
     headerNotification: "🎉 欢迎来到我的博客！新文章已上线～",
     sidebarAnnouncement: "📢 本站已支持暗色主题，欢迎体验！",
     recordInfo: "浙ICP备12345678号-1",

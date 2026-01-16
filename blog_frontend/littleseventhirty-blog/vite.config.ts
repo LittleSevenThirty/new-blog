@@ -4,12 +4,22 @@ import path from "path";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
+// 自定义元素标签集合
+const customElements=new Set(['toggle-button']);
+
 // https://vite.dev/config/
 export default defineConfig(({ mode }: ConfigEnv) => {
   const env = loadEnv(mode, process.cwd());
   return {
     plugins: [
-      vue(),
+      vue({
+        template:{
+          compilerOptions:{
+            // 排除自定义元素标签
+            isCustomElement: (tag) => customElements.has(tag)
+          }
+        }
+      }),
       Components({
         // 重要配置：指定类型声明文件输出路径
         dts: "src/types/components.d.ts",
