@@ -1,5 +1,5 @@
 <!-- 这一块有点乱，写到后面都有点搞不清写的对不对了 -->
-
+<!-- 公用组件不止一个展示页使用 -->
 <script setup lang="ts">
 import { Ref, ref, onMounted, watchEffect, watch } from 'vue';
 import { Search, Delete, Loading } from '@element-plus/icons-vue';
