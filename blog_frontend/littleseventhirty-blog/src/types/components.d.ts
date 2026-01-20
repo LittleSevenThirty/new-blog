@@ -12,20 +12,22 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BottomRightLayout: typeof import('./../components/BottomRightLayout/index.vue')['default']
+    BottomRightMore: typeof import('./../components/BottomRightMore.vue')['default']
     ContextMenu: typeof import('./../components/ContextMenu/index.vue')['default']
     DevToolsBlocker: typeof import('./../components/DevToolsBlocker/index.vue')['default']
     Footer: typeof import('./../components/Layout/Footer/index.vue')['default']
-    FullScreen: typeof import('./../components/FullScreen/index.vue')['default']
+    FullScreen: typeof import('./../components/FullScreen.vue')['default']
     Header: typeof import('./../components/Layout/Header/index.vue')['default']
     HelloWorld: typeof import('./../components/HelloWorld.vue')['default']
     Loading: typeof import('./../components/Loading/index.vue')['default']
     Menu: typeof import('./../components/Layout/Header/Menu/index.vue')['default']
     MoveMenu: typeof import('./../components/Layout/Header/MoveMenu/index.vue')['default']
     Music: typeof import('./../components/Music/index.vue')['default']
-    ReadingMode: typeof import('./../components/ReadingMode/index.vue')['default']
+    ReadingMode: typeof import('./../components/ReadingMode.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./../components/Search/index.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
+    ToTop: typeof import('./../components/ToTop.vue')['default']
   }
 }

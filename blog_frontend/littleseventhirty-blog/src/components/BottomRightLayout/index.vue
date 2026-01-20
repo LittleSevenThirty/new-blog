@@ -1,7 +1,8 @@
 <!-- 底部右侧快捷功能布局公用组件 -->
 <script setup>
-import ReadingMode from  "../ReadingMode/index.vue";
-import FullScreen from "../FullScreen/index.vue";
+import ReadingMode from  "../ReadingMode.vue";
+import FullScreen from "../FullScreen.vue";
+import BottomRightMore from "../BottomRightMore.vue";
 import { defineProps, ref } from 'vue';
 const props = defineProps({
   // 提供返回顶端功能
@@ -28,6 +29,10 @@ const props = defineProps({
 
 const isContainerVisible = ref(false);
 
+const toggleCantainer=()=>{
+  isContainerVisible=!isContainerVisible;
+}
+
 const emits=defineEmits(['ReadingMode'])
 </script>
 
@@ -39,8 +44,11 @@ const emits=defineEmits(['ReadingMode'])
       </div>
       <FullScreen/>
     </div>
-    <div class="my-4">
-      
+    <div class="my-4" @click="toggleCantainer">
+      <BottomRightMore/>
+    </div>
+    <div class="mb-4" v-if="props.toTop">
+      <ToTop/>
     </div>
   </div>
 </template>
