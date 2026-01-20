@@ -1,8 +1,10 @@
 <!-- 底部右侧快捷功能布局公用组件 -->
 <script setup>
-import ReadingMode from  "../ReadingMode.vue";
+import ReadingMode from "../ReadingMode.vue";
 import FullScreen from "../FullScreen.vue";
 import BottomRightMore from "../BottomRightMore.vue";
+import ToTop from "../ToTop.vue";
+import ToComment from "../ToComment.vue";
 import { defineProps, ref } from 'vue';
 const props = defineProps({
   // 提供返回顶端功能
@@ -29,26 +31,33 @@ const props = defineProps({
 
 const isContainerVisible = ref(false);
 
-const toggleCantainer=()=>{
-  isContainerVisible=!isContainerVisible;
+const toggleCantainer = () => {
+  isContainerVisible = !isContainerVisible;
 }
 
-const emits=defineEmits(['ReadingMode'])
+const emits = defineEmits(['ReadingMode'])
 </script>
 
 <template>
   <div class="div_cantainer">
     <div class="hide" v-bind:class="{ visible: isContainerVisible }">
-      <div v-if="props.redingMode" @click="emits('ReadingMode',true)">
-        <ReadingMode/>
+      <div v-if="props.redingMode" @click="emits('ReadingMode', true)">
+        <ReadingMode />
       </div>
-      <FullScreen/>
+      <FullScreen />
     </div>
     <div class="my-4" @click="toggleCantainer">
-      <BottomRightMore/>
+      <BottomRightMore />
     </div>
     <div class="mb-4" v-if="props.toTop">
-      <ToTop/>
+      <ToTop />
+    </div>
+    <div class="mb-4" v-if="props.toComment">
+      <ToComment />
+    </div>
+    <div class="scroll_percentage" v-if="props.scrollPercentage">
+      <!-- 提供插槽，后期填入对应百分比显示条 -->
+      <slot name="scroll_percentage"></slot>
     </div>
   </div>
 </template>
@@ -66,6 +75,19 @@ const emits=defineEmits(['ReadingMode'])
   bottom: 4rem;
   right: 2rem;
   padding: 0.5rem;
+
+  .scroll_percentage {
+    background: var(--mao-scroll-percentage-bg);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .9rem;
+    font-weight: bold;
+  }
 }
 
 // 适配手机端
@@ -73,6 +95,11 @@ const emits=defineEmits(['ReadingMode'])
   .div_cantainer {
     bottom: 0px;
     right: 0.5rem;
+  }
+
+  .scroll_percentage {
+    width: 40px;
+    height: 40px;
   }
 }
 
