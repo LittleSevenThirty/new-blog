@@ -12,7 +12,7 @@
   <template v-if="noDisplayComponent">
     <Footer/>
   </template>
-  <BottomRightLayout/>
+  <BottomRightLayout to-top/>
 </template>
 
 <script setup lang="ts">

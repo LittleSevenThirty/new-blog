@@ -17,7 +17,7 @@ const showMusic = import.meta.env.VITE_FRONTEND_URL;
 const mode = useColorMode();
 // pinia
 const websiteStore = useWebsiteStore();
-const userStore=useUserStore();
+const userStore = useUserStore();
 
 const dialogVisible = ref(false);
 
@@ -31,59 +31,56 @@ function changeToggle(event: boolean) {
   mode.value = event ? "light" : "dark";
 }
 // 登出函数
-async function logoutSub(){
+async function logoutSub() {
   console.log("点击了退出功能");
-  const res=await logout() as any;
-  if(res.code==200){
+  const res = await logout() as any;
+  if (res.code == 200) {
     REMOVE_TOKEN();
-    userStore.userInfo=undefined;
+    userStore.userInfo = undefined;
     ElMessage.success("退出登录成功");
     router.push("/");
   }
-  else{
+  else {
     ElMessage.error("退出登录失败");
   }
 }
 
 // 滚动相关函数（向下滚动不显示菜单栏，向上滚动显示菜单栏）
-let lastScrollTop=0;
-let scrollTimeout:number|undefined;
-function scrollHandle(){
+let lastScrollTop = 0;
+let scrollTimeout: number | undefined;
+function scrollHandle() {
   // 获取当前滚动条和top之间的高度差
-  const currentScrollTop=window.pageYOffset||document.documentElement.scrollTop;
+  const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
   // console.log(currentScollTop);
   // 控制菜单显示和透明度
-  isMenuVisible.value=currentScrollTop<=lastScrollTop; // 原是currentScrollTop>=0取反
-  isTransParent.value=currentScrollTop===0;
-  lastScrollTop=currentScrollTop<= 0?0:currentScrollTop;
+  isMenuVisible.value = currentScrollTop <= lastScrollTop; // 原是currentScrollTop>=0取反
+  isTransParent.value = currentScrollTop === 0;
+  lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
 }
 
 // 防抖
-function debounceBackground(){
-  if(scrollTimeout){
+function debounceBackground() {
+  if (scrollTimeout) {
     clearTimeout(scrollTimeout)
   }
-  scrollTimeout=window.setTimeout(()=>{
-    const currentScrollTop=window.pageYOffset||document.documentElement.scrollTop;
-    isTransParent.value=currentScrollTop===0;
-  },100);
+  scrollTimeout = window.setTimeout(() => {
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    isTransParent.value = currentScrollTop === 0;
+  }, 100);
 }
 
-onMounted(()=>{
-  window.addEventListener("scroll",scrollHandle);
-  window.addEventListener("scroll",debounceBackground);
+onMounted(() => {
+  window.addEventListener("scroll", scrollHandle);
+  window.addEventListener("scroll", debounceBackground);
 });
 
-onUnmounted(()=>{
-  window.addEventListener("scroll",scrollHandle);
-  window.addEventListener("scroll",debounceBackground);
+onUnmounted(() => {
+  window.addEventListener("scroll", scrollHandle);
+  window.addEventListener("scroll", debounceBackground);
 });
 </script>
 
 <template>
-  <div style="height: 6000px; background: linear-gradient(to bottom, white, black);">
-  滚动测试区域（足够高）
-  </div>
   <div class="seacher_dialog_container">
     <el-dialog v-model="dialogVisible" :show-close="false" :close-on-click-model="false" :lock-scroll="true"
       :close-on-press-escape="false">
@@ -156,7 +153,7 @@ onUnmounted(()=>{
           <div class="menu_item">
             <span>
               <el-icon>
-                <IceCreamRound/>
+                <IceCreamRound />
               </el-icon>
               <span>其它</span>
               <el-icon class="arrow">
@@ -243,11 +240,11 @@ onUnmounted(()=>{
           <div style="display:flex">
             <div class="profile">
               <div style="font-size:15px;font-weight: bold;color:black">{{ userStore.userInfo?.username }}</div>
-              <div style="font-size:14px;color:#363636;margin-top:3px;" v-if="userStore.userInfo?.registerType==0">
-                {{ userStore.userInfo?.email}}
+              <div style="font-size:14px;color:#363636;margin-top:3px;" v-if="userStore.userInfo?.registerType == 0">
+                {{ userStore.userInfo?.email }}
               </div>
               <div style="font-size:14px;color:#363636;margin-top:3px;" v-else>
-                {{ userStore.userInfo?.registerType===1?"gitee":"github" }}
+                {{ userStore.userInfo?.registerType === 1 ? "gitee" : "github" }}
               </div>
             </div>
             <el-dropdown>
@@ -256,13 +253,17 @@ onUnmounted(()=>{
                 <el-dropdown-menu>
                   <el-dropdown-item @click="router.push('/setting')">
                     <template v-slot:default>
-                      <el-icon><Setting/></el-icon>
+                      <el-icon>
+                        <Setting />
+                      </el-icon>
                       <span>个人设置</span>
                     </template>
                   </el-dropdown-item>
                   <el-dropdown-item @click="logoutSub()">
                     <template v-slot:default>
-                      <el-icon><Promotion/></el-icon>
+                      <el-icon>
+                        <Promotion />
+                      </el-icon>
                       <span>退出登录</span>
                     </template>
                   </el-dropdown-item>
@@ -335,7 +336,7 @@ nav {
   }
 
   &.transparent {
-    background-color: transparent;  // 效果没实现
+    background-color: transparent; // 效果没实现
   }
 
   #menu_left {
@@ -455,7 +456,7 @@ nav {
     }
 
     .user_info {
-      &:hover{
+      &:hover {
         cursor: pointer;
       }
     }

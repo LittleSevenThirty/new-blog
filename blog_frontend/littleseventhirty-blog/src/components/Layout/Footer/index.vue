@@ -1,6 +1,8 @@
 <script setup>
 import useWebsiteStore from "../../../pinia/store/modules/website.ts";
 const websiteStore = useWebsiteStore();
+console.log("footer");
+console.log(websiteStore);
 </script>
 
 <template>
@@ -8,8 +10,8 @@ const websiteStore = useWebsiteStore();
     <div class="footer_container">
       <div class="footer_text">
         <div>&copy;{{ websiteStore.webInfo?.websiteName }}</div>
-        <div v-if="websiteStore.webInfo.recordInfo">备案号:<a href="https://beian.miit.gov.cn">{{
-          useWebsite.webInfo?.recordInfo }}</a></div>
+        <div v-if="websiteStore.webInfo.recordInfo">备案号：<a href="https://beian.miit.gov.cn">{{
+          websiteStore.webInfo?.recordInfo }}</a></div>
       </div>
     </div>
   </div>
@@ -31,12 +33,13 @@ const websiteStore = useWebsiteStore();
     align-items: center;
 
     .footer_text {
+      font-weight: bold;
       line-height: 20px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: #fff;
+      color: rgba(103,103,103);
     }
   }
 }
