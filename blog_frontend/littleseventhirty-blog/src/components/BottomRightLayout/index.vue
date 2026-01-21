@@ -29,10 +29,12 @@ const props = defineProps({
   }
 });
 
+console.log(props.toTop);
+
 const isContainerVisible = ref(false);
 
 const toggleCantainer = () => {
-  isContainerVisible = !isContainerVisible;
+  isContainerVisible.value = !isContainerVisible.value;
 }
 
 const emits = defineEmits(['ReadingMode'])
@@ -49,16 +51,16 @@ const emits = defineEmits(['ReadingMode'])
     <div class="my-4" @click="toggleCantainer">
       <BottomRightMore />
     </div>
-    <div class="mb-4" v-if="props.toTop">
+    <div v-if="props.toTop">
       <ToTop />
     </div>
     <div class="mb-4" v-if="props.toComment">
       <ToComment />
     </div>
-    <div class="scroll_percentage" v-if="props.scrollPercentage">
+    <!-- <div class="scroll_percentage" v-if="props.scrollPercentage"> -->
       <!-- 提供插槽，后期填入对应百分比显示条 -->
-      <slot name="scroll_percentage"></slot>
-    </div>
+      <!-- <slot name="scroll_percentage"></slot> -->
+    <!-- </div> -->
   </div>
 </template>
 

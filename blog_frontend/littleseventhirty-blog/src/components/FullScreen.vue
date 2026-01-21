@@ -1,28 +1,32 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useFullscreen } from '@vueuse/core';
 import { ElMessage } from 'element-plus';
-// 绑定整个文档作为全屏目标（实现网页全屏）
-const targetRef = ref<HTMLElement>(document.documentElement);
 
-// 使用 VueUse 全屏工具
-const { 
-  toggle, 
-  isLoading 
-} = useFullscreen(targetRef, {
-  onEnter: () => ElMessage.success('进入网页全屏'),
-  onExit: () => ElMessage.success('退出网页全屏'),
+// 1. 修正：模板引用初始化为 null（符合 Vue 规范）
+const targetRef = ref<HTMLElement | null>(null);
+
+// 2. 修正：在 onMounted 中初始化全屏功能（确保 DOM 已挂载）
+let toggle;
+let isLoading;
+onMounted(() => {
+  // 3. 直接传入原生 DOM（document.documentElement），而非 ref 包裹的对象
+  const fullscreen = useFullscreen(document.documentElement, {
+    onEnter: () => ElMessage.success('进入网页全屏'),
+    onExit: () => ElMessage.success('退出网页全屏'),
+  });
+  toggle = fullscreen.toggle;
+  isLoading = fullscreen.isLoading;
 });
-const fullScreenFunc=async () => {
-  // 避免重复点击
-  if (isLoading.value) return;
+
+const fullScreenFunc = async () => {
+  // 防御性判断：确保 toggle 方法已初始化
+  if (!toggle || (isLoading?.value)) return;
 
   try {
-    // 切换全屏状态
     await toggle();
   } catch (err) {
     console.error('全屏操作失败：', err);
-    // 友好提示用户
     ElMessage?.error('当前浏览器不支持全屏功能或权限不足');
   }
 };

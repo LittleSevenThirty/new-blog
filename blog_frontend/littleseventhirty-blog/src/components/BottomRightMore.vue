@@ -5,7 +5,7 @@
   <!-- tailwindcss maring-y:4 -->
   <div>
     <el-tooltip content="更多功能" placement="right" effect="light">
-      <div class="back_to_top more_rotating">
+      <div class="back_to_top">
         <svg t="1768897703587" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
           p-id="6718" width="30" height="30">
           <path d="M256 512m-74.666667 0a74.666667 74.666667 0 1 0 149.333334 0 74.666667 74.666667 0 1 0-149.333334 0Z"

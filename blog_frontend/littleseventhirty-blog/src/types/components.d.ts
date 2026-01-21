@@ -21,6 +21,7 @@ declare module 'vue' {
     HelloWorld: typeof import('./../components/HelloWorld.vue')['default']
     Loading: typeof import('./../components/Loading/index.vue')['default']
     Menu: typeof import('./../components/Layout/Header/Menu/index.vue')['default']
+    MouseTrail: typeof import('./../components/MouseTrail.vue')['default']
     MoveMenu: typeof import('./../components/Layout/Header/MoveMenu/index.vue')['default']
     Music: typeof import('./../components/Music/index.vue')['default']
     ReadingMode: typeof import('./../components/ReadingMode.vue')['default']
@@ -28,6 +29,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./../components/Search/index.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
+    ToComment: typeof import('./../components/ToComment.vue')['default']
     ToTop: typeof import('./../components/ToTop.vue')['default']
   }
 }

@@ -1,5 +1,6 @@
 <template>
   <Header />
+  <div style="height: 6000px;"></div>
   <!-- 嵌套路由组件视口 -->
   <div style="min-height: 100vh;">
     <router-view v-slot="{ Component }">
@@ -12,6 +13,7 @@
   <template v-if="noDisplayComponent">
     <Footer/>
   </template>
+  <!-- <BottomRightLayout to-top/> -->
   <BottomRightLayout to-top/>
 </template>
 

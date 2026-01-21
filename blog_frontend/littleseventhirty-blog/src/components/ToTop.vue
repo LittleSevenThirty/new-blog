@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { throttle } from '../utils/tools';
 
 const top = ref(0);
 // 使用节流函数
@@ -17,7 +18,7 @@ const backToTop = () => {
 
 <template>
   <Transition name="el-zoom-in-bottom">
-    <div v-if="top >= 1000" @click="backToTop">
+    <div class="mb-4" v-if="top >= 1000" @click="backToTop">
       <el-tooltip effect="light" content="返回顶部" placement="right">
         <div class="back_to_top">
           <svg t="1768921006825" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"

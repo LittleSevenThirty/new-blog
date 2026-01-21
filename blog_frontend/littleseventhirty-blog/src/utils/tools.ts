@@ -22,3 +22,22 @@ export const returnTime = (time: string): string => {
 export function escapeRegExp(str: string) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
+
+/**
+ * 节流函数-时间戳版
+ * @param func 回调函数
+ * @param wait 节流时间 
+ */
+export function throttle(func: Function, wait: number) {
+    let previous = 0;
+    return function () {
+        let now = Date.now();
+        //@ts-ignore
+        let context = this;
+        let args = [...arguments];
+        if (now - previous >= wait) {
+            func();
+            previous=now;   // 闭包，记录本次时间戳
+        }
+    }
+}
