@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import MouseTrail from '../../components/MouseTrail.vue';
 import BackgroundImage from '../../components/BackgroundImage.vue';
 import Particles from '../../components/Particles.vue';
+import Brand from '../../components/Brand.vue';
 </script>
 
 <template>
@@ -13,6 +14,8 @@ import Particles from '../../components/Particles.vue';
     <BackgroundImage/>
     <!-- 粒子背景 -->
     <Particles/>
+    <!-- 个人标志展示 -->
+    <Brand/>
   </div>
 </template>
 

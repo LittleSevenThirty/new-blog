@@ -19,6 +19,7 @@ declare module 'vue' {
     DevToolsBlocker: typeof import('./../components/DevToolsBlocker/index.vue')['default']
     Footer: typeof import('./../components/Layout/Footer/index.vue')['default']
     FullScreen: typeof import('./../components/FullScreen.vue')['default']
+    GlitchText: typeof import('./../components/GlitchText.vue')['default']
     Header: typeof import('./../components/Layout/Header/index.vue')['default']
     Loading: typeof import('./../components/Loading/index.vue')['default']
     Menu: typeof import('./../components/Layout/Header/Menu/index.vue')['default']
