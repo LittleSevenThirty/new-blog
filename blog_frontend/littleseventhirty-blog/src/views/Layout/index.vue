@@ -1,6 +1,5 @@
 <template>
   <Header />
-  <div style="height: 6000px;"></div>
   <!-- 嵌套路由组件视口 -->
   <div style="min-height: 100vh;">
     <router-view v-slot="{ Component }">
@@ -11,10 +10,10 @@
   </div>
   <!-- 底部Footer组件展示逻辑,不是树洞就显示 -->
   <template v-if="noDisplayComponent">
-    <Footer/>
+    <Footer />
   </template>
   <!-- <BottomRightLayout to-top/> -->
-  <BottomRightLayout to-top/>
+  <BottomRightLayout to-top />
 </template>
 
 <script setup lang="ts">
@@ -24,8 +23,8 @@ import BottomRightLayout from "../../components/BottomRightLayout/index.vue";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 
-const noDisplayComponent=computed(()=>{
-  return useRoute().path!="/tree-hole";
+const noDisplayComponent = computed(() => {
+  return useRoute().path != "/tree-hole";
 })
 </script>
 

@@ -29,8 +29,6 @@ const props = defineProps({
   }
 });
 
-console.log(props.toTop);
-
 const isContainerVisible = ref(false);
 
 const toggleCantainer = () => {
@@ -58,8 +56,8 @@ const emits = defineEmits(['ReadingMode'])
       <ToComment />
     </div>
     <!-- <div class="scroll_percentage" v-if="props.scrollPercentage"> -->
-      <!-- 提供插槽，后期填入对应百分比显示条 -->
-      <!-- <slot name="scroll_percentage"></slot> -->
+    <!-- 提供插槽，后期填入对应百分比显示条 -->
+    <!-- <slot name="scroll_percentage"></slot> -->
     <!-- </div> -->
   </div>
 </template>
