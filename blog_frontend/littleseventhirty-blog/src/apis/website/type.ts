@@ -51,4 +51,9 @@ interface WebsiteInfo {
     visitedCount: string
 }
 
-export {WebsiteInfo};
+interface slideshowItem{
+    image:String    // 轮播图接口
+    // 其它字段
+}
+
+export {WebsiteInfo,slideshowItem};

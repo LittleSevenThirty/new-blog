@@ -74,6 +74,25 @@ CREATE TABLE `t_article`
   COLLATE = UTF8MB4_0900_AI_CI
   ROW_FORMAT = DYNAMIC;
 
+-- Table structure for t_banner
+-- create time: 2026/1/22 ; status: unfinished
+DROP TABLE IF EXISTS `t_banner`;
+CREATE TABLE `t_banner`
+(
+    `id`          bigint unsigned                                               NOT NULL AUTO_INCREMENT COMMENT '主键id，也作为广告标识',
+    `path`        varchar(255) CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI NOT NULL COMMENT '图片路径',
+    `size`        bigint                                                        NOT NULL COMMENT '图片尺寸',
+    `type`        varchar(55) CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI  NOT NULL COMMENT '图片类型',
+    `user_id`     bigint                                                        NOT NULL COMMENT '上传人id',
+    `order`       int                                                           NOT NULL COMMENT '图片顺序',
+    `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (ID) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 43
+  CHARACTER SET = UTF8MB4
+  COLLATE = UTF8MB4_0900_AI_CI
+  ROW_FORMAT = DYNAMIC;
+
 -- Table structure for t_category
 -- create time: 2026/1/8 ; Status: unfinished
 DROP TABLE IF EXISTS `t_category`;

@@ -9,4 +9,10 @@ export function getWebsiteInfo(){
     // return http.get("/website/front");
 }
 
-// export async function
+// 获取轮播图列表
+export function getSlideshow(){
+    return http({
+        url:"/banner/slideshow",
+        method:"get"
+    });
+}
