@@ -1,20 +1,42 @@
 <!-- 展示个人div能力组件 -->
 <script setup lang="ts">
+import Typed from 'typed.js';
+import { getSoup } from '../../../apis/thirdPartyAPIs/index.ts';
 import GlitchText from '../../../components/GlitchText.vue';
 import Wave from '../../../components/Wave.vue';
 import useWebsiteInfoStore from '../../../pinia/store/modules/website.ts';
-import { reactive } from 'vue';
+import { onMounted,onUnmounted,ref } from 'vue';
 const websiteInfoStore = useWebsiteInfoStore();
-const obj = reactive({
-  output: "你好",
-});
-
+const typed=ref<HTMLElement>();
+let typedInstance:Typed;
 const scrollDown = () => {
   window.scrollTo({
     behavior: 'smooth',
     top: document.documentElement.clientHeight
   })
 }
+
+onMounted(async ()=>{
+  const res:any=await getSoup();
+  // console.log("一言:");
+  // console.log(res);
+  // const yiYanString=res?.hitokoto;
+  typedInstance=new Typed(typed.value,{
+    strings:[res?.hitokoto],
+    typeSpeed: 150,        // 打字速度（毫秒/字符）
+    backSpeed: 75,        // 删除速度
+    startDelay: 500,      // 开始前延迟
+    backDelay: 3000,      // 打完后停顿多久再删除
+    loop: true,           // 是否循环
+    showCursor: false,     // 显示光标
+  });
+})
+
+onUnmounted(()=>{
+  if(typedInstance){
+    typedInstance.destroy();
+  }
+})
 </script>
 
 <template>
@@ -24,13 +46,13 @@ const scrollDown = () => {
       <GlitchText :text="websiteInfoStore?.webInfo?.websiteName || ''" />
       <div class="brand_text_container">
         <div class="title">
-          {{ obj.output }}
+          <span ref="typed"></span>
           <span class="easy_typed_cursor">|</span>
         </div>
       </div>
     </div>
     <!-- 向下按钮 -->
-    <div class="button_container arow_down" v-on:click="scrollDown">
+    <div class="button_container" v-on:click="scrollDown">
       <svg t="1769093840622" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
         p-id="4808" width="20" height="20">
         <path
@@ -104,6 +126,53 @@ const scrollDown = () => {
     &:hover {
       animation: arow_shake 1.5s ease-out infinite;
     }
+
+    .button_ripple{
+      background: linear-gradient(to right,#f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+      background-size: 300% 300%;
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      animation:gradientAnimation 4s ease-out infinite,ripple 2s ease-out infinite;
+      opacity:0.8;
+      z-index:8;
+    }
+  }
+}
+
+// 左右横移
+@keyframes gradientAnimation{
+  0% {
+    background-position: 0% 50%;
+  }
+  25%{
+    background-position: 50% 50%;
+  }
+  50%{
+    background-position: 100% 50%;
+  }
+    75%{
+    background-position: 50% 50%;
+  }
+    100% {
+    background-position: 0% 50%;
+  }
+}
+
+// 波纹
+@keyframes ripple {
+  0%{
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+  50%{
+    transform:scale(1.2);
+    opacity: 0.4;
+  }
+  100%{
+    transform:scale(0.8);
+    opacity:0.6;
   }
 }
 

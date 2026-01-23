@@ -30,6 +30,7 @@ declare module 'vue' {
     ReadingMode: typeof import('./../components/ReadingMode.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ScrollParallel: typeof import('./../components/ScrollParallel/index.vue')['default']
     Search: typeof import('./../components/Search/index.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
     ToComment: typeof import('./../components/ToComment.vue')['default']

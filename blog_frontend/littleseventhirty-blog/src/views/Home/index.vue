@@ -4,6 +4,8 @@ import MouseTrail from '../../components/MouseTrail.vue';
 import BackgroundImage from '../../components/BackgroundImage.vue';
 import Particles from '../../components/Particles.vue';
 import Brand from './Brand/index.vue';
+import ScrollParallel from '../../components/ScrollParallel/index.vue';
+import Display from './Display/index.vue';
 </script>
 
 <template>
@@ -16,6 +18,12 @@ import Brand from './Brand/index.vue';
     <Particles />
     <!-- 个人标志展示 -->
     <Brand />
+    <!-- 平行滚动组件 -->
+    <ScrollParallel :speed="0.1" direction="vertical">
+      <template v-slot:default>
+        <Display/>
+      </template>
+    </ScrollParallel>
   </div>
 </template>
 
