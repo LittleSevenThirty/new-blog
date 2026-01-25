@@ -14,7 +14,6 @@ declare module 'vue' {
     BackgroundImage: typeof import('./../components/BackgroundImage.vue')['default']
     BottomRightLayout: typeof import('./../components/BottomRightLayout/index.vue')['default']
     BottomRightMore: typeof import('./../components/BottomRightMore.vue')['default']
-    Brand: typeof import('./../components/Brand.vue')['default']
     ContextMenu: typeof import('./../components/ContextMenu/index.vue')['default']
     DevToolsBlocker: typeof import('./../components/DevToolsBlocker/index.vue')['default']
     Footer: typeof import('./../components/Layout/Footer/index.vue')['default']

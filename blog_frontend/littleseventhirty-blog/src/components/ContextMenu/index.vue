@@ -21,7 +21,8 @@
       <ul class="menu-items">
         <li class="menu-item" v-on:click="navigateTo('/')">
           <div class="menu-item-icon">
-            <svg viewBox="0 0 24 24" width="24" height="24" :stroke="isDarkMode ? '#a78bfa' : '#8b5cf6'" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" width="24" height="24" :stroke="isDarkMode ? '#a78bfa' : '#8b5cf6'"
+              stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
               <polyline points="9 22 9 12 15 12 15 22"></polyline>
             </svg>
@@ -96,7 +97,7 @@ const hideMenu = () => {
 
 // 跳转页面
 const navigateTo = (path: string) => {
-  console.log("证明我被点击了"+path);
+  console.log("证明我被点击了" + path);
   router.push(path);
   hideMenu();
 }
@@ -107,7 +108,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-// 实现“几乎看不见 + 稍小”快速放大并淡入
 .context-menu {
   position: fixed;
   z-index: 100000;

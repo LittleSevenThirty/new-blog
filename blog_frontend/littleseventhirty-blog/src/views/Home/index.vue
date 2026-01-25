@@ -21,7 +21,7 @@ import Display from './Display/index.vue';
     <!-- 平行滚动组件 -->
     <ScrollParallel :speed="0.1" direction="vertical">
       <template v-slot:default>
-        <Display/>
+        <Display />
       </template>
     </ScrollParallel>
   </div>

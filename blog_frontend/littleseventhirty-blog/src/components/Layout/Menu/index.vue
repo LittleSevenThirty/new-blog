@@ -59,8 +59,9 @@ const props = defineProps({
 </template>
 
 <style lang="scss" scoped>
+@use "../../../styles/variable.scss" as *;
 @media screen and (max-width: 1000px) {
-  .div_container{
+  .div_container {
     margin: 0;
   }
 }
@@ -70,8 +71,8 @@ const props = defineProps({
   justify-content: center;
   padding-bottom: 2rem;
   width: 100%;
-  margin:0 0;
-  transition:margin .5s;
+  margin: 0 0;
+  transition: margin .5s;
 }
 
 @media screen and (max-width:910px) {

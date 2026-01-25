@@ -5,10 +5,10 @@ import { getSoup } from '../../../apis/thirdPartyAPIs/index.ts';
 import GlitchText from '../../../components/GlitchText.vue';
 import Wave from '../../../components/Wave.vue';
 import useWebsiteInfoStore from '../../../pinia/store/modules/website.ts';
-import { onMounted,onUnmounted,ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 const websiteInfoStore = useWebsiteInfoStore();
-const typed=ref<HTMLElement>();
-let typedInstance:Typed;
+const typed = ref<HTMLElement>();
+let typedInstance: Typed;
 const scrollDown = () => {
   window.scrollTo({
     behavior: 'smooth',
@@ -16,13 +16,13 @@ const scrollDown = () => {
   })
 }
 
-onMounted(async ()=>{
-  const res:any=await getSoup();
+onMounted(async () => {
+  const res: any = await getSoup();
   // console.log("一言:");
   // console.log(res);
   // const yiYanString=res?.hitokoto;
-  typedInstance=new Typed(typed.value,{
-    strings:[res?.hitokoto],
+  typedInstance = new Typed(typed.value, {
+    strings: [res?.hitokoto],
     typeSpeed: 150,        // 打字速度（毫秒/字符）
     backSpeed: 75,        // 删除速度
     startDelay: 500,      // 开始前延迟
@@ -32,8 +32,8 @@ onMounted(async ()=>{
   });
 })
 
-onUnmounted(()=>{
-  if(typedInstance){
+onUnmounted(() => {
+  if (typedInstance) {
     typedInstance.destroy();
   }
 })
@@ -115,6 +115,7 @@ onUnmounted(()=>{
   }
 
   .button_container {
+    top: 5px;
     position: absolute;
     bottom: 15vh;
     display: flex;
@@ -127,52 +128,58 @@ onUnmounted(()=>{
       animation: arow_shake 1.5s ease-out infinite;
     }
 
-    .button_ripple{
-      background: linear-gradient(to right,#f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+    .button_ripple {
+      background: linear-gradient(to right, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
       background-size: 300% 300%;
       position: absolute;
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      animation:gradientAnimation 4s ease-out infinite,ripple 2s ease-out infinite;
-      opacity:0.8;
-      z-index:8;
+      animation: gradientAnimation 4s ease-out infinite, ripple 2s ease-out infinite;
+      opacity: 0.8;
+      z-index: 8;
     }
   }
 }
 
 // 左右横移
-@keyframes gradientAnimation{
+@keyframes gradientAnimation {
   0% {
     background-position: 0% 50%;
   }
-  25%{
+
+  25% {
     background-position: 50% 50%;
   }
-  50%{
+
+  50% {
     background-position: 100% 50%;
   }
-    75%{
+
+  75% {
     background-position: 50% 50%;
   }
-    100% {
+
+  100% {
     background-position: 0% 50%;
   }
 }
 
 // 波纹
 @keyframes ripple {
-  0%{
+  0% {
     transform: scale(0.8);
     opacity: 0.6;
   }
-  50%{
-    transform:scale(1.2);
+
+  50% {
+    transform: scale(1.2);
     opacity: 0.4;
   }
-  100%{
-    transform:scale(0.8);
-    opacity:0.6;
+
+  100% {
+    transform: scale(0.8);
+    opacity: 0.6;
   }
 }
 
