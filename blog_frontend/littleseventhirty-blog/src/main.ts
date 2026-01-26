@@ -16,12 +16,14 @@ import 'element-plus/dist/index.css';
 import './mock/index.ts'; // 如果不想启动后端就想要数据需要将这段注释取消掉，配置mock是为了后端数据未准备好时提供假数据用的
 // 引入自定义指令
 import vViewRequest from './directives/vViewRequest.ts'
+import vSlideIn from "./directives/vSlideIn.ts";
 
 
 // 获取应用实例
 const app = createApp(App);
 // 注册全局指令，使用时添加前缀v-
-app.directive("view-request",vViewRequest);
+app.directive("view-request", vViewRequest);
+app.directive("slide-in", vSlideIn);
 
 // 安装路由
 app.use(router);
