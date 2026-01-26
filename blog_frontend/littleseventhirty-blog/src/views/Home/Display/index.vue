@@ -2,7 +2,7 @@
 import Menu from "../../../components/Layout/Menu/index.vue";
 import useWebsiteStore from "../../../pinia/store/modules/website";
 import RecommendArticle from "../RecommendArticle/index.vue";
-
+import EssayCard from "../../../components/EssayCard.vue";
 const websiteStore = useWebsiteStore();
 </script>
 
@@ -27,7 +27,27 @@ const websiteStore = useWebsiteStore();
         <span>{{ websiteStore.webInfo?.headerNotification }}</span>
       </div>
       <!-- 推荐文章 -->
-      <RecommendArticle />
+      <div>
+        <RecommendArticle />
+      </div>
+      <!-- 文章 -->
+      <div class="essay_title">
+        <el-divider border-style="dashed" content-position="left">
+          <div>
+            <el-icon>
+              <svg t="1769416794624" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" p-id="6264" width="16" height="16">
+                <path d="M213.333333 170.666667v128h234.666667v512h128V298.666667h234.666667V170.666667z" fill="#409EFF"
+                  p-id="6265"></path>
+              </svg>
+            </el-icon>
+            <span>文章</span>
+          </div>
+        </el-divider>
+      </div>
+      <div>
+        <EssayCard/>
+      </div>
     </template>
     <!-- 侧边栏 -->
     <template #side></template>
@@ -45,5 +65,17 @@ const websiteStore = useWebsiteStore();
   border-radius: 15px;
   padding: 5px;
   border: 1px dotted #ccc;
+}
+
+.essay_title {
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      margin-left: 5px;
+    }
+  }
 }
 </style>

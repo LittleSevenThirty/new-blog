@@ -43,7 +43,7 @@ const props = defineProps({
   <div class="div_container" v-else :style="'margin-top:' + props.marginTop + ';'">
     <div class="banner_container" style="display: flex;justify-content: center;">
       <!-- 内容 -->
-      <div class="content_container" style="width: 100%;max-width:100rem">
+      <div class="content_container" style="width: 100%;">
         <slot name="content"></slot>
       </div>
       <!-- 侧边栏 -->

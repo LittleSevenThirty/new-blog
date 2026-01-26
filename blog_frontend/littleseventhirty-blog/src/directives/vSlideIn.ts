@@ -1,2 +1,7 @@
+const vSlideIn = {
+  mounted(){
+    
+  }
+}
 
-const map=new WeakMap();
+export default vSlideIn;

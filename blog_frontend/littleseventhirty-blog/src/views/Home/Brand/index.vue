@@ -121,7 +121,7 @@ onUnmounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 0;
     cursor: pointer;
 
     &:hover {
