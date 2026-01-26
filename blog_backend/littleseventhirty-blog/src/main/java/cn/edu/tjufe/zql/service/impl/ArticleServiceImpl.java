@@ -3,10 +3,7 @@ package cn.edu.tjufe.zql.service.impl;
 import cn.edu.tjufe.zql.constants.SQLConst;
 import cn.edu.tjufe.zql.domain.entity.Article;
 import cn.edu.tjufe.zql.domain.entity.Category;
-import cn.edu.tjufe.zql.domain.vo.HotArticleVO;
-import cn.edu.tjufe.zql.domain.vo.InitSearchTitleVO;
-import cn.edu.tjufe.zql.domain.vo.RandomArticleVO;
-import cn.edu.tjufe.zql.domain.vo.SearchArticleByContentVO;
+import cn.edu.tjufe.zql.domain.vo.*;
 import cn.edu.tjufe.zql.mapper.ArticleMapper;
 import cn.edu.tjufe.zql.mapper.CategoryMapper;
 import cn.edu.tjufe.zql.service.IArticleService;
@@ -100,6 +97,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<Article> randomArticles = articleMapper.selectRandomArticle(SQLConst.PUBLIC_APTICLE, SQLConst.RANDOM_ARTICLE_COUNT);
         if (!randomArticles.isEmpty()) {
             return randomArticles.stream().map(article -> article.asViewObject(RandomArticleVO.class)).toList();
+        }
+        return List.of();
+    }
+
+    @Override
+    public List<RecommendArticleVO> getRecommendArticles() {
+        List<Article> articles = articleMapper.selectList(new LambdaQueryWrapper<Article>().eq(Article::getIsTop, SQLConst.RECOMMEND_ARTICLE).eq(Article::getStatus, SQLConst.PUBLIC_APTICLE));
+        if (!articles.isEmpty()) {
+            return articles.stream().map(article -> article.asViewObject(RecommendArticleVO.class)).toList();
         }
         return List.of();
     }

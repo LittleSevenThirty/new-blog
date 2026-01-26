@@ -116,6 +116,8 @@ function handleMouseMove(e: MouseEvent) {
       }
     }
     timeoutList[index] = setTimeout(() => {
+      // 元素可能卸载再挂载，此时会出现trailCanvas为null情况
+      if(!trailCanvas.value) return;
       //清屏
       //@ts-ignore
       ctx.clearRect(0, 0, trailCanvas.value.width, trailCanvas.value.height);

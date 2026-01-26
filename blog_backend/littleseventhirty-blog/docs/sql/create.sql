@@ -64,6 +64,7 @@ CREATE TABLE `t_article`
     `article_type`    TINYINT                                                        NOT NULL COMMENT '类型（1原创 2转载 3翻译）',
     `status`          TINYINT                                                        NOT NULL COMMENT '文章状态（1公开 2私密 3草稿）',
     `visited_count`   BIGINT unsigned                                                NOT NULL COMMENT '文章访问数目',
+    `is_top`          tinyint                                                        NOT NULL COMMENT '是否置顶（0否，1是）',
     `create_time`     DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '文章创建时间',
     `update_time`     DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '文章更新时间',
     `is_deleted`      TINYINT(1)                                                     NOT NULL DEFAULT 0 COMMENT '是否删除（0未删除，1已删除）',

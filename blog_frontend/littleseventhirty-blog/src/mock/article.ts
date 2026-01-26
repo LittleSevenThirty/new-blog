@@ -177,7 +177,7 @@ Mock.mock("/api/article/search/init/title", "get", {
 //   }
 // })
 
-Mock.mock(RegExp('/api/article/search/by/content'+'.*'), 'get', (options) => {
+Mock.mock(RegExp('/api/article/search/by/content' + '.*'), 'get', (options) => {
   console.log(options);
   // 从 URL 中提取查询参数（兼容无参数的情况）
   const queryString = options.url.split('?')[1] || '';
@@ -200,7 +200,7 @@ Mock.mock(RegExp('/api/article/search/by/content'+'.*'), 'get', (options) => {
   });
 })
 
-Mock.mock("/api/article/random","get",()=>{
+Mock.mock("/api/article/random", "get", () => {
   // 1. 先复制数组并打乱顺序（避免修改原数组）
   const shuffledArticles = [...articleList].sort(() => Math.random() - 0.5);
   // 2. 截取前5条作为随机结果
@@ -218,4 +218,47 @@ Mock.mock("/api/article/random","get",()=>{
     message: 'success(成功)',
     data: formattedResult
   })
+})
+
+// 推荐文章列表接口
+Mock.mock("/api/article/recommend", "get", {
+  code: 200,
+  message: 'success',
+  data: [
+    {
+      "articleId": 1001,
+      "articleCover": "https://example.com/covers/tech-01.jpg",
+      "articleTitle": "Java 高并发编程实战：从理论到落地",
+      "articleContent": "本文详细讲解了Java高并发编程的核心原理，包括线程池、锁机制、CAS操作等，并结合实际项目案例演示了如何解决生产环境中的并发问题。",
+      "createTime": "2026-01-20 10:30:00"
+    },
+    {
+      "articleId": 1002,
+      "articleCover": "https://example.com/covers/frontend-02.jpg",
+      "articleTitle": "Vue3 + Vite 项目性能优化最佳实践",
+      "articleContent": "针对Vue3项目开发中的常见性能瓶颈，本文从打包体积、渲染效率、请求优化三个维度，分享了8个可落地的优化技巧。",
+      "createTime": "2026-01-22 15:15:00"
+    },
+    {
+      "articleId": 1003,
+      "articleCover": "https://example.com/covers/db-03.jpg",
+      "articleTitle": "MySQL 索引失效的10种常见场景及解决方案",
+      "articleContent": "索引是提升MySQL查询效率的关键，但不当的使用会导致索引失效。本文梳理了10种高频索引失效场景，并给出对应的优化方案和SQL示例。",
+      "createTime": "2026-01-23 09:45:00"
+    },
+    {
+      "articleId": 1004,
+      "articleCover": "https://example.com/covers/cloud-04.jpg",
+      "articleTitle": "Docker 容器化部署实战：从入门到精通",
+      "articleContent": "本文从零开始讲解Docker的核心概念，包括镜像、容器、仓库，然后通过一个SpringBoot项目的容器化部署案例，完整演示Docker的使用流程。",
+      "createTime": "2026-01-24 14:20:00"
+    },
+    {
+      "articleId": 1005,
+      "articleCover": "https://example.com/covers/ai-05.jpg",
+      "articleTitle": "大语言模型应用开发：基于LangChain快速搭建智能问答系统",
+      "articleContent": "LangChain简化了大语言模型的应用开发流程，本文以智能问答系统为例，讲解如何使用LangChain整合LLM、向量数据库和提示词工程。",
+      "createTime": "2026-01-25 11:00:00"
+    }
+  ]
 })

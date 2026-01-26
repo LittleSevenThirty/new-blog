@@ -1,11 +1,10 @@
 package cn.edu.tjufe.zql.controller;
 
 import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.LogAnnotation;
+import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
-import cn.edu.tjufe.zql.domain.vo.HotArticleVO;
-import cn.edu.tjufe.zql.domain.vo.InitSearchTitleVO;
-import cn.edu.tjufe.zql.domain.vo.RandomArticleVO;
-import cn.edu.tjufe.zql.domain.vo.SearchArticleByContentVO;
+import cn.edu.tjufe.zql.domain.vo.*;
 import cn.edu.tjufe.zql.service.IArticleService;
 import cn.edu.tjufe.zql.utils.ResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,14 +71,27 @@ public class ArticleController {
     @Operation(summary = "热门内容推荐接口")
     @AccessIntercepter(second = 60, maxCount = 60)
     @GetMapping("/hot")
-    public ResponseResult<List<HotArticleVO>> getHotArticles() {
+    public ResponseResult<List<HotArticleVO>> hotArticles() {
         return ResponseWrapper.handler(() -> articleService.getHotArticles());
     }
 
+    /**
+     * 随机文章推荐接口
+     *
+     * @return
+     */
     @GetMapping("/random")
     @AccessIntercepter(second = 60, maxCount = 5)
     @Operation(description = "刷一刷获取随机文章")
-    public ResponseResult<List<RandomArticleVO>> getRandomArticles() {
+    public ResponseResult<List<RandomArticleVO>> randomArticles() {
         return ResponseWrapper.handler(() -> articleService.getRandomArticles());
+    }
+
+    @LogAnnotation(module = "文章管理", operation = LogConst.GET)
+    @AccessIntercepter(second = 60, maxCount = 5)
+    @Operation(summary = "推荐文章接口")
+    @GetMapping("/recommend")
+    public ResponseResult<List<RecommendArticleVO>> recommend() {
+        return ResponseWrapper.handler(() -> articleService.getRecommendArticles());
     }
 }

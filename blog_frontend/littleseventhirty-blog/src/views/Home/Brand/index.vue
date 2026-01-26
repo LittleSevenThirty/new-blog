@@ -115,7 +115,7 @@ onUnmounted(() => {
   }
 
   .button_container {
-    top: 5px;
+    bottom: 5px;
     position: absolute;
     bottom: 15vh;
     display: flex;

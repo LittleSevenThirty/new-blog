@@ -7,6 +7,11 @@ package cn.edu.tjufe.zql.constants;
  **/
 public class SQLConst {
     /**
+     * 推荐文章字段标识
+     */
+    public static final String RECOMMEND_ARTICLE = "1";
+
+    /**
      * 公开文章的字段标识
      */
     public static final Integer PUBLIC_APTICLE = 1;

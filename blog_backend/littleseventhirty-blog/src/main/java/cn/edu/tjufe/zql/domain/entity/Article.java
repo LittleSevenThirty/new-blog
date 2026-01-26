@@ -46,6 +46,9 @@ public class Article implements ViewObjectConvertible {
     // 文章类型(1原创，2翻译，3转载）
     private Short articleType;
 
+    // 文章是否置顶
+    private Integer isTop;
+
     // 文章状态(1公开 2私密 3草稿）
     private Integer status;
 

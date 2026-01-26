@@ -38,3 +38,10 @@ export function getRandomArticle() {
     method: "get"
   })
 }
+
+export function getRecommendArticleList(){
+    return http({
+        url:"/article/recommend",
+        method:"get"
+    });
+}

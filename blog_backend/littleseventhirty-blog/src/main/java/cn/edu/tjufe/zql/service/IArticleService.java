@@ -1,10 +1,7 @@
 package cn.edu.tjufe.zql.service;
 
 import cn.edu.tjufe.zql.domain.entity.Article;
-import cn.edu.tjufe.zql.domain.vo.HotArticleVO;
-import cn.edu.tjufe.zql.domain.vo.InitSearchTitleVO;
-import cn.edu.tjufe.zql.domain.vo.RandomArticleVO;
-import cn.edu.tjufe.zql.domain.vo.SearchArticleByContentVO;
+import cn.edu.tjufe.zql.domain.vo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -44,4 +41,11 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<RandomArticleVO> getRandomArticles();
+
+    /**
+     * 获取推荐文章
+     *
+     * @return
+     */
+    List<RecommendArticleVO> getRecommendArticles();
 }

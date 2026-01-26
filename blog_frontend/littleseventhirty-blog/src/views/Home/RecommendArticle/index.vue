@@ -1,4 +1,34 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { getRecommendArticleList } from '../../../apis/article';
+import { ArticleSearch } from '../../../apis/article/type';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import router from "../../../router/index.ts";
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';  // 导入导航，分页，自动播放模块
+// 对应模块的对应css
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
+
+const recommendArticles = ref<any[]>([]);
+
+const modules = ref([Navigation, Pagination, Autoplay]);
+
+function loadContent() {
+  getRecommendArticleList().then((res) => {
+    // 数据处理
+    res.data = res.data.map((item: ArticleSearch) => {
+      // 替换特殊字符
+      item.articleContent = item.articleContent.replace(/[*#>`~\-\\[\]()\s]|(\n\n)/g, "");
+      // 截取前50个左右的字符
+      item.articleContent = item.articleContent.substring(0, 25) + "...";
+      return item;
+    });
+    recommendArticles.value = res.data;
+  })
+}
+</script>
 
 <template>
   <!-- 标题 -->
@@ -18,6 +48,60 @@
     </el-divider>
   </div>
   <!-- 先暂停，补充自定义指令以及全局API注册全局指令知识 -->
+  <!-- 使用观察器，懒加载对应资源(推荐文章) -->
+  <div v-view-request="{ callback: loadContent }">
+    <swiper class="h-[200px] recommend" :modules="modules" loop navigation :pagination="{ clickable: true }"
+      :autoplay="{ delay: 2500 }" v-if="recommendArticles.length > 0">
+      <swiper-slide v-for="recommendArticle in recommendArticles" :key="recommendArticle.articleId"
+      @click="router.push(`/article/${recommendArticle.articleId}`)">
+        <div class="item_text_container">
+          <div style="font-size:30px">
+            {{ recommendArticle?.articleTitle }}
+          </div>
+          <div style="font-size:15px">
+            {{ recommendArticle?.createTime }}
+          </div>
+          <div style="font-size:18px">
+            {{ recommendArticle?.articleContent }}
+          </div>
+        </div>
+        <el-image :src="recommendArticle.articleCover" fit="fill" :lazy="true"/>
+      </swiper-slide>
+      <div class="swiper-pagination"></div>
+    </swiper>
+  </div>
+  <el-skeleton v-if="recommendArticles.length==0" :rows="5" animated></el-skeleton>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "../../../styles/variable.scss" as *;
+
+.recommend {
+  border-radius: $border-radius;
+
+  .item_text_container{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    flex-direction: column;
+    // 字体设置
+    color:#fff;
+    font-size: 20px;
+    font-weight: bold;
+    background-color:rgba(0,0,0,0.1);
+    padding: 0 20px;
+    z-index: 1;
+    line-height: 2;
+  }
+
+  @media screen and (min-width:760px){
+    .el-image{
+      transform: translate(0, -20%);
+      transition: transform 0.5s;
+    }
+  }
+}
+</style>
