@@ -32,6 +32,8 @@ const vSlideIn = {
       easing: 'ease-in-out',
       fill: 'forwards'
     });
+    animation.pause();
+    map.set(el, animation);
     // 定义观察器
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -42,9 +44,7 @@ const vSlideIn = {
         }
       })
     })
-    animation.pause();
     observer.observe(el);
-    map.set(el, animation);
     el._intersectionObserver = observer;
   },
   unmounted(el: any) {

@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,11 +88,35 @@ public class ArticleController {
         return ResponseWrapper.handler(() -> articleService.getRandomArticles());
     }
 
+    /**
+     * 置顶文章接口
+     *
+     * @return
+     */
     @LogAnnotation(module = "文章管理", operation = LogConst.GET)
     @AccessIntercepter(second = 60, maxCount = 5)
     @Operation(summary = "推荐文章接口")
     @GetMapping("/recommend")
     public ResponseResult<List<RecommendArticleVO>> recommend() {
         return ResponseWrapper.handler(() -> articleService.getRecommendArticles());
+    }
+
+    /**
+     * 所有文章列表接口
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Operation(summary = "获取所有文章列表")
+    @AccessIntercepter(second = 60, maxCount = 10)
+    @LogAnnotation(module = "文章管理", operation = LogConst.GET)
+    @Parameters({
+            @Parameter(name = "pageNum", description = "页码", required = true),
+            @Parameter(name = "pageSize", description = "每页数量", required = true)
+    })
+    @GetMapping("/list")
+    public ResponseResult<PageVO<List<ArticleVO>>> list(@NotNull Integer pageNum, @NotNull Integer pageSize) {
+        return ResponseWrapper.handler(() -> articleService.allArticleList(pageNum, pageSize));
     }
 }

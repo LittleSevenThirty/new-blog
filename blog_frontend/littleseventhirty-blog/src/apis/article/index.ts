@@ -39,9 +39,24 @@ export function getRandomArticle() {
   })
 }
 
+/**
+ * 
+ * @returns 推荐的置顶文章
+ */
 export function getRecommendArticleList(){
     return http({
         url:"/article/recommend",
         method:"get"
     });
+}
+
+export function getArticleList(pageNum:Number,pageSize:Number){
+    return http({
+        url:"/article/list",
+        method:"get",
+        params:{
+            pageNum,
+            pageSize
+        }
+    })
 }

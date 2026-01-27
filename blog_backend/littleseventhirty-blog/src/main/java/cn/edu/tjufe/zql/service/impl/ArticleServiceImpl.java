@@ -109,4 +109,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         return List.of();
     }
+
+    @Override
+    public PageVO<List<ArticleVO>> allArticleList(Integer pageNum, Integer pageSize) {
+        return null;
+    }
 }

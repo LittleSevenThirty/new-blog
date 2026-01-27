@@ -48,4 +48,13 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<RecommendArticleVO> getRecommendArticles();
+
+    /**
+     * 所有文章列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    PageVO<List<ArticleVO>> allArticleList(Integer pageNum, Integer pageSize);
 }
