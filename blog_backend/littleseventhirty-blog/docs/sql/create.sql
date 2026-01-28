@@ -52,6 +52,23 @@ CREATE TABLE `sys_website_info`
 
 -- Table structure for t_article
 -- Created time: 2026/1/4 ; Status: unfinished
+DROP TABLE IF EXISTS `t_article_tag`
+CREATE TABLE `t_article_tag`
+(
+    `id` bigint unsigned not null AUTO_INCREMENT comment '关系表id',
+    `article_id` bigint unsigned not null COMMENT '文章id',
+    `tag_id` bigint unsigned not null comment '标签id',
+    `create_time` datetime DEFAULT current_timestamp not null COMMENT '创建时间',
+    `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
+    primary key(id) using BTREE
+)ENGINE = InnoDB
+ AUTO_INCREMENT = 187
+ CHARACTER SET = UTF8MB4
+ COLLATE = UTF8MB4_0900_AI_CI
+ ROW_FORMAT = DYNAMIC;
+
+-- Table structure for t_article
+-- Created time: 2026/1/4 ; Status: unfinished
 DROP TABLE IF EXISTS `t_article`;
 CREATE TABLE `t_article`
 (

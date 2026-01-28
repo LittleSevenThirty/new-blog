@@ -1,14 +1,22 @@
 package cn.edu.tjufe.zql.service.impl;
 
+import cn.edu.tjufe.zql.constants.RedisConst;
 import cn.edu.tjufe.zql.constants.SQLConst;
 import cn.edu.tjufe.zql.domain.entity.Article;
+import cn.edu.tjufe.zql.domain.entity.ArticleTag;
 import cn.edu.tjufe.zql.domain.entity.Category;
+import cn.edu.tjufe.zql.domain.entity.Tag;
 import cn.edu.tjufe.zql.domain.vo.*;
 import cn.edu.tjufe.zql.mapper.ArticleMapper;
+import cn.edu.tjufe.zql.mapper.ArticleTagMapper;
 import cn.edu.tjufe.zql.mapper.CategoryMapper;
+import cn.edu.tjufe.zql.mapper.TagMapper;
 import cn.edu.tjufe.zql.service.IArticleService;
+import cn.edu.tjufe.zql.utils.RedisCache;
 import cn.edu.tjufe.zql.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +39,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private ArticleMapper articleMapper;
 
     @Resource
+    private ArticleTagMapper articleTagMapper;
+
+    @Resource
     private CategoryMapper categoryMapper;
+
+    @Resource
+    private RedisCache redisCache;
+
+    @Resource
+    private TagMapper tagMapper;
 
     @Override
     public List<InitSearchTitleVO> initSearchByTitle() {
@@ -112,6 +129,21 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public PageVO<List<ArticleVO>> allArticleList(Integer pageNum, Integer pageSize) {
+        // 文章
+        boolean hasKey = redisCache.isHasKey(RedisConst.ARTICLE_COMMENT_COUNT) && redisCache.isHasKey(RedisConst.ARTICLE_FAVORITE_COUNT) && redisCache.isHasKey(RedisConst.ARTICLE_LIKE_COUNT);
+        IPage<Article> page = new Page<>(pageNum, pageSize);
+        this.page(page, new LambdaQueryWrapper<Article>().eq(Article::getStatus, SQLConst.PUBLIC_APTICLE).orderByDesc(Article::getCreateTime));
+        List<Article> list = page.getRecords();
+        // 分类映射
+        Map<Long, String> categoryMap = categoryMapper.selectList(new LambdaQueryWrapper<Category>().in(Category::getCategoryId, list.stream().map(Article::getCategoryId).toList()))
+                .stream().collect(Collectors.toMap(Category::getCategoryId, Category::getCategoryName));
+        // 关联Article和Tag表
+        List<ArticleTag> articleTags = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().in(ArticleTag::getArticleId, list.stream().map(Article::getArticleId).toList()));
+        // 标签映射
+        Map<Long, String> tagMap = tagMapper.selectList(new LambdaQueryWrapper<Tag>().in(Tag::getTagId, articleTags.stream().map(ArticleTag::getArticleId).toList()))
+                .stream().collect(Collectors.toMap(Tag::getTagId, Tag::getTagName));
+        List<ArticleVO> articleVOS=
+
         return null;
     }
 }

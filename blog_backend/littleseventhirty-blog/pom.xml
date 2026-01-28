@@ -81,6 +81,11 @@
             <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
             <!--  版本依赖与dependencyManagement -->
         </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-jsqlparser</artifactId>
+            <version>3.5.10</version> <!-- 确保版本与主包一致 -->
+        </dependency>
         <!-- 数据库驱动（以MySQL为例） -->
         <!-- 但如果使用的是MySQL8.0.27，官方推荐使用mysql-connector-j包-->
         <dependency>
