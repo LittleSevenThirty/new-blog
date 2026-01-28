@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -142,8 +143,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 标签映射
         Map<Long, String> tagMap = tagMapper.selectList(new LambdaQueryWrapper<Tag>().in(Tag::getTagId, articleTags.stream().map(ArticleTag::getArticleId).toList()))
                 .stream().collect(Collectors.toMap(Tag::getTagId, Tag::getTagName));
-        List<ArticleVO> articleVOS=
+        List<ArticleVO> articleVOS=list.stream().map(article->{
+            ArticleVO articleVO=article.asViewObject(ArticleVO.class);
+            articleVO.setCategoryName(categoryMap.get(article.getCategoryId()));
+            articleVO.setTags(articleTags
+                    .stream()
+                    .filter(at-> Objects.equals(at.getArticleId(),article.getArticleId()))  // 过滤后的集合
+                    .map(at->tagMap.get(at.getTagId()))
+                    .toList());
+            return articleVO;
+        }).toList();
+        if(hasKey){
+            articleVOS=articleVOS.stream().peek(at->{
 
-        return null;
+            }).toList();
+        }
+
+        return new PageVO<List<ArticleVO>>(articleVOS,page.getTotal());
     }
 }
