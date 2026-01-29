@@ -14,7 +14,7 @@ const vViewRequest = {
       threshold: binding.value?.threshold || 0,  // 可选相交比例阈值
     }
 
-    // 创建对应交叉观察器
+    // 创建对应交叉观察器，即确切看到对应元素再去加载对应数据，以提升响应速度
     const observer=new IntersectionObserver((entries)=>{
       entries.forEach((entry)=>{
         // 元素进入屏幕

@@ -1,0 +1,1 @@
+export const loadingImg="https://cn.bing.com/images/search?view=detailV2&ccid=eNf%2fi4p2&id=0A4402FAFB5478316F47BB5B0E43F8D45A97578D&thid=OIP.eNf_i4p2hH0DIsjz7l1ZRgHaFW&mediaurl=https%3a%2f%2fwww.17sucai.com%2fstatics%2fimages%2floading2.gif&exph=361&expw=500&q=%e5%8a%a0%e8%bd%bd.gif&FORM=IRPRST&ck=2B7ED8D894E67E69AEFF6EF866377968&selectedIndex=0&itb=0";
