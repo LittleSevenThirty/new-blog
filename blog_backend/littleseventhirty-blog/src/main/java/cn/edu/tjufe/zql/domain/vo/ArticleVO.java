@@ -49,4 +49,7 @@ public class ArticleVO {
     // 点赞数
     @Schema(description = "点赞数")
     private Long likeCount;
+    //收藏数
+    @Schema(description = "收藏数")
+    private Long favoriteCount;
 }

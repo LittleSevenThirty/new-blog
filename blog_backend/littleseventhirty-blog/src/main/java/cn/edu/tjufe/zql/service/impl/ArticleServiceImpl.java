@@ -7,6 +7,7 @@ import cn.edu.tjufe.zql.domain.entity.ArticleTag;
 import cn.edu.tjufe.zql.domain.entity.Category;
 import cn.edu.tjufe.zql.domain.entity.Tag;
 import cn.edu.tjufe.zql.domain.vo.*;
+import cn.edu.tjufe.zql.enums.CountTypeEnum;
 import cn.edu.tjufe.zql.mapper.ArticleMapper;
 import cn.edu.tjufe.zql.mapper.ArticleTagMapper;
 import cn.edu.tjufe.zql.mapper.CategoryMapper;
@@ -143,22 +144,43 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         // 标签映射
         Map<Long, String> tagMap = tagMapper.selectList(new LambdaQueryWrapper<Tag>().in(Tag::getTagId, articleTags.stream().map(ArticleTag::getArticleId).toList()))
                 .stream().collect(Collectors.toMap(Tag::getTagId, Tag::getTagName));
-        List<ArticleVO> articleVOS=list.stream().map(article->{
-            ArticleVO articleVO=article.asViewObject(ArticleVO.class);
+        List<ArticleVO> articleVOS = list.stream().map(article -> {
+            ArticleVO articleVO = article.asViewObject(ArticleVO.class);
             articleVO.setCategoryName(categoryMap.get(article.getCategoryId()));
             articleVO.setTags(articleTags
                     .stream()
-                    .filter(at-> Objects.equals(at.getArticleId(),article.getArticleId()))  // 过滤后的集合
-                    .map(at->tagMap.get(at.getTagId()))
+                    .filter(at -> Objects.equals(at.getArticleId(), article.getArticleId()))  // 过滤后的集合
+                    .map(at -> tagMap.get(at.getTagId()))
                     .toList());
             return articleVO;
         }).toList();
-        if(hasKey){
-            articleVOS=articleVOS.stream().peek(at->{
-
+        if (hasKey) {
+            articleVOS = articleVOS.stream().peek(articleVO -> {
+                setRedisCache(articleVO, RedisConst.ARTICLE_COMMENT_COUNT, CountTypeEnum.COMMENT);
+                setRedisCache(articleVO, RedisConst.ARTICLE_FAVORITE_COUNT, CountTypeEnum.FAVORITE);
+                setRedisCache(articleVO, RedisConst.ARTICLE_LIKE_COUNT, CountTypeEnum.LIKE);
             }).toList();
         }
 
-        return new PageVO<List<ArticleVO>>(articleVOS,page.getTotal());
+        return new PageVO<List<ArticleVO>>(articleVOS, page.getTotal());
+    }
+
+    private <T> void setRedisCache(ArticleVO articleVO, String redisKey, CountTypeEnum countType) {
+        String articleId = articleVO.getArticleId().toString();
+        Object countObj = redisCache.getCacheMap(redisKey).get(articleId);
+        long count = 0l;
+        if (countObj != null) {
+            count = Long.parseLong(countObj.toString());
+        } else {
+            redisCache.setCacheMap(redisKey, Map.of(articleId, 0));
+        }
+
+        if (countType.equals(CountTypeEnum.COMMENT)) {
+            articleVO.setCommmentCount(count);
+        } else if (countType.equals(CountTypeEnum.FAVORITE)) {
+            articleVO.setFavoriteCount(count);
+        } else if (countType.equals(CountTypeEnum.LIKE)) {
+            articleVO.setLikeCount(count);
+        }
     }
 }

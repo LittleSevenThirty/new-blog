@@ -50,7 +50,7 @@ public interface IArticleService extends IService<Article> {
     List<RecommendArticleVO> getRecommendArticles();
 
     /**
-     * 所有文章列表
+     * 获取所有文章
      *
      * @param pageNum
      * @param pageSize

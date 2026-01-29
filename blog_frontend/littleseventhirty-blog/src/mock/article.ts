@@ -3,6 +3,7 @@
 // 对接前端使用axios访问后端接口时，但后端没准备好
 // 前端接口处于apis/article/index
 import Mock from "mockjs"
+import articleMock from  "./articleMock";
 
 // 模拟文章数据（基于你的 insert.sql 转换，补充了分类名称）
 const articleList = [
@@ -262,3 +263,6 @@ Mock.mock("/api/article/recommend", "get", {
     }
   ]
 })
+
+// 假全文章推荐列表
+Mock.mock(RegExp('/api/article/list' + '.*'),"get", () => articleMock);
