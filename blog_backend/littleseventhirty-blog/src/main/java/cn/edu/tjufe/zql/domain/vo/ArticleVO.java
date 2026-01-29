@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,4 +53,10 @@ public class ArticleVO {
     //收藏数
     @Schema(description = "收藏数")
     private Long favoriteCount;
+    //文章创建时间
+    @Schema(description="创建时间")
+    private Date createTime;
+    //文章更新时间
+    @Schema(description="更新时间")
+    private Date updateTime;
 }
