@@ -4,6 +4,7 @@ import useWebsiteStore from "../../../pinia/store/modules/website";
 import RecommendArticle from "../RecommendArticle/index.vue";
 import EssayCard from "../../../components/EssayCard.vue";
 import Pagination from "../../../components/Pagination.vue";
+import SideBar from "../../../components/SideBar.vue";
 const websiteStore = useWebsiteStore();
 </script>
 
@@ -61,7 +62,9 @@ const websiteStore = useWebsiteStore();
       </div>
     </template>
     <!-- 侧边栏 -->
-    <template #side></template>
+    <template #side>
+      <SideBar/>
+    </template>
   </Menu>
 </template>
 
