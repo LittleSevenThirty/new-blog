@@ -3,7 +3,7 @@
 // 对接前端使用axios访问后端接口时，但后端没准备好
 // 前端接口处于apis/article/index
 import Mock from "mockjs"
-import articleMock from  "./articleMock";
+import {data1,data2} from  "./articleMock";
 
 // 模拟文章数据（基于你的 insert.sql 转换，补充了分类名称）
 const articleList = [
@@ -235,28 +235,28 @@ Mock.mock("/api/article/recommend", "get", {
     },
     {
       "articleId": 1002,
-      "articleCover": "https://example.com/covers/frontend-02.jpg",
+      "articleCover": "https://picsum.photos/seed/tech1/300/200",
       "articleTitle": "Vue3 + Vite 项目性能优化最佳实践",
       "articleContent": "针对Vue3项目开发中的常见性能瓶颈，本文从打包体积、渲染效率、请求优化三个维度，分享了8个可落地的优化技巧。",
       "createTime": "2026-01-22 15:15:00"
     },
     {
       "articleId": 1003,
-      "articleCover": "https://example.com/covers/db-03.jpg",
+      "articleCover": "https://picsum.photos/seed/life2/300/200",
       "articleTitle": "MySQL 索引失效的10种常见场景及解决方案",
       "articleContent": "索引是提升MySQL查询效率的关键，但不当的使用会导致索引失效。本文梳理了10种高频索引失效场景，并给出对应的优化方案和SQL示例。",
       "createTime": "2026-01-23 09:45:00"
     },
     {
       "articleId": 1004,
-      "articleCover": "https://example.com/covers/cloud-04.jpg",
+      "articleCover": "https://picsum.photos/seed/ent3/300/200",
       "articleTitle": "Docker 容器化部署实战：从入门到精通",
       "articleContent": "本文从零开始讲解Docker的核心概念，包括镜像、容器、仓库，然后通过一个SpringBoot项目的容器化部署案例，完整演示Docker的使用流程。",
       "createTime": "2026-01-24 14:20:00"
     },
     {
       "articleId": 1005,
-      "articleCover": "https://example.com/covers/ai-05.jpg",
+      "articleCover": "https://picsum.photos/seed/finance5/300/200",
       "articleTitle": "大语言模型应用开发：基于LangChain快速搭建智能问答系统",
       "articleContent": "LangChain简化了大语言模型的应用开发流程，本文以智能问答系统为例，讲解如何使用LangChain整合LLM、向量数据库和提示词工程。",
       "createTime": "2026-01-25 11:00:00"
@@ -265,4 +265,8 @@ Mock.mock("/api/article/recommend", "get", {
 })
 
 // 假全文章推荐列表
-Mock.mock(RegExp('/api/article/list' + '.*'),"get", () => articleMock);
+let random=0;
+Mock.mock(RegExp('/api/article/list' + '.*'),"get", () => {
+  random+=1;
+  return random%2==0?data1:data2;
+});

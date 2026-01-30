@@ -83,7 +83,7 @@ const props = defineProps({
 }
 
 .content_container {
-  height: 100vh;
+  height: 100%;
   width: 60vw;
   max-width: 70rem;
   padding: 1rem;
@@ -91,6 +91,19 @@ const props = defineProps({
   border: .5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transition: width 0.5s, padding 0.5s;
+}
+
+.sideBar_container{
+  width:23%;
+  min-height:100%;
+  max-width:25rem;
+  transition:width 0.5s;
+  @media screen and (max-width:1200px){
+    width:30%;
+  }
+  @media screen and (max-width:900px){
+    display:none;
+  }
 }
 
 @media screen and (max-width:1200px) {

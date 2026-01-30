@@ -46,7 +46,7 @@ function loadContent() {
         <div v-slide-in @click="router.push(`/article/${article.articleId}`)"
           class="h-92 md:h-60 mt-4 flex flex-col md:flex-row card overflow-hidden shadow-md mb-5 mx-2 dark:bg-[#1D1D1D]">
           <!-- 同时负责移动端上图下内容的显示和桌面端奇数卡的左图右内容 -->
-          <div class="w-full md:h-full md:w-1/2 h-40" v-if="index % 2 == 1 || width < 768px">
+          <div class="w-full md:h-full md:w-1/2 h-40" v-if="index % 2 == 1 || width < 768">
             <div class="w-full h-full relative">
               <div class="relative w-full h-full img">
                 <img class="w-full h-full object-cover hover:scale-110 ease-liner duration-300" v-lazy="true"
@@ -141,7 +141,7 @@ function loadContent() {
             </div>
           </div>
           <!-- 桌面端配置偶数卡片自动在右边 -->
-          <div class="w-full md:h-full md:w-1/2 h-40" v-if="index % 2 == 0 && width > 768px">
+          <div class="w-full md:h-full md:w-1/2 h-40" v-if="index % 2 == 0 && width > 768">
             <div class="w-full h-full relative">
               <div class="relative w-full h-full img">
                 <img class="w-full h-full object-cover hover:scale-110 ease-liner duration-300" v-lazy="true"

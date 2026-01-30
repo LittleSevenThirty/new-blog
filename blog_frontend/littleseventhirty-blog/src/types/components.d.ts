@@ -26,6 +26,7 @@ declare module 'vue' {
     MouseTrail: typeof import('./../components/MouseTrail.vue')['default']
     MoveMenu: typeof import('./../components/Layout/Header/MoveMenu/index.vue')['default']
     Music: typeof import('./../components/Music/index.vue')['default']
+    Pagination: typeof import('./../components/Pagination.vue')['default']
     Particles: typeof import('./../components/Particles.vue')['default']
     ReadingMode: typeof import('./../components/ReadingMode.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -3,6 +3,7 @@ import Menu from "../../../components/Layout/Menu/index.vue";
 import useWebsiteStore from "../../../pinia/store/modules/website";
 import RecommendArticle from "../RecommendArticle/index.vue";
 import EssayCard from "../../../components/EssayCard.vue";
+import Pagination from "../../../components/Pagination.vue";
 const websiteStore = useWebsiteStore();
 </script>
 
@@ -30,7 +31,7 @@ const websiteStore = useWebsiteStore();
       <div>
         <RecommendArticle />
       </div>
-      <!-- 文章 -->
+      <!-- 文章卡片 -->
       <div class="essay_title">
         <el-divider border-style="dashed" content-position="left">
           <div>
@@ -47,6 +48,16 @@ const websiteStore = useWebsiteStore();
       </div>
       <div>
         <EssayCard/>
+      </div>
+      <!-- 分页组件 -->
+      <div>
+        <Pagination/>
+      </div>
+      <!-- 底部分割线提示 -->
+      <div>
+        <el-divider border-style="dashed" content-position="center">
+          <div style="font-weight: bold;">~~到底啦（¯﹃¯）~~</div>
+        </el-divider>
       </div>
     </template>
     <!-- 侧边栏 -->

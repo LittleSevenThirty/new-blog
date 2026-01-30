@@ -1,5 +1,5 @@
 // mockArticleData.js
-export default {
+export const data1= {
   code: "200",
   msg: "success",
   data: {
@@ -13,9 +13,11 @@ export default {
         articleContent: "本文系统讲解 Vue3 Composition API 的设计哲学与核心用法，对比 Options API 优势，结合状态管理、自定义 Hooks 等实战场景，附完整代码示例。适合从中级迈向高阶的前端开发者。",
         articleType: "原创",
         visitedCount: 2850,
-        commentCount: 42, // 注意：接口字段为 commentCount（双m）
+        commentCount: 42,
         likeCount: 189,
-        favoriteCount: 97
+        favoriteCount: 97,
+        createTime: "2024-04-01 09:30:00",
+        updateTime: "2024-04-01 14:25:00"  // 原创文章有更新
       },
       {
         articleId: "2",
@@ -28,7 +30,9 @@ export default {
         visitedCount: 1920,
         commentCount: 38,
         likeCount: 156,
-        favoriteCount: 112
+        favoriteCount: 112,
+        createTime: "2024-04-02 11:15:00",
+        updateTime: "2024-04-03 09:40:00"  // 原创文章有更新
       },
       {
         articleId: "3",
@@ -41,7 +45,9 @@ export default {
         visitedCount: 3410,
         commentCount: 67,
         likeCount: 245,
-        favoriteCount: 138
+        favoriteCount: 138,
+        createTime: "2024-04-03 14:20:00",
+        updateTime: "2024-04-03 14:20:00"  // 转载文章时间相同
       },
       {
         articleId: "4",
@@ -54,7 +60,9 @@ export default {
         visitedCount: 2105,
         commentCount: 29,
         likeCount: 132,
-        favoriteCount: 88
+        favoriteCount: 88,
+        createTime: "2024-04-04 08:45:00",
+        updateTime: "2024-04-05 16:30:00"  // 原创文章有更新
       },
       {
         articleId: "5",
@@ -67,7 +75,9 @@ export default {
         visitedCount: 4280,
         commentCount: 85,
         likeCount: 310,
-        favoriteCount: 205
+        favoriteCount: 205,
+        createTime: "2024-04-05 10:10:00",
+        updateTime: "2024-04-06 11:20:00"  // 原创文章有更新
       },
       {
         articleId: "6",
@@ -80,7 +90,9 @@ export default {
         visitedCount: 1760,
         commentCount: 33,
         likeCount: 142,
-        favoriteCount: 95
+        favoriteCount: 95,
+        createTime: "2024-04-06 15:50:00",
+        updateTime: "2024-04-07 09:15:00"  // 原创文章有更新
       },
       {
         articleId: "7",
@@ -93,7 +105,9 @@ export default {
         visitedCount: 2540,
         commentCount: 41,
         likeCount: 178,
-        favoriteCount: 126
+        favoriteCount: 126,
+        createTime: "2024-04-07 13:05:00",
+        updateTime: "2024-04-07 13:05:00"  // 转载文章时间相同
       },
       {
         articleId: "8",
@@ -106,7 +120,9 @@ export default {
         visitedCount: 3120,
         commentCount: 58,
         likeCount: 224,
-        favoriteCount: 163
+        favoriteCount: 163,
+        createTime: "2024-04-08 09:40:00",
+        updateTime: "2024-04-10 14:55:00"  // 原创文章有更新
       },
       {
         articleId: "9",
@@ -119,7 +135,9 @@ export default {
         visitedCount: 1890,
         commentCount: 47,
         likeCount: 165,
-        favoriteCount: 108
+        favoriteCount: 108,
+        createTime: "2024-04-09 16:20:00",
+        updateTime: "2024-04-11 10:30:00"  // 原创文章有更新
       },
       {
         articleId: "10",
@@ -132,9 +150,172 @@ export default {
         visitedCount: 5230,
         commentCount: 93,
         likeCount: 387,
-        favoriteCount: 241
+        favoriteCount: 241,
+        createTime: "2024-04-10 11:45:00",
+        updateTime: "2024-04-10 11:45:00"  // 转载文章时间相同
       }
     ],
-    total: 10
+    total: 100
+  }
+};
+
+// mockArticleData.js
+export const data2= {
+  code: "200",
+  msg: "success",
+  data: {
+    page: [
+      {
+        articleId: "11",
+        categoryName: "技术",
+        tags: ["TypeScript", "工程化", "前端架构"],
+        articleCover: "https://picsum.photos/seed/tech11/300/200",
+        articleTitle: "TypeScript 5.0 新特性实战：如何提升大型项目可维护性",
+        articleContent: "深度解读 TypeScript 5.0 的装饰器标准化、类型参数推导等核心更新，结合Monorepo项目实战案例，展示如何减少30%类型错误。含迁移 checklist 与性能优化技巧。",
+        articleType: "原创",
+        visitedCount: 3180,
+        commentCount: 52,
+        likeCount: 215,
+        favoriteCount: 142,
+        createTime: "2024-04-11 08:20:00",
+        updateTime: "2024-04-12 15:40:00"
+      },
+      {
+        articleId: "12",
+        categoryName: "生活",
+        tags: ["家居", "收纳", "极简主义"],
+        articleCover: "https://picsum.photos/seed/life12/300/200",
+        articleTitle: "小户型逆袭指南：15㎡卧室的7种空间魔法",
+        articleContent: "无需砸墙改造！利用垂直空间、多功能家具与色彩心理学，实测提升40%收纳效率。附宜家平价好物清单+手绘布局图，租房党也能轻松复刻的治愈系小家。",
+        articleType: "转载",
+        visitedCount: 2870,
+        commentCount: 61,
+        likeCount: 238,
+        favoriteCount: 189,
+        createTime: "2024-04-12 14:30:00",
+        updateTime: "2024-04-12 14:30:00"
+      },
+      {
+        articleId: "13",
+        categoryName: "娱乐",
+        tags: ["综艺", "文化观察", "社会议题"],
+        articleCover: "https://picsum.photos/seed/ent13/300/200",
+        articleTitle: "《种地吧》破圈启示录：年轻人为何为「电子农活」上头？",
+        articleContent: "从慢综艺热潮看Z世代情感需求变迁，深度访谈制作团队+心理学专家解读。附10个治愈瞬间盘点与「云种地」打卡指南，探讨内容创作如何与社会情绪同频共振。",
+        articleType: "原创",
+        visitedCount: 4150,
+        commentCount: 97,
+        likeCount: 328,
+        favoriteCount: 215,
+        createTime: "2024-04-13 10:05:00",
+        updateTime: "2024-04-14 09:20:00"
+      },
+      {
+        articleId: "14",
+        categoryName: "财经",
+        tags: ["碳中和", "绿色金融", "ESG"],
+        articleCover: "https://picsum.photos/seed/finance14/300/200",
+        articleTitle: "ESG投资真相：普通人如何避开「漂绿」陷阱？",
+        articleContent: "拆解ESG评级体系漏洞，手把手教你识别企业真实环保表现。结合A股/港股案例，提供3步自查法+5个可信数据平台，让绿色投资真正「既向善又赚钱」。",
+        articleType: "原创",
+        visitedCount: 2640,
+        commentCount: 44,
+        likeCount: 187,
+        favoriteCount: 132,
+        createTime: "2024-04-14 16:15:00",
+        updateTime: "2024-04-16 11:30:00"
+      },
+      {
+        articleId: "15",
+        categoryName: "健康",
+        tags: ["心理健康", "正念", "职场压力"],
+        articleCover: "https://picsum.photos/seed/health15/300/200",
+        articleTitle: "情绪急救包：5个科学验证的焦虑缓解技巧（附音频）",
+        articleContent: "哈佛心理学实验室验证的「478呼吸法」「认知解离术」等工具，搭配定制化冥想音频。含压力自测量表与每日微习惯打卡表，专为高压职场人设计的即时缓解方案。",
+        articleType: "转载",
+        visitedCount: 3920,
+        commentCount: 88,
+        likeCount: 356,
+        favoriteCount: 274,
+        createTime: "2024-04-15 09:50:00",
+        updateTime: "2024-04-15 09:50:00"
+      },
+      {
+        articleId: "16",
+        categoryName: "教育",
+        tags: ["AI教育", "编程启蒙", "亲子互动"],
+        articleCover: "https://picsum.photos/seed/edu16/300/200",
+        articleTitle: "6岁+儿童AI启蒙课：用Scratch制作会讲故事的机器人",
+        articleContent: "零代码基础家长也能教！分步图解10个趣味项目（情绪识别小怪兽、古诗生成器等），融合STEAM教育理念。附免费资源包+防屏幕沉迷时间管理表，玩出计算思维。",
+        articleType: "原创",
+        visitedCount: 2310,
+        commentCount: 53,
+        likeCount: 198,
+        favoriteCount: 167,
+        createTime: "2024-04-16 13:40:00",
+        updateTime: "2024-04-18 10:15:00"
+      },
+      {
+        articleId: "17",
+        categoryName: "旅游",
+        tags: ["新疆", "自驾攻略", "小众秘境"],
+        articleCover: "https://picsum.photos/seed/travel17/300/200",
+        articleTitle: "独库公路全攻略2024：避开人流的5个隐藏观景台+实时路况",
+        articleContent: "亲测更新！含最佳通行时段、加油站分布、边防证办理指南。揭秘琼库什台后山草原、恰西画卷等非网红点位，附无人机拍摄禁忌与环保旅行倡议，安全与美景兼得。",
+        articleType: "原创",
+        visitedCount: 5870,
+        commentCount: 126,
+        likeCount: 482,
+        favoriteCount: 395,
+        createTime: "2024-04-17 11:25:00",
+        updateTime: "2024-04-19 16:40:00"
+      },
+      {
+        articleId: "18",
+        categoryName: "美食",
+        tags: ["烘焙", "零失败", "节日特辑"],
+        articleCover: "https://picsum.photos/seed/food18/300/200",
+        articleTitle: "端午限定｜流心咸蛋黄肉粽：家庭版零失败教程（附真空保存法）",
+        articleContent: "非遗传承人改良配方！详解糯米浸泡黄金时间、粽叶处理技巧、流心馅料比例。含南北口味对比表+儿童迷你粽做法，附赠电子版「节气美食日历」，传承有新意。",
+        articleType: "转载",
+        visitedCount: 3450,
+        commentCount: 79,
+        likeCount: 291,
+        favoriteCount: 248,
+        createTime: "2024-04-18 15:10:00",
+        updateTime: "2024-04-18 15:10:00"
+      },
+      {
+        articleId: "19",
+        categoryName: "科技",
+        tags: ["量子计算", "前沿科普", "产业展望"],
+        articleCover: "https://picsum.photos/seed/tech19/300/200",
+        articleTitle: "量子计算离我们有多远？2024年普通人能感知的3个落地场景",
+        articleContent: "破除 hype！聚焦药物研发加速、金融风控优化、物流路径规划等真实应用案例。专访中科院团队解读技术瓶颈，附「量子素养」入门书单，理性看待科技浪潮。",
+        articleType: "原创",
+        visitedCount: 4760,
+        commentCount: 105,
+        likeCount: 367,
+        favoriteCount: 283,
+        createTime: "2024-04-19 09:00:00",
+        updateTime: "2024-04-20 14:20:00"
+      },
+      {
+        articleId: "20",
+        categoryName: "体育",
+        tags: ["马拉松", "科学训练", "装备指南"],
+        articleCover: "https://picsum.photos/seed/sport20/300/200",
+        articleTitle: "首马通关秘籍：从「跑不完」到「享受42公里」的12周计划",
+        articleContent: "北马冠军教练定制！含心率区间训练表、补给策略、赛前减量指南。破解「撞墙期」应对技巧，附跑鞋选购避坑清单与赛后恢复拉伸视频，安全完赛才是真胜利。",
+        articleType: "原创",
+        visitedCount: 3290,
+        commentCount: 71,
+        likeCount: 254,
+        favoriteCount: 198,
+        createTime: "2024-04-20 10:35:00",
+        updateTime: "2024-04-21 08:50:00"
+      }
+    ],
+    total: 100
   }
 };
