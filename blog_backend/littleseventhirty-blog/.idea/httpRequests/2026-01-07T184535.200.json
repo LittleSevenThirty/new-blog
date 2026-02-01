@@ -1,0 +1,4 @@
+{
+  "code": "500",
+  "msg": "\r\n### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column 'visited_count' in 'field list'\r\n### The error may exist in cn/edu/tjufe/zql/mapper/ArticleMapper.java (best guess)\r\n### The error may involve defaultParameterMap\r\n### The error occurred while setting parameters\r\n### SQL: SELECT  id,article_id,user_id,category_id,article_title,article_content,visited_count,article_type,status,create_time,update_time,is_deleted  FROM T_Article      WHERE  (status = ?) ORDER BY visited_count DESC LIMIT 5\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column 'visited_count' in 'field list'\n; bad SQL grammar []"
+}

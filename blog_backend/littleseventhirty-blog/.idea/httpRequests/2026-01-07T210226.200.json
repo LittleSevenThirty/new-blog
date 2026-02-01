@@ -1,0 +1,26 @@
+{
+  "code": "200",
+  "msg": "success（成功）",
+  "data": [
+    {
+      "articleId": 5,
+      "articleTitle": "test设计模式在项目中的应用",
+      "visitedCount": 32
+    },
+    {
+      "articleId": 8,
+      "articleTitle": "test产品需求文档撰写技巧",
+      "visitedCount": 25
+    },
+    {
+      "articleId": 1,
+      "articleTitle": "test我的编程学习笔记",
+      "visitedCount": 20
+    },
+    {
+      "articleId": 2,
+      "articleTitle": "test前端框架新特性解析",
+      "visitedCount": 15
+    }
+  ]
+}

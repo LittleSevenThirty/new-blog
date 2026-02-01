@@ -1,0 +1,99 @@
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T210238.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T210226.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T205723.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T184753.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T184535.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T183916.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T183739.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T183715.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T183615.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T183544.200.json
+
+###
+
+GET http://localhost:8080/article/hot
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+<> 2026-01-07T171713.200.json
+
+###
+
