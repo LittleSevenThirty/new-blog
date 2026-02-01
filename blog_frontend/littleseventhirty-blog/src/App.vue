@@ -1,17 +1,34 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import ContextMenu from "./components/ContextMenu/index.vue";
+import useWebsiteStore from "./pinia/store/modules/website.ts";
+import { useDark,useToggle } from "@vueuse/core";
+import { onMounted } from "vue";
+
+const websiteStore=useWebsiteStore();
+
+onMounted(()=>{
+  websiteStore.getInfo();
+})
+
+// useDark({
+//   useDarkOptions
+// })
 </script>
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <router-view></router-view>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <!-- <HelloWorld msg="世界，你好"/> -->
+  <!-- hello 看到我就说明显示没啥问题，但控制台还是得检查检查 -->
+  <loading></loading>
+  <!-- 全局加载 -->
+  <!-- 1. 音乐组件 -->
+  <!-- <Music/> -->
+  <!-- 2. 阻拦开发者工具查看的组件 -->
+  <!-- <DevToolsBlocker/> -->
+  <!-- 3. 内容菜单组件 -->
+  <ContextMenu/>
 </template>
 
 <style scoped>

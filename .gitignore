@@ -1,5 +1,4 @@
-# 忽略所有word，pdf，excel图片形式文档，将其存放到云存
-*.docx
+# 忽略所有word，pdf，excel图片形式文档，将其存放到云存（后期）
 
 # 忽略所有参考大佬的代码
-/refrences/code
+/blog_refrences/code
