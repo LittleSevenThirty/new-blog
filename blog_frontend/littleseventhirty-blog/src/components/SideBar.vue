@@ -9,7 +9,7 @@ import InfoCard from './InfoCard.vue';
       <InfoCard/>
     </div>
     <div class="anouncement_container">
-      <Card></Card>
+      <!-- <Card></Card> -->
     </div>
   </div>
 </template>

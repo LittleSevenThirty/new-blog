@@ -31,7 +31,7 @@ const props = defineProps({
     <div class="banner_container" style="display: flex;justify-content: center;">
       <!-- 内容 -->
       <div class="content_container" style="width: 100%;max-width:100rem">
-        <slot name="content"></slot>
+        <slot name="content" />
       </div>
       <!-- 侧边栏 -->
       <div class="sideBar_container" v-if="props.isSideBar">
@@ -41,16 +41,14 @@ const props = defineProps({
   </div>
   <!-- 内容区 -->
   <div class="div_container" v-else :style="'margin-top:' + props.marginTop + ';'">
-    <div class="banner_container" style="display: flex;justify-content: center;">
       <!-- 内容 -->
-      <div class="content_container" style="width: 100%;">
-        <slot name="content"></slot>
+      <div class="content_container">
+        <slot name="content"/>
       </div>
       <!-- 侧边栏 -->
       <div class="sideBar_container" v-if="props.isSideBar">
         <slot name="side" />
       </div>
-    </div>
   </div>
   <!-- 底部区 -->
   <div>
@@ -77,18 +75,18 @@ const props = defineProps({
 
 @media screen and (max-width:910px) {
   .content_container {
-    width: 100vw;
+    width: 100%;
     padding: .2rem;
   }
 }
 
 .content_container {
   height: 100%;
-  width: 60vw;
+  width: 60%;
   max-width: 70rem;
   padding: 1rem;
   background-color: var(--el-bg-color);
-  border: .5rem;
+  border-radius: .5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transition: width 0.5s, padding 0.5s;
 }
