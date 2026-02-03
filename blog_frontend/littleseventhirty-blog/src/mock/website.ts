@@ -5,7 +5,7 @@ Mock.mock("/api/websiteInfo/front","get",{
   code: 200,
   status: "success",
   data: {
-    webMasterAvater: "../../public/avater.jpg",
+    webMasterAvater: "/src/assets/images/avater.jpg",
     webMasterName: "张三",
     webMasterCopy: "热爱开源、前端开发与写作的独立开发者。",
     webMasterProfileBackground: "https://ts1.tc.mm.bing.net/th/id/R-C.22fc123aa05330a4f68c998766f43e94?rik=lCrVWHF%2fQMpiLA&riu=http%3a%2f%2fimg-download.pchome.net%2fdownload%2f1k1%2fee%2f2k%2folyjst-mvf.jpg&ehk=i84XSCytuXQg0nab4oH5qgZX6ckUsCCvIPIbEH8fu6Y%3d&risl=&pid=ImgRaw&r=0",

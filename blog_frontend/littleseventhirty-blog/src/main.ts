@@ -18,7 +18,8 @@ import './mock/index.ts'; // 如果不想启动后端就想要数据需要将这
 import vViewRequest from './directives/vViewRequest.ts'
 import vSlideIn from "./directives/vSlideIn.ts";
 import vLazy from "./directives/vLazy.ts";
-
+// 在src/main.ts中引入svg-sprivte注册脚本
+import 'virtual:svg-icons-register';
 
 // 获取应用实例
 const app = createApp(App);

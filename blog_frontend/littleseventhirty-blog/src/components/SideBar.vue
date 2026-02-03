@@ -1,6 +1,8 @@
 <!-- 侧边栏组件 -->
 <script lang="ts" setup>
 import InfoCard from './InfoCard.vue';
+import Card from './Card.vue';
+import SvgIcon from './SvgIcon/index.vue';
 </script>
 
 <template>
@@ -9,7 +11,11 @@ import InfoCard from './InfoCard.vue';
       <InfoCard/>
     </div>
     <div class="anouncement_container">
-      <!-- <Card></Card> -->
+      <!-- 二次元少女 -->
+      <div class="anime_girl">
+        <img src="../assets/images/动漫少女坐姿-公告_压缩.png" alt="二次元少女" >
+      </div>
+      <Card></Card>
     </div>
   </div>
 </template>
@@ -19,5 +25,23 @@ import InfoCard from './InfoCard.vue';
 .anouncement_container{
   position:relative;
   margin-top:70px;
+}
+
+.anime-girl {
+  position: absolute;
+  top: -85px; // 向上偏移以实现坐在容器上的效果
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  
+  img {
+    max-height: 120px;
+    width: auto;
+    // 添加一些阴影效果增强立体感
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    // 图片禁止拖拽
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
 }
 </style>

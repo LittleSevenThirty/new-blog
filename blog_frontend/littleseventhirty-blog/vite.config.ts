@@ -2,7 +2,7 @@ import { ConfigEnv, defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 import Components from "unplugin-vue-components/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import {createSvgIconsPlugin} from "vite-plugin-svg-icons";
 
 
 // 自定义元素标签集合
@@ -29,6 +29,12 @@ export default defineConfig(({ mode }: ConfigEnv) => {
         // 其它配置2：解析器配置=》对于其它第三方组件库，需要对应的解析器
         resolvers: [],
       }), // 添加unplugin-vue-components配置
+      createSvgIconsPlugin({
+        // 指定需要缓存的图标文件夹
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+        // symbolId的格式，就是css的#标识
+        symbolId: 'icon-[name]',
+      })
     ],
     resolve: {
       alias: {
