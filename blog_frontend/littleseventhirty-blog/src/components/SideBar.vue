@@ -2,7 +2,18 @@
 <script lang="ts" setup>
 import InfoCard from './InfoCard.vue';
 import Card from './Card.vue';
-import SvgIcon from './SvgIcon/index.vue';
+import ElectronicClocks from './ElectronicClocks.vue';
+import { ElMessageBox } from 'element-plus';
+import useWebsiteStore from '../pinia/store/modules/website';
+const websiteStore=useWebsiteStore();
+
+function announcement(){
+  ElMessageBox.alert(`<pre>${websiteStore.webInfo?.sidebarAnnouncement}</pre>`,"公告",{
+    confirmButtonText:"关闭", // 关闭按钮自定义文本
+    closeOnPressEscape: true, // 是否允许通过esc键关闭
+    dangerouslyUseHTMLString: true, // 允许将文本作为HTML元素处理
+  })
+}
 </script>
 
 <template>
@@ -15,7 +26,15 @@ import SvgIcon from './SvgIcon/index.vue';
       <div class="anime_girl">
         <img src="../assets/images/动漫少女坐姿-公告_压缩.png" alt="二次元少女" >
       </div>
-      <Card></Card>
+      <Card title="公告" prefix-icon="announcement" suffix-icon="jt_y" isDithering isArrow
+        v-on:invoke="announcement()">
+        <template v-slot:content>
+          <pre class="pre_text">{{ websiteStore.webInfo?.sidebarAnnouncement }}</pre>
+        </template>
+      </Card>
+    </div>
+    <div id="electronicClock">
+      <ElectronicClocks/>
     </div>
   </div>
 </template>
@@ -25,6 +44,14 @@ import SvgIcon from './SvgIcon/index.vue';
 .anouncement_container{
   position:relative;
   margin-top:70px;
+}
+
+.pre_text{
+  text-align: left;
+  overflow:auto;  // 超出内容显示滚动条
+  white-space:pre-wrap; // 允许换行
+  word-wrap:break-word;   // 超长单词强制换行
+  max-width: 100%;
 }
 
 .anime-girl {

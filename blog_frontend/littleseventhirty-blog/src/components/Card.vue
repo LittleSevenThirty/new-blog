@@ -17,12 +17,12 @@ const props = defineProps({
   },
   // 是否抖动
   isDithering: {
-    type: String,
+    type: Boolean,
     default: false
   },
   // 是否循环缩放
   isScale: {
-    type: String,
+    type: Boolean,
     default: false
   },
   title: String,
@@ -56,10 +56,17 @@ function invoke() {
       </div>
       <!-- 提示信息 -->
       <el-tooltip class="box-item" content="刷新" placement="top" effect="light" v-if="suffixIcon == 'rotate'">
-        <div :class="{ 'arrow': props.isArrow, 'rotate': props.isRotate }" style="cursor:pointer;" @click="invoke">
+        <div :class="{ 'arrow': props.isArrow, 'rotate': props.isRotate }" style="cursor:pointer;" @click="invoke()">
           <SvgIcon :name="props.suffixIcon" width="30" height="30"></SvgIcon>
         </div>
       </el-tooltip>
+      <div v-else :class="{ 'arrow': props.isArrow, 'rotate': props.isRotate }" @click="invoke()">
+        <SvgIcon :name="props.suffixIcon" width="30" height="30"></SvgIcon>
+      </div>
+      <!-- 标题块结束 -->
+    </div>
+    <div class="content">
+      <slot name="content"/>
     </div>
   </div>
 </template>
@@ -71,10 +78,11 @@ function invoke() {
   background-color: var(--el-bg-color);
   width: $card-width;
   margin: $card-margin;
-  border: 1px solid var(--el-border-color);
+  border: 1px solid black;
   // 添加阴影
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  border-radius: $border-radius 0 $border-radius 0;
 
   .title {
     border-radius: $border-radius $border-radius 0 0;
@@ -93,50 +101,87 @@ function invoke() {
       .dithering {
         animation: shake 0.5s infinite;
         transform-origin: center; // 变形的原点
-
-        @keyframes shake {
-          0% {
-            transform: rotate(0deg);
-          }
-
-          25% {
-            transform: rotate(-10deg);
-          }
-
-          50% {
-            transform: rotate(0deg);
-          }
-
-          75% {
-            transform: rotate(10deg);
-          }
-
-          100% {
-            transform: rotate(0deg);
-          }
-        }
       }
 
       // 循环缩放
       .scale {
         animation: scale 0.5s infinite;
         transform-origin: center;
-
-        @keyframes scale {
-          0% {
-            transform: scale(1);
-          }
-
-          50% {
-            transform: scale(1.1);
-          }
-
-          100% {
-            transform: scale(1);
-          }
-        }
       }
     }
+
+    .arrow:hover{
+      animation: move 1s infinite;
+    }
+
+    .rotate:hover{
+      animation: rotate 1s infinite linear;
+    }
+  }
+
+  .content{
+    min-height: 5em;
+    text-align: center;
+    line-height: 22px;
+    padding:10px;
+    color:grey;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-10deg);
+  }
+
+  50% {
+    transform: rotate(0deg);
+  }
+
+  75% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes move {
+  0%{
+    transform:translateX(0);
+  }
+  50%{
+    transform: translateX(5px);
+  }
+  100%{
+    transform: translateX(0);
+  }
+}
+
+@keyframes rotate{
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform:rotate(360deg);
   }
 }
 </style>

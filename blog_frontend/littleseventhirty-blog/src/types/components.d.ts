@@ -17,6 +17,7 @@ declare module 'vue' {
     Card: typeof import('./../components/Card.vue')['default']
     ContextMenu: typeof import('./../components/ContextMenu/index.vue')['default']
     DevToolsBlocker: typeof import('./../components/DevToolsBlocker/index.vue')['default']
+    ElectronicClocks: typeof import('./../components/ElectronicClocks.vue')['default']
     EssayCard: typeof import('./../components/EssayCard.vue')['default']
     Footer: typeof import('./../components/Layout/Footer/index.vue')['default']
     FullScreen: typeof import('./../components/FullScreen.vue')['default']
