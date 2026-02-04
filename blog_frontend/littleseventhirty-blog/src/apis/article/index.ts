@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import http from "../../utils/http";
 import { ArticleSearch } from "./type.ts";
+import { METHODS } from "http";
 
 // 获得初始化时标题搜索数据 文章 搜索 初始化 标题
 export function getSearchTitleList() {
@@ -50,6 +51,12 @@ export function getRecommendArticleList(){
     });
 }
 
+/**
+ * 获取所有文章列表
+ * @param pageNum 
+ * @param pageSize 
+ * @returns 
+ */
 export function getArticleList(pageNum:Number,pageSize:Number){
     return http({
         url:"/article/list",
@@ -58,5 +65,18 @@ export function getArticleList(pageNum:Number,pageSize:Number){
             pageNum,
             pageSize
         }
+    })
+}
+
+/**
+ * 根据分类获得相关推荐
+ * @param categoryId 
+ * @param articleId 
+ * @returns 
+ */
+export function getRelativeArticle(categoryId:String,articleId:String){
+    return http({
+        url:`/article/list/${categoryId}/${articleId}`,
+        method: 'get'
     })
 }

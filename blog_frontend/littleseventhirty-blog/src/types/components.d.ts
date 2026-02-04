@@ -31,6 +31,7 @@ declare module 'vue' {
     Music: typeof import('./../components/Music/index.vue')['default']
     Pagination: typeof import('./../components/Pagination.vue')['default']
     Particles: typeof import('./../components/Particles.vue')['default']
+    RandomArticle: typeof import('./../components/RandomArticle.vue')['default']
     ReadingMode: typeof import('./../components/ReadingMode.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

@@ -16,10 +16,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -118,5 +115,19 @@ public class ArticleController {
     @GetMapping("/list")
     public ResponseResult<PageVO<List<ArticleVO>>> list(@NotNull Integer pageNum, @NotNull Integer pageSize) {
         return ResponseWrapper.handler(() -> articleService.allArticleList(pageNum, pageSize));
+    }
+
+    @Operation(summary = "获取相关文章接口")
+    @Parameters({
+            @Parameter(name="categoryId",description = "分类id",required = true),
+            @Parameter(name="articleId",description = "文章id",required=true)
+    })
+    @AccessIntercepter(second = 60, maxCount = 60)
+    @GetMapping("/related/{categoryId}/{articleId}")
+    public ResponseResult<List<RelatedArticleVO>> related(
+            @PathVariable @NotNull Integer categoryId,
+            @PathVariable @NotNull Integer articleId
+    ){
+        return ResponseWrapper.handler(()->articleService.getRelatedArticles(categoryId,articleId));
     }
 }

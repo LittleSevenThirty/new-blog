@@ -3,6 +3,7 @@
 import InfoCard from './InfoCard.vue';
 import Card from './Card.vue';
 import ElectronicClocks from './ElectronicClocks.vue';
+import RandomArticle from './RandomArticle.vue';
 import { ElMessageBox } from 'element-plus';
 import useWebsiteStore from '../pinia/store/modules/website';
 const websiteStore=useWebsiteStore();
@@ -33,13 +34,18 @@ function announcement(){
         </template>
       </Card>
     </div>
+    <!-- 时钟 -->
     <div id="electronicClock">
       <ElectronicClocks/>
+    </div>
+    <!-- 随机文章 -->
+    <div id="randomArticle">
+      <RandomArticle/>
     </div>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 // 二次元少女，或者说live-2D
 .anouncement_container{
   position:relative;

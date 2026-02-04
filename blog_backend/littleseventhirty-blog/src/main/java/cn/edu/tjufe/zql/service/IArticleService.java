@@ -3,6 +3,7 @@ package cn.edu.tjufe.zql.service;
 import cn.edu.tjufe.zql.domain.entity.Article;
 import cn.edu.tjufe.zql.domain.vo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -57,4 +58,12 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     PageVO<List<ArticleVO>> allArticleList(Integer pageNum, Integer pageSize);
+
+    /**
+     * 获取相关文章服务接口
+     * @param categoryId
+     * @param articleId
+     * @return
+     */
+    List<RelatedArticleVO> getRelatedArticles(@NotNull Integer categoryId, @NotNull Integer articleId);
 }

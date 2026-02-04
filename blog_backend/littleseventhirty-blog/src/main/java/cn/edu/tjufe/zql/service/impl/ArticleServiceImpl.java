@@ -165,6 +165,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return new PageVO<List<ArticleVO>>(articleVOS, page.getTotal());
     }
 
+    @Override
+    public List<RelatedArticleVO> getRelatedArticles(Integer categoryId, Integer articleId) {
+        return List.of();
+    }
+
     private <T> void setRedisCache(ArticleVO articleVO, String redisKey, CountTypeEnum countType) {
         String articleId = articleVO.getArticleId().toString();
         Object countObj = redisCache.getCacheMap(redisKey).get(articleId);
