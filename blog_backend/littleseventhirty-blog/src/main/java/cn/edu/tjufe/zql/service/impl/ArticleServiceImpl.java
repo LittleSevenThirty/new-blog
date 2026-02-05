@@ -167,6 +167,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public List<RelatedArticleVO> getRelatedArticles(Integer categoryId, Integer articleId) {
+        // 传回来的文章id不一定就是数据库里的文章id
+        List<Article> articles=articleMapper.selectList(new LambdaQueryWrapper<Article>()
+                .eq(Article::getStatus, SQLConst.PUBLIC_APTICLE)
+                .and(wrapper->wrapper.eq(Article::getCategoryId, categoryId))
+                .ne(Article::getArticleId, articleId)
+        );
+
         return List.of();
     }
 
