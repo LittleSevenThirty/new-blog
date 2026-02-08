@@ -66,7 +66,7 @@ function invoke() {
       <!-- 标题块结束 -->
     </div>
     <div class="content">
-      <slot name="content"/>
+      <slot name="content" />
     </div>
   </div>
 </template>
@@ -99,32 +99,32 @@ function invoke() {
 
       // 左右抖动
       .dithering {
-        animation: shake 0.5s infinite;
+        animation: shake 1s infinite;
         transform-origin: center; // 变形的原点
       }
 
       // 循环缩放
       .scale {
-        animation: scale 0.5s infinite;
+        animation: scale 1s infinite;
         transform-origin: center;
       }
     }
 
-    .arrow:hover{
+    .arrow:hover {
       animation: move 1s infinite;
     }
 
-    .rotate:hover{
+    .rotate:hover {
       animation: rotate 1s infinite linear;
     }
   }
 
-  .content{
+  .content {
     min-height: 5em;
     text-align: center;
     line-height: 22px;
-    padding:10px;
-    color:grey;
+    padding: 10px;
+    color: grey;
   }
 }
 
@@ -165,23 +165,26 @@ function invoke() {
 }
 
 @keyframes move {
-  0%{
-    transform:translateX(0);
+  0% {
+    transform: translateX(0);
   }
-  50%{
+
+  50% {
     transform: translateX(5px);
   }
-  100%{
+
+  100% {
     transform: translateX(0);
   }
 }
 
-@keyframes rotate{
-  0%{
+@keyframes rotate {
+  0% {
     transform: rotate(0deg);
   }
-  100%{
-    transform:rotate(360deg);
+
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

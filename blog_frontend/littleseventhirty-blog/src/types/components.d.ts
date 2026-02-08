@@ -39,6 +39,7 @@ declare module 'vue' {
     Search: typeof import('./../components/Search/index.vue')['default']
     SideBar: typeof import('./../components/SideBar.vue')['default']
     SvgIcon: typeof import('./../components/SvgIcon/index.vue')['default']
+    TagListCard: typeof import('./../components/TagListCard.vue')['default']
     ToComment: typeof import('./../components/ToComment.vue')['default']
     ToTop: typeof import('./../components/ToTop.vue')['default']
     Wave: typeof import('./../components/Wave.vue')['default']

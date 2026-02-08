@@ -3,7 +3,7 @@
 // 对接前端使用axios访问后端接口时，但后端没准备好
 // 前端接口处于apis/article/index
 import Mock from "mockjs"
-import {data1,data2} from  "./articleMock";
+import { data1, data2 } from "./articleMock";
 
 // 模拟文章数据（基于你的 insert.sql 转换，补充了分类名称）
 const articleList = [
@@ -211,7 +211,7 @@ Mock.mock("/api/article/random", "get", () => {
     articleId: Number(article.articleId), // 匹配VO的Long类型
     articleTitle: article.articleTitle,   // String类型
     visitedCount: Number(article.visitedCount), // 匹配VO的Long类型
-    createTime: new Date().getDate()
+    createTime: new Date()
   }));
 
   return Mock.mock({
@@ -264,9 +264,27 @@ Mock.mock("/api/article/recommend", "get", {
   ]
 })
 
+// 搜索文章
+Mock.mock(/\/api\/article\/list\/\d+\/\d+/, "get", {
+  // 这里假设 code 为 200 表示成功
+  code: 200,
+  msg: '请求成功',
+  // data 是一个数组，使用 Mock.js 的数组语法，生成 3-6 篇相关文章
+  'data|3-6': [{
+    // 文章 ID，生成随机数字
+    'articleId|+1': 1000,
+    // 文章缩略图，使用 Mock.js 的图片占位符服务
+    'articleCover': "@image('200x120', '#4A7BF7', '#FFF', 'png', '缩略图')",
+    // 文章标题，生成随机的中文句子
+    'articleTitle': "@ctitle(10, 20)",
+    // 创建时间，生成随机日期，格式为 YYYY-MM-DD HH:mm:ss
+    'createTime': new Date().getDate().toString()
+  }] // 提取数组部分
+})
+
 // 假全文章推荐列表
-let random=0;
-Mock.mock(RegExp('/api/article/list' + '.*'),"get", () => {
-  random+=1;
-  return random%2==0?data1:data2;
+let random = 0;
+Mock.mock(RegExp('/api/article/list' + '.*'), "get", () => {
+  random += 1;
+  return random % 2 == 0 ? data1 : data2;
 });

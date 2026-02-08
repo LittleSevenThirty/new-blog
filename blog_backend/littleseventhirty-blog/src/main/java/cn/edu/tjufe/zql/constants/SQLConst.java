@@ -7,11 +7,6 @@ package cn.edu.tjufe.zql.constants;
  **/
 public class SQLConst {
     /**
-     * 推荐文章字段标识
-     */
-    public static final String RECOMMEND_ARTICLE = "1";
-
-    /**
      * 公开文章的字段标识
      */
     public static final Integer PUBLIC_APTICLE = 1;
@@ -21,5 +16,18 @@ public class SQLConst {
      */
     public static final Integer RANDOM_ARTICLE_COUNT = 5;
 
+    /**
+     * 推荐相关文章的数目
+     */
+    public static final Integer RELATED_ARTICLE_COUNT=5;
+
+    /**
+     * 推荐文章字段标识
+     */
+    public static final String RECOMMEND_ARTICLE = "1";
+
+    /**
+     * 限制查询一条数据
+     */
     public static final String LIMIT_ONE_SQL = "LIMIT 1";
 }

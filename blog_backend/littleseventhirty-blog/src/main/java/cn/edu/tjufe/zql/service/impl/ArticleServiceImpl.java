@@ -173,8 +173,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 .and(wrapper->wrapper.eq(Article::getCategoryId, categoryId))
                 .ne(Article::getArticleId, articleId)
         );
-
-        return List.of();
+        List<Article> limitArticles=articles.stream().limit(SQLConst.RELATED_ARTICLE_COUNT).toList();
+        return limitArticles.stream().map(article->article.asViewObject(RelatedArticleVO.class)).toList();
     }
 
     private <T> void setRedisCache(ArticleVO articleVO, String redisKey, CountTypeEnum countType) {
