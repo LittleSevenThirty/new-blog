@@ -1,6 +1,6 @@
 import Mock from "mockjs";
 
-Mock.mock("/tag/list", "get", {
+Mock.mock("/api/tag/list", "get", {
   code: 200,
   message: "success",
   "data|15-25": [
