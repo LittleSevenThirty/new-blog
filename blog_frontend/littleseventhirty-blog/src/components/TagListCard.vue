@@ -4,6 +4,7 @@ import Card from './Card.vue';
 import { getTagList } from '../apis/tag';
 import { Tag } from '../apis/tag/type';
 import { ElMessage } from 'element-plus';
+import router from "../router/index.ts";
 
 const loading = ref(true);
 const tags = ref<Tag[]>();
@@ -23,6 +24,11 @@ function loadContent() {
     ElMessage.error("加载标签数据失败：" + error);
     loading.value = false;
   });
+}
+
+// 跳转详情页面
+function goToTag(tagId: number) {
+  router.push(`/tag/${tagId}`)
 }
 </script>
 
@@ -59,7 +65,27 @@ function loadContent() {
           <div class="dot3 decoration_dot"></div>
           <div class="dot4 decoration_dot"></div>
 
+          <div v-for="tag in tags" class="tag_item" :key="tag.tagId" @click="goToTag(tag.tagId)">
+            <div class="tag_content">
+              <span class="tag_symbol">#</span>
+              <span class="tag_name">{{ tag.tagName }}</span>
+              <div class="tag_count">{{ tag.articleCount }}</div>
+            </div>
+            <div class="tag_deco"></div>
+          </div>
 
+          <!-- 空状态 -->
+          <div v-if="tags?.length === 0" class="empty_state">
+            <div class="kawaii_cloud">
+              <div class="cloud_body"></div>
+              <div class="cloud_face">
+                <div class="left eye"></div>
+                <div class="right eye"></div>
+                <div class="mouth"></div>
+              </div>
+            </div>
+            <div class="loading_text">暂无数据~</div>
+          </div>
         </div>
       </div>
     </template>
@@ -451,11 +477,18 @@ function loadContent() {
       .tag_content {
         color: var(--el-color-primary);
 
-        .tag-symbol {
+        .tag_symbol {
           animation: bounce 0.6s ease infinite;
         }
 
-        .tag-count {
+        .tag_name {
+          margin-right: 4px;
+          white-space: nowrap;
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+          letter-spacing: 0.2px;
+        }
+
+        .tag_count {
           background-color: rgba(var(--el-color-primary-rgb), 0.15);
           transform: scale(1.05);
           box-shadow: 0 0 6px rgba(var(--el-color-primary-rgb), 0.12);
