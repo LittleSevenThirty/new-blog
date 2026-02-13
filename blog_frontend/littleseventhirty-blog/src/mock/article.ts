@@ -264,6 +264,17 @@ Mock.mock("/api/article/recommend", "get", {
   ]
 })
 
+Mock.mock("/api/artilce/timeline", "get", {
+  'code': 200,
+  'msg': '操作成功',
+  'data|10': [{ // 生成 10 条数据
+    'articleId|+1': 1, // 文章ID，从1开始自增
+    'articleCover': '@IMAGE("200x100", "#50BFF9", "缩略图")', // 模拟图片链接
+    'articleContent': '@CSENTENCE(50, 100)', // 模拟文章内容，50-100个汉字
+    'createTime': '@DATETIME("yyyy-MM-dd HH:mm:ss")' // 模拟创建时间
+  }]
+});
+
 // 搜索文章
 Mock.mock(/\/api\/article\/list\/\d+\/\d+/, "get", {
   // 这里假设 code 为 200 表示成功

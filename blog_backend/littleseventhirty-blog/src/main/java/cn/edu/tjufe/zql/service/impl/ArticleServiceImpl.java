@@ -177,6 +177,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return limitArticles.stream().map(article->article.asViewObject(RelatedArticleVO.class)).toList();
     }
 
+    @Override
+    public List<TimelineVO> listTimeline() {
+        List<Article> articles=this.query().list();
+        if(null!=articles){
+            return articles.stream().map(article->article.asViewObject(TimelineVO.class)).toList();
+        }
+        return List.of();
+    }
+
     private <T> void setRedisCache(ArticleVO articleVO, String redisKey, CountTypeEnum countType) {
         String articleId = articleVO.getArticleId().toString();
         Object countObj = redisCache.getCacheMap(redisKey).get(articleId);

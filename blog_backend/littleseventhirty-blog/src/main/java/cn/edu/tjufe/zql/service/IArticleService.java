@@ -66,4 +66,10 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<RelatedArticleVO> getRelatedArticles(@NotNull Integer categoryId, @NotNull Integer articleId);
+
+    /**
+     * 获取时间轴数据
+     * @return
+     */
+    List<TimelineVO> listTimeline();
 }

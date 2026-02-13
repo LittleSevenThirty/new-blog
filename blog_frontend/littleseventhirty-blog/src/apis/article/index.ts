@@ -34,20 +34,20 @@ export function getHotArticleRecommend() {
  * @returns 获取随机文章
  */
 export function getRandomArticle() {
-  return http({
-    url: "/article/random",
-    method: "get"
-  })
+    return http({
+        url: "/article/random",
+        method: "get"
+    })
 }
 
 /**
  * 
  * @returns 推荐的置顶文章
  */
-export function getRecommendArticleList(){
+export function getRecommendArticleList() {
     return http({
-        url:"/article/recommend",
-        method:"get"
+        url: "/article/recommend",
+        method: "get"
     });
 }
 
@@ -57,11 +57,11 @@ export function getRecommendArticleList(){
  * @param pageSize 
  * @returns 
  */
-export function getArticleList(pageNum:Number,pageSize:Number){
+export function getArticleList(pageNum: Number, pageSize: Number) {
     return http({
-        url:"/article/list",
-        method:"get",
-        params:{
+        url: "/article/list",
+        method: "get",
+        params: {
             pageNum,
             pageSize
         }
@@ -74,9 +74,19 @@ export function getArticleList(pageNum:Number,pageSize:Number){
  * @param articleId 
  * @returns 
  */
-export function getRelativeArticle(categoryId:String,articleId:String){
+export function getRelativeArticle(categoryId: String, articleId: String) {
     return http({
-        url:`/article/list/${categoryId}/${articleId}`,
+        url: `/article/list/${categoryId}/${articleId}`,
         method: 'get'
+    })
+}
+
+/**
+ * 获取文章时间线数据
+ */
+export function getTimeline() {
+    return http({
+        url: "/article/timeline",
+        method: "get"
     })
 }

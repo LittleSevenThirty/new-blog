@@ -130,4 +130,11 @@ public class ArticleController {
     ){
         return ResponseWrapper.handler(()->articleService.getRelatedArticles(categoryId,articleId));
     }
+
+    @Operation(summary="获取时间轴数据")
+    @AccessIntercepter(second=60,maxCount = 15)
+    @GetMapping("/timeline")
+    public ResponseResult<List<TimelineVO>> timeline(){
+        return ResponseWrapper.handler(()->articleService.listTimeline());
+    }
 }

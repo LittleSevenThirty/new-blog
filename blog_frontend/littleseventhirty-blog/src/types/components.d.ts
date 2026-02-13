@@ -12,6 +12,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BackgroundImage: typeof import('./../components/BackgroundImage.vue')['default']
+    Banner: typeof import('./../components/Banner.vue')['default']
     BottomRightLayout: typeof import('./../components/BottomRightLayout/index.vue')['default']
     BottomRightMore: typeof import('./../components/BottomRightMore.vue')['default']
     Card: typeof import('./../components/Card.vue')['default']
