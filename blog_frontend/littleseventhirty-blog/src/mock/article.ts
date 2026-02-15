@@ -264,7 +264,7 @@ Mock.mock("/api/article/recommend", "get", {
   ]
 })
 
-Mock.mock("/api/artilce/timeline", "get", {
+Mock.mock("/api/article/timeline", "get", {
   'code': 200,
   'msg': '操作成功',
   'data|10': [{ // 生成 10 条数据

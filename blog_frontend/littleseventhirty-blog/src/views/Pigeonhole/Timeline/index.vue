@@ -3,6 +3,7 @@ import Menu from "../../../components/Layout/Menu/index.vue";
 import Banner from "../../../components/Banner.vue";
 import { getTimeline } from "../../../apis/article/index.ts";
 import { computed, nextTick, onMounted, ref } from "vue";
+import router from "../../../router";
 
 const items: any = ref([]);
 const shellRef = ref<HTMLElement | null>(null);
@@ -48,12 +49,28 @@ onMounted(async () => {
 
     // 页面滚动触发滚动事件
     window.addEventListener("scroll", () => {
-      const poosition = window.pageYOffset;
+      const position = window.pageYOffset;
+      if (itemArray == null) return;
       itemArray.forEach((item: any, index) => {
         // 上边距顶部距离
         const min = item.offsetTop;
         // 下边距顶距离
         const max = item.offsetHeight + item.offsetTop;
+
+        // 如果滚动到最后一个项目，并且超过了当前项目高度的一半，
+        // 则将最后一个项目设置为激活状态，并设置背景图片为最后一个项目的图片
+        if (index === itemArray.length - 2 && position > min + item.offsetHeight / 2) {
+          itemArray.forEach(item => item.classList.remove('item_active'));
+          shell.style.backgroundImage = `url(${itemArray[itemArray.length - 1].querySelector('.img')?.src})`;
+          itemArray[itemArray.length - 1].classList.add('item--active');
+        }
+        // 如果当前滚动位置在当前项目的最小和最大高度之间，
+        // 则将当前项目设置为激活状态，并设置背景图片为当前项目的图片
+        else if (position <= max - 10 && position >= min) {
+          shell.style.backgroundImage = `url(${item.querySelector('.img').src})`;
+          itemArray.forEach(item => item.classList.remove('item_active'));
+          item.classList.add('item_active');
+        }
       })
     })
   })
@@ -71,12 +88,12 @@ onMounted(async () => {
           <div class="timeline">
             <template v-for="(item, year) in items" :key="item?.articleId">
               <div class="year">--{{ year }}--</div>
-              <div class="item" :data-text="i.createTime" :click="$router.push(`/article/${i.articleId}`)"
-                v-for="i in item">
+              <div class="item" :data-text="index.createTime" v-on:click="router.push(`/article/${index.articleId}`)"
+                v-for="index in item">
                 <div class="content">
-                  <img class="img" :src="i.articleCover" />
-                  <h2 class="content_title">{{ i.articleTitle }}</h2>
-                  <p class="content_desc">{{ i.articleContent }}</p>
+                  <img class="img" :src="index.articleCover" />
+                  <h2 class="content_title">{{ index.articleTitle }}</h2>
+                  <p class="content_desc">{{ index.articleContent }}</p>
                 </div>
               </div>
             </template>
