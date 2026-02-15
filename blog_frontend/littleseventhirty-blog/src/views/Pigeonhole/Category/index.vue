@@ -2,6 +2,7 @@
 import Menu from "../../../components/Layout/Menu/index.vue";
 import Banner from "../../../components/Banner.vue";
 import router from "../../../router/index.ts";
+import ArticleList from "../components/ArticleList.vue";
 import { ref } from "vue";
 
 const categories = ref<Array<{
@@ -9,6 +10,7 @@ const categories = ref<Array<{
   categoryName: string,
   isActive: boolean
 }>>([]);
+const articleList = ref([]);
 const isQueryArticle = ref(false);
 // 分类标题
 const title = ref('');
@@ -38,8 +40,11 @@ const title = ref('');
                 </div>
               </el-scrollbar>
             </div>
+            <el-divider />
+            <ArticleList :articleList="articleList" />
           </div>
         </template>
+        <template v-else></template>
       </template>
     </Menu>
   </div>
