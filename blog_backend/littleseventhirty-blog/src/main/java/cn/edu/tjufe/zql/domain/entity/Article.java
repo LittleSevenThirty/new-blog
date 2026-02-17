@@ -31,6 +31,9 @@ public class Article implements ViewObjectConvertible {
     // 作者ID
     private Long userId;
 
+    // 文章缩略图
+    private String articleCover;
+
     // 分类ID
     private Long categoryId;
 

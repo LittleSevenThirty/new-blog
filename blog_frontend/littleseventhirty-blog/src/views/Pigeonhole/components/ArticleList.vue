@@ -86,6 +86,50 @@ const props = defineProps({
       display: flex;
       flex-direction: column;
       justify-content: center;
+
+      .article_time {
+        font-size: 1rem;
+        color: grey;
+      }
+
+      .article_title {
+        margin-top: 0.4rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        transition: color 0.3s;
+        display: flex;
+        justify-content: space-between;
+
+        span:last-child {
+          font-size: 0.8rem;
+          color: grey;
+          display: flex;
+          align-items: center;
+        }
+
+        &:hover {
+          color: #862e9c;
+          cursor: pointer;
+        }
+      }
+
+      .article_tag {
+        display: flex;
+        margin-top: 0.4rem;
+        width: 100%;
+
+        span {
+          margin-right: 1rem;
+          font-size: 1rem;
+          color: grey;
+          transition: color 0.3s;
+
+          &:hover {
+            color: #862e9c;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 }

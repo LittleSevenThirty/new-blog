@@ -84,6 +84,7 @@ CREATE TABLE `t_article`
     `is_top`          tinyint                                                        NOT NULL COMMENT '是否置顶（0否，1是）',
     `create_time`     DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '文章创建时间',
     `update_time`     DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '文章更新时间',
+    `article_cover`   varchar(200) CHARACTER SET UTF8MB4 collate utf8mb4_0900_AI_CI not null comment '文章缩略图',
     `is_deleted`      TINYINT(1)                                                     NOT NULL DEFAULT 0 COMMENT '是否删除（0未删除，1已删除）',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB

@@ -186,6 +186,32 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return List.of();
     }
 
+    @Override
+    public List<CategoryArticleVO> getCategoryArticleList(Integer type, Integer typeId) {
+        List<Article> articles;
+        if(type==1){
+            articles=articleMapper.selectList(new LambdaQueryWrapper<Article>().eq(Article::getCategoryId,typeId));
+        }else if(type==2){
+            // 获取所有有typeid关键词的tag文章列表，将各自的文章id汇总成列表
+            List<Long> articleIds=articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getTagId,typeId)).stream().map(ArticleTag::getArticleId).toList();
+            // 获取所有文章
+            if(!articleIds.isEmpty()){
+                articles=articleMapper.selectByIds(articleIds);
+            }
+            else articles=List.of();
+        }else articles=List.of();
+        if(Objects.isNull(articles)||articles.isEmpty())return List.of();
+        // 获取文章列表包含的所有tag部分信息集合体
+        List<ArticleTag> articleTags=articleTagMapper.selectByIds(articles.stream().map(Article::getArticleId).toList());
+        // 获取对应tag实体
+        List<Tag> tags=tagMapper.selectByIds(articleTags.stream().map(ArticleTag::getArticleId).toList());
+
+        return articles.stream().map(article->article.asViewObject(CategoryArticleVO.class,item->{
+            item.setCategoryId(articles.stream().filter(art -> Objects.equals(art.getId(), article.getId())).findFirst().orElseThrow().getCategoryId());
+            item.setTags(tags.stream().filter(tag -> articleTags.stream().anyMatch(articleTag -> Objects.equals(articleTag.getArticleId(), article.getArticleId()) && Objects.equals(articleTag.getTagId(), tag.getTagId()))).map(tag -> tag.asViewObject(TagVO.class)).toList());
+        })).toList();
+    }
+
     private <T> void setRedisCache(ArticleVO articleVO, String redisKey, CountTypeEnum countType) {
         String articleId = articleVO.getArticleId().toString();
         Object countObj = redisCache.getCacheMap(redisKey).get(articleId);

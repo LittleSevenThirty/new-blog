@@ -68,6 +68,17 @@ export function getArticleList(pageNum: Number, pageSize: Number) {
     })
 }
 
+// 原/article/where/list
+export function getArticleListByType(type: number, typeId: string) {
+    return http({
+        url: `/article/type/list/${typeId}`,
+        method: "get",
+        params: {
+            type
+        }
+    });
+}
+
 /**
  * 根据分类获得相关推荐
  * @param categoryId 

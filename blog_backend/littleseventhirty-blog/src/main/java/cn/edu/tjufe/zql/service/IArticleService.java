@@ -72,4 +72,12 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<TimelineVO> listTimeline();
+
+    /**
+     * 获取分类文章列表
+     * @param typeId
+     * @param type type==1从分类中找，2从tag标签中找
+     * @return
+     */
+    List<CategoryArticleVO> getCategoryArticleList(@NotNull Integer type, @NotNull Integer typeId);
 }

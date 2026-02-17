@@ -131,6 +131,20 @@ public class ArticleController {
         return ResponseWrapper.handler(()->articleService.getRelatedArticles(categoryId,articleId));
     }
 
+    @Operation(summary="获取分类下的文章")
+    @Parameters({
+        @Parameter(name="typeId",description = "类型id",required=true),
+        @Parameter(name="type",description = "类型",required=true)
+    })
+    @AccessIntercepter(second = 60, maxCount = 60)
+    @GetMapping("/type/list/{typeId}")
+    public ResponseResult<List<CategoryArticleVO>> getCategoryArticle(
+            @NotNull @RequestParam("type") Integer type,
+            @NotNull @PathVariable("typeId") Integer typeId
+            ){
+        return ResponseWrapper.handler(()->{return articleService.getCategoryArticleList(type,typeId);});
+    }
+
     @Operation(summary="获取时间轴数据")
     @AccessIntercepter(second=60,maxCount = 15)
     @GetMapping("/timeline")
