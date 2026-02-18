@@ -299,3 +299,55 @@ Mock.mock(RegExp('/api/article/list' + '.*'), "get", () => {
   random += 1;
   return random % 2 == 0 ? data1 : data2;
 });
+
+const articleListByTypeUrl = /\/api\/article\/type\/list\/\w+.*/
+
+// 获取分类或分标签的文章
+Mock.mock(articleListByTypeUrl, 'get', {
+  "code": 200,
+  "msg": "操作成功",
+  // data 是 List<CategoryArticleVO>，模拟生成 6 到 10 篇文章
+  "data|6-10": [
+    {
+      // --- CategoryArticleVO 字段 ---
+
+      // articleId: Long -> 模拟文章 ID
+      "articleId|+1": 10000,
+
+      // categoryId: Long -> 模拟分类 ID
+      "categoryId": "@integer(100, 200)",
+
+      // articleTitle: String -> 模拟文章标题 (10-20个字)
+      "articleTitle": "@ctitle(10, 20)",
+
+      // articleCover: String -> 模拟图片 URL
+      // Mock.js 自带生成占位图功能：大小, 背景色, 文字
+      "articleCover": "@image('300x200', '#50B347', '#FFF', 'ArticleCover')",
+
+      // visitedCount: Long -> 访问量
+      "visitedCount": "@integer(100, 9999)",
+
+      // createTime: Date -> 文章创建时间
+      "createTime": "@datetime('yyyy-MM-dd HH:mm:ss')",
+
+      // --- 嵌套 TagVO 列表 (List<TagVO>) ---
+      // tags: 模拟每篇文章包含 1 到 3 个标签
+      "tags|1-3": [
+        {
+          // tagId: Long
+          "tagId|+1": 500,
+
+          // tagName: String -> 标签名 (2-4个字)
+          "tagName": "@ctitle(2, 4)",
+
+          // articleCount: Long -> 该标签下的文章数
+          "articleCount": "@integer(10, 1000)",
+
+          // createTime & updateTime
+          "createTime": "@datetime('yyyy-MM-dd HH:mm:ss')",
+          "updateTime": "@datetime('yyyy-MM-dd HH:mm:ss')"
+        }
+      ]
+    }
+  ]
+})

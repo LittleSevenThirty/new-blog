@@ -30,7 +30,20 @@ export const constantRouter = [
                 meta: {
                     title: "时间轴"
                 }
+            },
+            {
+                path: "/category/:id?",
+                component: () => import("../views/Pigeonhole/Category/index.vue"),
+                meta: {
+                    title: "文章分类"
+                }
             }
         ]
+    },
+    // 只能放在最后的作为重定向的错误页，后期选择加上错误组件
+    {
+        path: "/:pathMatch(.*)*",
+        name: "not-found",
+        redirect: "/"
     }
 ]

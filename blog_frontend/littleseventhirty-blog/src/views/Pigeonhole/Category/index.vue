@@ -3,11 +3,14 @@ import Menu from "../../../components/Layout/Menu/index.vue";
 import Banner from "../../../components/Banner.vue";
 import router from "../../../router/index.ts";
 import ArticleList from "../components/ArticleList.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { getArticleListByType } from "../../../apis/article/index.ts";
 import { dayjs } from "element-plus";
 import { categoryList } from "../../../apis/category/index.ts";
+import { CategoryVO } from "../../../apis/category/type.ts";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const categories = ref<Array<{
   categoryId: number,
   categoryName: string,
@@ -33,7 +36,40 @@ function getArticle(articleId: string) {
 }
 
 onMounted(() => {
-  categoryList().then()
+  categoryList().then((res: any) => {
+    if (res.code === 200) {
+      categories.value = res.data;
+    }
+  })
+  if (route.params.id) {
+    isQueryArticle.value = true;
+    categories.value.forEach((item) => {
+      if (item.categoryId === Number(route.params.id)) {
+        item.isActive = true;
+        title.value = item.categoryName;
+      } else {
+        item.isActive = false;
+      }
+    })
+    getArticle(route.params.id);
+  } else {
+    isQueryArticle.value = false;
+  }
+})
+
+watch(() => route.params.id, (id) => {
+  if (id) {
+    isQueryArticle.value = true;
+    categories.value.forEach((item) => {
+      if (item.categoryId === Number(id)) {
+        item.isActive = true;
+        title.value = item.categoryName;
+      } else {
+        item.isActive = false;
+      }
+    })
+    getArticle(id);
+  }
 })
 </script>
 
