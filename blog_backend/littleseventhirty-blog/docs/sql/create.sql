@@ -129,6 +129,26 @@ CREATE TABLE `t_category`
   COLLATE = UTF8MB4_0900_AI_CI
   ROW_FORMAT = DYNAMIC;
 
+-- Table structure for t_tree_hole
+-- create time: 2026/2/19 ; Status:unfinished
+-- ----------------------------
+-- Table structure for t_tree_hole
+-- ----------------------------
+DROP TABLE IF EXISTS `t_tree_hole`;
+CREATE TABLE `t_tree_hole`  (
+                                `id` bigint NOT NULL AUTO_INCREMENT COMMENT '树洞表id',
+                                `user_id` bigint NOT NULL COMMENT '用户id',
+                                `content` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '内容',
+                                `is_check` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否通过 (0否 1是)',
+                                `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                                `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT '修改时间',
+                                `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
+                                PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- 导出版本（可靠性高）
 CREATE TABLE BLOG.T_ARTICLE
 (

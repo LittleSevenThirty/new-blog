@@ -51,6 +51,7 @@ onMounted(() => {
         item.isActive = false;
       }
     })
+    // @ts-ignore
     getArticle(route.params.id);
   } else {
     isQueryArticle.value = false;
@@ -68,6 +69,7 @@ watch(() => route.params.id, (id) => {
         item.isActive = false;
       }
     })
+    // @ts-ignore
     getArticle(id);
   }
 })

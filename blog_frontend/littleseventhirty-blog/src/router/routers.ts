@@ -13,6 +13,7 @@ export const constantRouter = [
         name: "layout",
         component: () => import("../views/Layout/index.vue"),
         children: [
+            // 首页
             {
                 // 默认匹配，即默认嵌套router-view展示页面
                 path: "",
@@ -23,6 +24,7 @@ export const constantRouter = [
                     title: "littleseven-blog | 不断学习的博客"
                 }
             },
+            // 时间轴
             {
                 path: "/timeline",
                 component: () => import("../views/Pigeonhole/Timeline/index.vue"),
@@ -31,11 +33,31 @@ export const constantRouter = [
                     title: "时间轴"
                 }
             },
+            // 分类
             {
                 path: "/category/:id?",
                 component: () => import("../views/Pigeonhole/Category/index.vue"),
+                name: "category",
                 meta: {
                     title: "文章分类"
+                }
+            },
+            // 标签
+            {
+                path: "/tags/:id?",
+                component: () => import("../views/Pigeonhole/Tags/index.vue"),
+                name: "tags",
+                meta: {
+                    title: "文章标签"
+                }
+            },
+            // 树洞
+            {
+                path: "/tree-hole",
+                component: () => import("../views/Pigeonhole/TreeHole/index.vue"),
+                name: "tree-hole",
+                meta: {
+                    title: "留言树洞"
                 }
             }
         ]
