@@ -1,5 +1,9 @@
 package cn.edu.tjufe.zql.utils;
 
+import cn.edu.tjufe.zql.domain.entity.LoginUser;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -18,7 +22,11 @@ public final class SecurityUtils {
      * @return 用户ID
      */
     public static Long getUserId() {
-        return 0L;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication!=null&&authentication.getPrincipal() instanceof LoginUser loginUser){
+            return loginUser.getUser().getUserId();
+        }
+        return 0L;  // 无法获取用户ID，返回默认值
     }
 
     /**

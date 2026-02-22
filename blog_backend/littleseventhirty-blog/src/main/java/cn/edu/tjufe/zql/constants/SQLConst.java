@@ -7,6 +7,11 @@ package cn.edu.tjufe.zql.constants;
  **/
 public class SQLConst {
     /**
+     * 树洞留言是否通过
+     */
+    public static final Integer IS_CHECK_YES=1;
+
+    /**
      * 公开文章的字段标识
      */
     public static final Integer PUBLIC_APTICLE = 1;

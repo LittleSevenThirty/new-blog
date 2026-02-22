@@ -28,9 +28,9 @@ import java.util.Date;
 @Data
 public class User implements ViewObjectConvertible {
     // 表标识
-    private Integer id;
+    private Long id;
     // 用户标识
-    private Integer userId;
+    private Long userId;
     // 用户昵称
     private String nickName;
     // 用户名

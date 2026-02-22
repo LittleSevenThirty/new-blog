@@ -7,7 +7,7 @@ import router from "../../../router/index.ts";
 import { getTagList } from "../../../apis/tag/index.ts";
 import { getArticleListByType } from "../../../apis/article/index.ts";
 import { dayjs } from "element-plus";
-import ArticleList from "../components/ArticleList.vue";
+import ArticleList from "../../components/ArticleList.vue";
 
 const route = useRoute();
 
@@ -67,35 +67,38 @@ watch(() => route.params.id, (id) => {
 </script>
 
 <template>
-  <Menu only-father-container>
-    <template v-slot:banner>
-      <Banner title="标签页" subtitle="tags" />
-    </template>
-    <template v-slot:content>
-      <div class="tags_container">
-        <div class="title" v-if="!isQueryArticle">
-          标签 {{ title }}
-        </div>
-        <div class="title" v-else>
-          标签 - {{ title }}
-        </div>
-        <template v-if="!isQueryArticle">
-          <div class="item_container">
-            <template v-for="tag in tags" :key="tag.tagId">
-              <div v-slide-in class="item" v-on:click="router.push(`/tags/${tag.tagId}`)">
-                <span @click="router.push(`/tags/${tag.tagId}`)"># {{ tag.tagName }}</span>
-                <span>{{ tag.articleCount }}</span>
-              </div>
-            </template>
+  <!-- 必要存在根div -->
+  <div>
+    <Menu only-father-container>
+      <template v-slot:banner>
+        <Banner title="标签页" subtitle="tags" />
+      </template>
+      <template v-slot:content>
+        <div class="tags_container">
+          <div class="title" v-if="!isQueryArticle">
+            标签 {{ title }}
           </div>
-        </template>
-        <template v-else>
-          <el-divider />
-          <ArticleList :article-list="articleList" />
-        </template>
-      </div>
-    </template>
-  </Menu>
+          <div class="title" v-else>
+            标签 - {{ title }}
+          </div>
+          <template v-if="!isQueryArticle">
+            <div class="item_container">
+              <template v-for="tag in tags" :key="tag.tagId">
+                <div v-slide-in class="item" v-on:click="router.push(`/tags/${tag.tagId}`)">
+                  <span @click="router.push(`/tags/${tag.tagId}`)"># {{ tag.tagName }}</span>
+                  <span>{{ tag.articleCount }}</span>
+                </div>
+              </template>
+            </div>
+          </template>
+          <template v-else>
+            <el-divider />
+            <ArticleList :article-list="articleList" />
+          </template>
+        </div>
+      </template>
+    </Menu>
+  </div>
 </template>
 
 <style lang="scss">

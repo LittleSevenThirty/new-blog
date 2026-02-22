@@ -2,7 +2,7 @@
 import Menu from "../../../components/Layout/Menu/index.vue";
 import Banner from "../../../components/Banner.vue";
 import router from "../../../router/index.ts";
-import ArticleList from "../components/ArticleList.vue";
+import ArticleList from "../../components/ArticleList.vue";
 import { onMounted, ref, watch } from "vue";
 import { getArticleListByType } from "../../../apis/article/index.ts";
 import { dayjs } from "element-plus";

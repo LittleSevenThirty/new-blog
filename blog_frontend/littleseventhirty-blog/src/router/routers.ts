@@ -54,11 +54,20 @@ export const constantRouter = [
             // 树洞
             {
                 path: "/tree-hole",
-                component: () => import("../views/Pigeonhole/TreeHole/index.vue"),
+                component: () => import("../views/Other/TreeHole/index.vue"),
                 name: "tree-hole",
                 meta: {
-                    title: "留言树洞"
+                    title: "弹幕树洞"
                 }
+            },
+            // 留言板
+            {
+                path: "/message",
+                component: () => import("../views/Other/Message/index.vue"),
+                name: "message",
+                children: [
+                    {}
+                ]
             }
         ]
     },
