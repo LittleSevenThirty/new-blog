@@ -13,6 +13,7 @@
     "@vueuse/core": "^14.0.0",
     "axios": "^1.13.2",
     "element-plus": "^2.11.8",
+    "md-editor-v3": "^6.3.1",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.3",
     "swiper": "^11.0.0",

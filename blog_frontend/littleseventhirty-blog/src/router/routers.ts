@@ -66,7 +66,15 @@ export const constantRouter = [
                 component: () => import("../views/Other/Message/index.vue"),
                 name: "message",
                 children: [
-                    {}
+                    // 默认
+                    {
+                        path: "",
+                        component: () => import("../views/Other/Message/MessageList/index.vue"),
+                        name: "messageList",
+                        meta: {
+                            title: "留言板"
+                        }
+                    }
                 ]
             }
         ]
