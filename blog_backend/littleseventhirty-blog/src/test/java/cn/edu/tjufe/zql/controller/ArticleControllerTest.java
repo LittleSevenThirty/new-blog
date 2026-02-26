@@ -8,6 +8,6 @@ public class ArticleControllerTest {
 
     @Test
     void getHotArticles() {
-        articleController.getHotArticles();
+        articleController.hotArticles();
     }
 }

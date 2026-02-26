@@ -87,7 +87,7 @@ export function getArticleListByType(type: number, typeId: string) {
  */
 export function getRelativeArticle(categoryId: String, articleId: String) {
     return http({
-        url: `/article/list/${categoryId}/${articleId}`,
+        url: `/article/related/${categoryId}/${articleId}`,
         method: 'get'
     })
 }

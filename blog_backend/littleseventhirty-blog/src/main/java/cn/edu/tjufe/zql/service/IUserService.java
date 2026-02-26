@@ -17,4 +17,18 @@ public interface IUserService extends IService<User> {
      * @return 用户信息
      */
     UserAccountVO getUserInfoById(Long id);
+
+    /**
+     * 用户登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 登录令牌
+     */
+    String login(String username, String password);
+
+    /**
+     * 用户退出登录
+     */
+    void logout();
 }

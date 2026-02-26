@@ -1,6 +1,5 @@
 package cn.edu.tjufe.zql.domain.entity;
 
-
 import cn.edu.tjufe.zql.utils.RedisCache;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
@@ -30,8 +29,8 @@ public class LoginUser implements UserDetails {
 
     private User user;
 
-    public LoginUser(User user){
-        this.user=user;
+    public LoginUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -41,11 +40,31 @@ public class LoginUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return user.getUserName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return user.getIsDelete() == 0;
     }
 }

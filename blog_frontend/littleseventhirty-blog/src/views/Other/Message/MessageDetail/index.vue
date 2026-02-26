@@ -12,7 +12,7 @@ import { cancelLike, userLike } from "../../../../apis/like/index.ts";
 import { cancelFavorite, userFavorite } from '../../../../apis/favorite/index.ts';
 import { ElMessage } from 'element-plus';
 import { useColorMode } from '@vueuse/core';
-import Comment from '../../../../components/Comment.vue';
+import Comment from '../../../../components/Comment/index.vue';
 
 const mode = useColorMode();
 const route = useRoute();
