@@ -6,15 +6,15 @@ import cn.edu.tjufe.zql.domain.entity.User;
 import cn.edu.tjufe.zql.domain.vo.UserAccountVO;
 import cn.edu.tjufe.zql.mapper.UserMapper;
 import cn.edu.tjufe.zql.service.IUserService;
-import cn.edu.tjufe.zql.utils.RedisCache;
 import cn.edu.tjufe.zql.utils.SecurityUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.Authentication;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private AuthenticationManager authenticationManager;
 
     @Resource
-    private RedisCache redisCache;
+    private RedisTemplate redisTemplate;
 
     @Override
     public UserAccountVO getUserInfoById(Long id) {
@@ -75,7 +75,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         // 生成JWT令牌
         String token = UUID.randomUUID().toString();
         // 将用户信息存入Redis
-        redisCache.setCacheObject("login:" + token, loginUser);
+        redisTemplate.opsForValue().set("login:" + token, loginUser);
         // 返回令牌
         return token;
     }
@@ -87,7 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (authentication != null && authentication.getPrincipal() instanceof LoginUser loginUser) {
             // 从Redis中删除用户信息
             String token = SecurityContextHolder.getContext().getAuthentication().getName();
-            redisCache.deleteObject("login:" + token);
+            redisTemplate.delete("login:" + token);
         }
     }
 }

@@ -50,7 +50,7 @@ public class LeaveWordServiceImpl extends ServiceImpl<LeaveWordMapper, LeaveWord
     private UserMapper userMapper;
     @Value("${spring.mail.username}")
     private String mail;
-    @Value("${mail.message-mail-notice")
+    @Value("${mail.message-mail-notice}")
     private Boolean mailNotice;
 
     @Override

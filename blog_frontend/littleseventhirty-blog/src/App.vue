@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ContextMenu from "./components/ContextMenu/index.vue";
+import Loading from "./components/Loading/index.vue";
 import useWebsiteStore from "./pinia/store/modules/website.ts";
 import { useDark,useToggle } from "@vueuse/core";
 import { onMounted } from "vue";

@@ -144,8 +144,8 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <!--启占位符替换功能-->
-                <filtering>true</filtering>
+                <!--关闭占位符替换功能-->
+                <filtering>false</filtering>
             </resource>
         </resources>
     </build>

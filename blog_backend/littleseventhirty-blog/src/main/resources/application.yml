@@ -10,7 +10,7 @@ logging:
 # spring配置
 spring:
   profiles:
-    active: "@profiles.active@"
+    active: "dev"
   datasource:
     password: Zql@20040712
     username: root

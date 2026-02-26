@@ -8,6 +8,15 @@ export const constantRouter = [
     //     meta,
     //     chldren
     // },
+    // 登录页面
+    {
+        path: "/login",
+        component: () => import("../views/Login/index.vue"),
+        name: "login",
+        meta: {
+            title: "登录"
+        }
+    },
     {
         path: "/",
         name: "layout",

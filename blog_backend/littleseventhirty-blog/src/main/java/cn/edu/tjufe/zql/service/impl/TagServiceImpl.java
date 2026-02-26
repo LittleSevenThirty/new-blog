@@ -9,6 +9,7 @@ import cn.edu.tjufe.zql.service.ITagService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @description:
  * @date: 2026/1/28-16:52
  **/
+@Service(value = "tagService")
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagService {
     @Resource
     private TagMapper tagMapper;

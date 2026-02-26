@@ -11,6 +11,18 @@ export function getUserInfo():Promise<AxiosResponse<UserInfo>>{
   });
 }
 
+// 登录
+export function login(username: string, password: string){
+  return http({
+    url:"/user/login",
+    method:"post",
+    params: {
+      username,
+      password
+    }
+  });
+}
+
 // 退出登录
 export function logout(){
   return http({
