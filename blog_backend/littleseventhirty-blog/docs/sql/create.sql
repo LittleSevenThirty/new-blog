@@ -176,6 +176,18 @@ CREATE TABLE `t_like`  (
                            PRIMARY KEY (`like_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 363 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
+-- Table structure for t_favorite
+-- create time: 2026/2/26 ; Status: newly created
+DROP TABLE IF EXISTS `t_favorite`;
+CREATE TABLE `t_favorite` (
+  `favorite_id` bigint NOT NULL AUTO_INCREMENT COMMENT '收藏id',
+  `user_id` bigint NOT NULL COMMENT '收藏的用户id',
+  `type` int NOT NULL COMMENT '收藏类型(1,文章 2,留言板)',
+  `type_id` bigint NOT NULL COMMENT '类型id',
+  `is_check` int DEFAULT 1 COMMENT '是否有效 (0否 1是)',
+  `create_time` datetime NOT NULL COMMENT '收藏时间',
+  PRIMARY KEY (`favorite_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- Table structure for t_tree_hole
 -- create time: 2026/2/19 ; Status:unfinished
@@ -215,4 +227,3 @@ CREATE TABLE BLOG.T_ARTICLE
     VISITED_COUNT   bigint            NOT NULL COMMENT '访问数量'
 )
     ROW_FORMAT = DYNAMIC;
-

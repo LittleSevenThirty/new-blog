@@ -10,14 +10,6 @@ export const constantRouter = [
     // },
     // 登录页面
     {
-        path: "/login",
-        component: () => import("../views/Login/index.vue"),
-        name: "login",
-        meta: {
-            title: "登录"
-        }
-    },
-    {
         path: "/",
         name: "layout",
         component: () => import("../views/Layout/index.vue"),
@@ -95,6 +87,14 @@ export const constantRouter = [
                 ]
             }
         ]
+    },
+    {
+        path: "/login",
+        component: () => import("../views/Login/index.vue"),
+        name: "login",
+        meta: {
+            title: "登录"
+        }
     },
     // 只能放在最后的作为重定向的错误页，后期选择加上错误组件
     {

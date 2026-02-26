@@ -5,7 +5,7 @@ export function addNewLeaveWord(content: string) {
   return http({
     url: "/leaveWord/auth/userLeaveWord",
     method: "post",
-    params: JSON.stringify(content)
+    data: content
   });
 }
 

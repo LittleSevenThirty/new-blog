@@ -17,6 +17,8 @@ import Comment from '../../../../components/Comment/index.vue';
 const mode = useColorMode();
 const route = useRoute();
 const leaveWord = ref<{
+  leaveWordId: number,
+  userId: number,
   avatar: string,
   nickname: string,
   content: string,
@@ -27,10 +29,12 @@ const leaveWord = ref<{
 }>();
 const like = ref(false);
 const favorite = ref(false);
+const loadingComment = ref(false);
 
 function getLeaveWord() {
   getLeaveWordList(route.params.id).then((res: any) => {
     leaveWord.value = res.data[0];
+    loadingComment.value = true;
   })
 }
 
@@ -104,6 +108,10 @@ function userFavoriteFunc() {
   });
 }
 
+function isLikeFunc() { }
+
+function isFavoriteFunc() { }
+
 onMounted(() => {
   window.scrollTo(0, 0);
   console.log(route); // 获取一下路由信息
@@ -150,7 +158,8 @@ onMounted(() => {
     </div>
     <el-divider />
     <!-- 用户评论 -->
-    <Comment></Comment>
+    <Comment :type="2" :like-type="2" :author-id="leaveWord?.userId" :type-id="leaveWord?.leaveWordId"
+      :is-show-header="true" v-if="loadingComment"></Comment>
   </div>
 </template>
 

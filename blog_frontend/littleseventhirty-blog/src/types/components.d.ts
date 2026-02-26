@@ -20,6 +20,7 @@ declare module 'vue' {
     ContextMenu: typeof import('./../components/ContextMenu/index.vue')['default']
     DevToolsBlocker: typeof import('./../components/DevToolsBlocker/index.vue')['default']
     ElectronicClocks: typeof import('./../components/ElectronicClocks.vue')['default']
+    EmojiPicker: typeof import('./../components/Comment/EmojiPicker.vue')['default']
     EssayCard: typeof import('./../components/EssayCard.vue')['default']
     Footer: typeof import('./../components/Layout/Footer/index.vue')['default']
     FullScreen: typeof import('./../components/FullScreen.vue')['default']
