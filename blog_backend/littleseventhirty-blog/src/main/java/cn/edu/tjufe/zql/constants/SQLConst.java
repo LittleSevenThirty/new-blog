@@ -6,6 +6,8 @@ package cn.edu.tjufe.zql.constants;
  * @date: 2025/12/15-15:59
  **/
 public class SQLConst {
+    public static final String IS_CHECK="is_check";
+
     /**
      * 树洞留言是否通过
      */

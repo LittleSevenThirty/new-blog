@@ -16,7 +16,7 @@ import java.util.Date;
  * @description: 目前文章表就这些了，后续更新数据库表再同步更新实体类
  * @date: 2025/12/12-11:51
  **/
-@TableName("T_Article")
+@TableName("t_article")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

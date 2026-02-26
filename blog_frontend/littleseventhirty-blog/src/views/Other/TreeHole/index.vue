@@ -8,7 +8,7 @@ const content = ref('');
 const isShowSubmit = ref(false);
 const treeHoleList = ref<Array<{
   nickName: string,
-  avater: string,
+  avatar: string,
   content: string
 }>>([]);
 
@@ -57,7 +57,7 @@ onMounted(() => {
       <template v-slot:danmu="{ danmu }">
         <div class="barrage_container">
           <div>
-            <el-avatar :src="danmu.avater" />
+            <el-avatar :src="danmu.avatar" />
           </div>
           <div><span>{{ danmu.nickname }}：</span><span>{{ danmu.content }}</span></div>
         </div>

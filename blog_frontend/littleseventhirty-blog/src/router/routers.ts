@@ -74,6 +74,14 @@ export const constantRouter = [
                         meta: {
                             title: "留言板"
                         }
+                    },
+                    {
+                        path: "/message/detail/:id?",
+                        component: () => import("../views/Other/Message/MessageDetail/index.vue"),
+                        name: "messageDetail",
+                        meta: {
+                            title: "留言详情"
+                        }
                     }
                 ]
             }

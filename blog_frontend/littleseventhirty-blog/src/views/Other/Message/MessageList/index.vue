@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { onMounted, Ref, ref, UnwrapRef } from 'vue';
+import { ArrowRightBold } from '@element-plus/icons-vue';
 import { Footers, MdEditor, ToolbarNames } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";  // md-editor-v3的样式要专门导入
 import { useColorMode } from '@vueuse/core';
 import { ElMessage } from 'element-plus';
 import { addNewLeaveWord, getLeaveWordList } from "../../../../apis/leaveWord/index.ts";
+import SvgIcon from "../../../../components/SvgIcon/index.vue";
+import router from '../../../../router/index.ts';
 
 const mode = useColorMode();
 const isShow = ref(false);
@@ -13,10 +16,14 @@ const wordCount = ref(0); // 字数
 // 页脚
 const footers: (Footers | number)[] = [0, 1, '=', 'scrollSwitch'];
 const leaveWordList = ref<Array<{
+  leaveWordId: string,
   content: string,
   nickName: string,
-  avater: string,
-  createTime: string
+  avatar: string,
+  createTime: string,
+  commentCount: number,
+  likeCount: number,
+  favoriteCount: number
 }>>([]);
 
 // 工具栏
@@ -138,7 +145,7 @@ onMounted(() => {
             <template #header>
               <div class="card_header">
                 <span>
-                  <el-avatar :src="item.avater" />
+                  <el-avatar :src="item.avatar" />
                 </span>
                 <span class="name">{{ item.nickName }}</span>
                 <span class="time">{{ item.createTime }}</span>
@@ -148,7 +155,30 @@ onMounted(() => {
               {{ item.content }}
             </div>
             <div class="bottom">
-
+              <div class="count">
+                <div>
+                  <SvgIcon name="comment" />
+                  <span>{{ item.commentCount }}</span>
+                </div>
+                <div>
+                  <SvgIcon name="like" />
+                  <span>{{ item.likeCount }}</span>
+                </div>
+                <div>
+                  <SvgIcon name="collection" />
+                  <span>{{ item.favoriteCount }}</span>
+                </div>
+              </div>
+              <div>
+                <el-link type="primary" @click="router.push(`/message/detail/${item.leaveWordId}`)">
+                  <template #icon>
+                    <el-icon>
+                      <ArrowRightBold />
+                    </el-icon>
+                  </template>
+                  查看详情
+                </el-link>
+              </div>
             </div>
             <!-- card body -->
           </el-card>
@@ -228,7 +258,28 @@ onMounted(() => {
       }
     }
 
-    .bottom {}
+    .bottom {
+      margin-top: 1rem;
+      color: grey;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .count {
+        display: flex;
+        margin-top: 0.5rem;
+
+        div {
+          display: flex;
+          align-items: center;
+          margin-right: 1rem;
+        }
+
+        span {
+          margin-left: 0.2rem;
+        }
+      }
+    }
   }
 }
 

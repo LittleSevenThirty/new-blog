@@ -14,7 +14,7 @@ Mock.mock("/api/treeHole/treeHoleList", "get", {
     {
       "nickName": "@cname", // 随机生成中文姓名
       // 生成随机图片占位符
-      "avater": "@image('100x100', '#4A90E2', '#FFF', 'User')",
+      "avatar": "@image('100x100', '#4A90E2', '#FFF', 'User')",
       "content": "@cparagraph(1, 3)", // 随机生成 1 到 3 句中文段落
     }
   ]

@@ -1,0 +1,54 @@
+package cn.edu.tjufe.zql.controller;
+
+
+import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.CheckBlacklist;
+import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.LeaveWordVO;
+import cn.edu.tjufe.zql.service.ILeaveWordService;
+import cn.edu.tjufe.zql.utils.ResponseWrapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ *
+ * @authro 钟奇林
+ * @description 留言接口控制层
+ * @date 2026/2/24
+ * @github https://github.com/little-seven-thirty
+ */
+@RestController
+@RequestMapping("/leaveWord")
+@Validated
+@Tag(name="留言板",description="留言板相关接口")
+public class LeaveWordController {
+    @Resource
+    private ILeaveWordService leaveWordService;
+
+    @CheckBlacklist
+    @Operation(summary="用户留言")
+    @AccessIntercepter(second = 60,maxCount = 60)
+    @GetMapping("/auth/userLeaveWord")
+    public ResponseResult<Void> userLeaveWord(@RequestBody @NotNull String content){
+        return leaveWordService.addUserLeaveWord(content);
+    }
+
+    @Operation(summary = "获取留言板列表")
+    @Parameters({
+            @Parameter(name = "id", description = "留言板id", in = ParameterIn.QUERY)
+    })
+    @GetMapping("/list")
+    @AccessIntercepter(second = 60, maxCount = 10)
+    public ResponseResult<List<LeaveWordVO>>  getAllLeaveWord(@RequestParam(value = "id",required = false) String id){
+        return ResponseWrapper.handler(()->leaveWordService.getAllLeaveWordList(id));
+    }
+}

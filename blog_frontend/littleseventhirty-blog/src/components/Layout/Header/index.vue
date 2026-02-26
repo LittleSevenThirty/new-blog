@@ -20,14 +20,14 @@ const mode = useColorMode();
 
 const drawer = ref(false);
 
-onMounted(async ()=>{
-  try{
+onMounted(async () => {
+  try {
     // 获取指定标签元素，注册对应自定义组件
-    if(!customElements.get('toggle-button')){
-      customElements.define('toggle-button',DayNightToggleButton);
+    if (!customElements.get('toggle-button')) {
+      customElements.define('toggle-button', DayNightToggleButton);
     }
     await userStore.getInfo();
-  }catch(e){
+  } catch (e) {
     console.error("Error defining custom element or getting user info:", e);
   }
 })
@@ -118,7 +118,7 @@ async function logoutSub() {
               </div>
             </div>
             <el-dropdown>
-              <el-avatar v-bind:src="userStore.userInfo?.avater" style="margin-right:2rem"></el-avatar>
+              <el-avatar v-bind:src="userStore.userInfo?.avatar" style="margin-right:2rem"></el-avatar>
               <template v-slot:dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="router.push('/setting')">
@@ -154,11 +154,12 @@ async function logoutSub() {
           </span>
           <Position style="width:2em;height: 2em;margin-top: 10px;" />
         </div>
-        <el-button :icon="Close" style="background: none;font-size: 1.5rem;width: 30px;border: none;margin-bottom: 10px;"
-                   @click="drawer = false"/>
+        <el-button :icon="Close"
+          style="background: none;font-size: 1.5rem;width: 30px;border: none;margin-bottom: 10px;"
+          @click="drawer = false" />
       </template>
       <template v-slot:default>
-        <MoveMenu v-on:update:close-drawer="drawer=false"/>
+        <MoveMenu v-on:update:close-drawer="drawer = false" />
       </template>
     </el-drawer>
   </div>

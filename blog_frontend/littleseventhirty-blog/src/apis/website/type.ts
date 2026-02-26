@@ -1,7 +1,7 @@
 interface WebsiteInfo {
     // 站长头像地址
-    webMasterAvater: string,
-    
+    webMasteravatar: string,
+
     // 站长名称
     webMasterName: string,
 
@@ -51,9 +51,9 @@ interface WebsiteInfo {
     visitedCount: string
 }
 
-interface slideshowItem{
-    image:String    // 轮播图接口
+interface slideshowItem {
+    image: String    // 轮播图接口
     // 其它字段
 }
 
-export {WebsiteInfo,slideshowItem};
+export { WebsiteInfo, slideshowItem };

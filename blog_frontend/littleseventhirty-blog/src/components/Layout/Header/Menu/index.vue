@@ -248,7 +248,7 @@ onUnmounted(() => {
               </div>
             </div>
             <el-dropdown>
-              <el-avatar v-bind:src="userStore.userInfo?.avater" style="margin-right:2rem"></el-avatar>
+              <el-avatar v-bind:src="userStore.userInfo?.avatar" style="margin-right:2rem"></el-avatar>
               <template v-slot:dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item @click="router.push('/setting')">

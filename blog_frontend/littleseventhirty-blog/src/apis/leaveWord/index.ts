@@ -1,12 +1,11 @@
 import http from "../../utils/http";
 
+
 export function addNewLeaveWord(content: string) {
   return http({
     url: "/leaveWord/auth/userLeaveWord",
     method: "post",
-    params: {
-      content
-    }
+    params: JSON.stringify(content)
   });
 }
 

@@ -22,3 +22,9 @@ spring:
       password: ""         # 本地无密码可空；云服务（如 Azure Redis）必填！
       database: 0          # Redis 有 16 个库（0～15），开发常用 0
       timeout: 2000ms      # 操作超时时间
+  mail:
+    username: 3100649706@qq.com
+
+# 邮件配置
+mail:
+  message-mail-notice: false

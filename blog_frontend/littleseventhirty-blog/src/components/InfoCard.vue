@@ -13,8 +13,8 @@ console.log(websiteStore.webInfo?.webMasterProfileBackground);
     <div class="background_image"
       :style="`background-image: url(${websiteStore.webInfo?.webMasterProfileBackground});`"></div>
     <!-- 头像 -->
-    <div class="avater_wrapper">
-      <el-avatar :src="websiteStore.webInfo?.webMasterAvater" size="large" />
+    <div class="avatar_wrapper">
+      <el-avatar :src="websiteStore.webInfo?.webMasteravatar" size="large" />
     </div>
     <!-- 站点信息 -->
     <div class="webmaster_name">
@@ -129,15 +129,15 @@ console.log(websiteStore.webInfo?.webMasterProfileBackground);
     }
   }
 
-  > * {
+  >* {
     position: relative;
     z-index: 2;
   }
 
-  .avater_wrapper {
+  .avatar_wrapper {
     margin-top: 30px;
 
-    .el-avater {
+    .el-avatar {
       width: 90px;
       height: 90px;
       border: 3px solid var(--el-color-white);
@@ -145,7 +145,7 @@ console.log(websiteStore.webInfo?.webMasterProfileBackground);
       transition: all 0.6s ease;
     }
 
-    &:hover .el-avater {
+    &:hover .el-avatar {
       transform: rotate(360deg) scale(1.1);
     }
   }

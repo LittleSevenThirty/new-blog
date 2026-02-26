@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import router from '../../../router';
-import SvgIcon from "../../../components/SvgIcon/index.vue";
+import router from '../../router/index.ts';
+import SvgIcon from "../../components/SvgIcon/index.vue";
 const props = defineProps({
   articleList: {
     type: Array<{

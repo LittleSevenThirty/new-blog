@@ -40,7 +40,7 @@ public class User implements ViewObjectConvertible {
     // 用户性别(0男，1女，2其它）
     private Integer gender;
     // 用户头像
-    private String avater;
+    private String avatar;
     // 个人简介
     private String introduce;
     // 个人邮箱
