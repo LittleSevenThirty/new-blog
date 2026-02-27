@@ -30,7 +30,7 @@ public class WebsiteInfoController {
      *
      * @return
      */
-    @AccessIntercepter(second = 60, maxCount = 30)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
     @Operation(description = "查询网站信息-前端")
     @GetMapping("/front")
     public ResponseResult<WebsiteInfoVO> getFrontArticles() {

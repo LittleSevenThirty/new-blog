@@ -121,62 +121,64 @@ function updatePreviewPosition(event) {
 </script>
 
 <template>
-  <el-popover placement="bottom-end" :width="popoverWidth" trigger="click" :popper-class="'emoji-popover-container'">
-    <template #reference>
-      <slot name="trigger">
-        <div class="emoji-trigger-btn">
-          <svg-icon name="emojis" class="emoji-icon" />
-          <span class="emoji-ripple"></span>
-        </div>
-      </slot>
-    </template>
-
-    <div class="emojis_container" @mousedown.stop.prevent>
-      <el-scrollbar>
-        <div class="OvO_emojis" v-show="optionsIndex === 0">
-          <!-- 文字表情 -->
-          <div v-for="(emoji, key) in emojis" :key="key" :title="key" @click.stop="addEmoji(emoji, $event)"
-            @mousedown.stop.prevent class="emoji-item" @mouseenter="showTextPreview($event, emoji, key)"
-            @mouseleave="hidePreview">
-            {{ emoji }}
+  <div>
+    <el-popover placement="bottom-end" :width="popoverWidth" trigger="click" :popper-class="'emoji-popover-container'">
+      <template #reference>
+        <slot name="trigger">
+          <div class="emoji-trigger-btn">
+            <svg-icon name="emojis" class="emoji-icon" />
+            <span class="emoji-ripple"></span>
           </div>
-        </div>
-        <div class="OvO_heo" v-show="optionsIndex === 1">
-          <div>
-            <!-- 图片表情 -->
-            <div v-for="(src, key) in heo" :key="key" class="emoji-img-wrapper">
-              <img :title="key" :src="src" @click="addEmoji(key, $event)"
-                @mouseenter="showImagePreview($event, src, key)" @mouseleave="hidePreview" />
+        </slot>
+      </template>
+
+      <div class="emojis_container" @mousedown.stop.prevent>
+        <el-scrollbar>
+          <div class="OvO_emojis" v-show="optionsIndex === 0">
+            <!-- 文字表情 -->
+            <div v-for="(emoji, key) in emojis" :key="key" :title="key" @click.stop="addEmoji(emoji, $event)"
+              @mousedown.stop.prevent class="emoji-item" @mouseenter="showTextPreview($event, emoji, key)"
+              @mouseleave="hidePreview">
+              {{ emoji }}
             </div>
           </div>
-        </div>
-      </el-scrollbar>
-      <div class="OvO_options" ref="options" @mousedown.stop.prevent>
-        <div v-for="(emojiOption, index) in emojiOptions" class="item_emoji" @click.stop="optionEmoji(index)"
-          @mousedown.stop.prevent>
-          {{ emojiOption }}
+          <div class="OvO_heo" v-show="optionsIndex === 1">
+            <div>
+              <!-- 图片表情 -->
+              <div v-for="(src, key) in heo" :key="key" class="emoji-img-wrapper">
+                <img :title="key" :src="src" @click="addEmoji(key, $event)"
+                  @mouseenter="showImagePreview($event, src, key)" @mouseleave="hidePreview" />
+              </div>
+            </div>
+          </div>
+        </el-scrollbar>
+        <div class="OvO_options" ref="options" @mousedown.stop.prevent>
+          <div v-for="(emojiOption, index) in emojiOptions" class="item_emoji" @click.stop="optionEmoji(index)"
+            @mousedown.stop.prevent>
+            {{ emojiOption }}
+          </div>
         </div>
       </div>
-    </div>
-  </el-popover>
+    </el-popover>
 
-  <!-- 全局预览元素 - 添加pointer-events: none -->
-  <Teleport to="body">
-    <div v-show="showPreview" class="global-emoji-preview" :style="{
-      left: `${previewPosition.x}px`,
-      top: `${previewPosition.y}px`
-    }">
-      <div class="preview-content">
-        <template v-if="!isImage">
-          {{ previewContent }}
-        </template>
-        <template v-else>
-          <img :src="previewImageSrc" />
-        </template>
+    <!-- 全局预览元素 - 添加pointer-events: none -->
+    <Teleport to="body">
+      <div v-show="showPreview" class="global-emoji-preview" :style="{
+        left: `${previewPosition.x}px`,
+        top: `${previewPosition.y}px`
+      }">
+        <div class="preview-content">
+          <template v-if="!isImage">
+            {{ previewContent }}
+          </template>
+          <template v-else>
+            <img :src="previewImageSrc" />
+          </template>
+        </div>
+        <div class="preview-name">{{ previewName }}</div>
       </div>
-      <div class="preview-name">{{ previewName }}</div>
-    </div>
-  </Teleport>
+    </Teleport>
+  </div>
 </template>
 
 <style scoped lang="scss">

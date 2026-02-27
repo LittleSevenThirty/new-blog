@@ -42,9 +42,19 @@ public class RedisCache {
         return redisTemplate.opsForHash().entries(key);
     }
 
+    /**
+     * 缓存Map
+     *
+     * @param key
+     * @param
+     */
     public <T> void setCacheMap(final String key, final Map<String, T> map) {
         if (null != map) {
             redisTemplate.opsForHash().putAll(key, map);
         }
+    }
+
+    public void incrementCacheMapValue(String key,String hkey,int v){
+        redisTemplate.opsForHash().increment(key,hkey,v);
     }
 }

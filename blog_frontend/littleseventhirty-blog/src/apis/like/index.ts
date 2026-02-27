@@ -21,3 +21,15 @@ export function userLike(type: number, typeId: string) {
     }
   });
 }
+
+// 是否点赞
+export const isLike = (type: number, typeId?: string) => {
+  return http({
+    url: '/like/whether/like',
+    method: "get",
+    params: {
+      type,
+      typeId
+    }
+  });
+}

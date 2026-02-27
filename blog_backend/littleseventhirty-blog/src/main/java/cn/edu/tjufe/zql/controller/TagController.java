@@ -32,7 +32,7 @@ public class TagController {
     private TagServiceImpl tagService;
 
     @Operation(summary = "获取所有标签列表")
-    @AccessIntercepter(second = 60,maxCount = 60)
+    @AccessIntercepter(seconds = 60,maxCount = 60)
     @GetMapping("/list")
     public ResponseResult<List<TagVO>> tagList(){
         return ResponseWrapper.handler(()->tagService.listAllTag());

@@ -31,7 +31,7 @@ public class BannerController {
      * @return 轮播图路径列表
      */
     @Operation(summary = "前端获取轮播图url")
-    @AccessIntercepter(second = 60, maxCount = 25)
+    @AccessIntercepter(seconds = 60, maxCount = 25)
     @LogAnnotation(module = "信息管理", operation = LogConst.GET)
     @GetMapping("/slideshow")
     public ResponseResult<List<String>> getSlideshowImages() {

@@ -8,8 +8,8 @@ import { getLeaveWordList } from '../../../../apis/leaveWord';
 import { MdPreview } from 'md-editor-v3';
 import "md-editor-v3/lib/preview.css";
 import SvgIcon from "../../../../components/SvgIcon/index.vue";
-import { cancelLike, userLike } from "../../../../apis/like/index.ts";
-import { cancelFavorite, userFavorite } from '../../../../apis/favorite/index.ts';
+import { cancelLike, userLike, isLike } from "../../../../apis/like/index.ts";
+import { cancelFavorite, userFavorite, isFavorite } from '../../../../apis/favorite/index.ts';
 import { ElMessage } from 'element-plus';
 import { useColorMode } from '@vueuse/core';
 import Comment from '../../../../components/Comment/index.vue';
@@ -35,6 +35,8 @@ function getLeaveWord() {
   getLeaveWordList(route.params.id).then((res: any) => {
     leaveWord.value = res.data[0];
     loadingComment.value = true;
+    isLikeFunc();
+    isFavoriteFunc();
   })
 }
 
@@ -52,6 +54,13 @@ function favoriteFunc() {
   } else {
     userFavoriteFunc();
   }
+}
+
+function isFavoriteFunc() {
+  // @ts-ignore
+  isFavorite(2, leaveWord.value?.leaveWordId.toString()).then((res: any) => {
+    favorite.value = res.data === true;
+  })
 }
 
 function cancelLikeFunc() {
@@ -108,9 +117,12 @@ function userFavoriteFunc() {
   });
 }
 
-function isLikeFunc() { }
-
-function isFavoriteFunc() { }
+function isLikeFunc() {
+  // @ts-ignore
+  isLike(3, leaveWord.value?.leaveWordId).then((res: any) => {
+    like.value = res.code === 200
+  })
+}
 
 onMounted(() => {
   window.scrollTo(0, 0);

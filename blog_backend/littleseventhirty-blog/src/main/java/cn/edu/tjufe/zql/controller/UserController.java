@@ -34,7 +34,7 @@ public class UserController {
      * @return
      */
     @Operation(summary = "当前用户登录信息")
-    @AccessIntercepter(second = 60, maxCount = 30)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
     @RequestMapping("/auth/info")
     public ResponseResult<UserAccountVO> getUserInfo() {
         return ResponseWrapper.handler(() -> userService.getUserInfoById(SecurityUtils.getUserId()));

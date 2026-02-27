@@ -27,7 +27,7 @@ public class CategoryController {
     private CategoryServiceImpl categoryService;
 
     @Operation(summary = "获取所有分类")
-    @AccessIntercepter(second=60,maxCount=60)
+    @AccessIntercepter(seconds =60,maxCount=60)
     @GetMapping("/list")
     public ResponseResult<List<CategoryVO>> allCategoryList(){
         return ResponseWrapper.handler(()->categoryService.listAllCategory());

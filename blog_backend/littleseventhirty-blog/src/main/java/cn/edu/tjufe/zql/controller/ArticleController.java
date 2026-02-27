@@ -35,7 +35,7 @@ public class ArticleController {
      * @return
      */
     @Operation(summary = "初始化标题搜索文章数据")
-    @AccessIntercepter(second = 60, maxCount = 5)
+    @AccessIntercepter(seconds = 60, maxCount = 5)
     @GetMapping("/search/init/title")
     public ResponseResult<List<InitSearchTitleVO>> initSearchByTitle() {
         return ResponseWrapper.handler(() -> articleService.initSearchByTitle());
@@ -51,7 +51,7 @@ public class ArticleController {
     @Parameters({
             @Parameter(name = "content", description = "搜索文章内容片段", required = true)
     })
-    @AccessIntercepter(second = 60, maxCount = 5)
+    @AccessIntercepter(seconds = 60, maxCount = 5)
     @GetMapping("/search/by/content")
     public ResponseResult<List<SearchArticleByContentVO>> searchArticleByContent(
             @NotEmpty
@@ -67,7 +67,7 @@ public class ArticleController {
      * @return
      */
     @Operation(summary = "热门内容推荐接口")
-    @AccessIntercepter(second = 60, maxCount = 60)
+    @AccessIntercepter(seconds = 60, maxCount = 60)
     @GetMapping("/hot")
     public ResponseResult<List<HotArticleVO>> hotArticles() {
         return ResponseWrapper.handler(() -> articleService.getHotArticles());
@@ -79,7 +79,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/random")
-    @AccessIntercepter(second = 60, maxCount = 5)
+    @AccessIntercepter(seconds = 60, maxCount = 5)
     @Operation(description = "刷一刷获取随机文章")
     public ResponseResult<List<RandomArticleVO>> randomArticles() {
         return ResponseWrapper.handler(() -> articleService.getRandomArticles());
@@ -91,7 +91,7 @@ public class ArticleController {
      * @return
      */
     @LogAnnotation(module = "文章管理", operation = LogConst.GET)
-    @AccessIntercepter(second = 60, maxCount = 5)
+    @AccessIntercepter(seconds = 60, maxCount = 5)
     @Operation(summary = "推荐文章接口")
     @GetMapping("/recommend")
     public ResponseResult<List<RecommendArticleVO>> recommend() {
@@ -106,7 +106,7 @@ public class ArticleController {
      * @return
      */
     @Operation(summary = "获取所有文章列表")
-    @AccessIntercepter(second = 60, maxCount = 10)
+    @AccessIntercepter(seconds = 60, maxCount = 10)
     @LogAnnotation(module = "文章管理", operation = LogConst.GET)
     @Parameters({
             @Parameter(name = "pageNum", description = "页码", required = true),
@@ -122,7 +122,7 @@ public class ArticleController {
             @Parameter(name="categoryId",description = "分类id",required = true),
             @Parameter(name="articleId",description = "文章id",required=true)
     })
-    @AccessIntercepter(second = 60, maxCount = 60)
+    @AccessIntercepter(seconds = 60, maxCount = 60)
     @GetMapping("/related/{categoryId}/{articleId}")
     public ResponseResult<List<RelatedArticleVO>> related(
             @PathVariable @NotNull Integer categoryId,
@@ -136,7 +136,7 @@ public class ArticleController {
         @Parameter(name="typeId",description = "类型id",required=true),
         @Parameter(name="type",description = "类型",required=true)
     })
-    @AccessIntercepter(second = 60, maxCount = 60)
+    @AccessIntercepter(seconds = 60, maxCount = 60)
     @GetMapping("/type/list/{typeId}")
     public ResponseResult<List<CategoryArticleVO>> getCategoryArticle(
             @NotNull @RequestParam("type") Integer type,
@@ -146,7 +146,7 @@ public class ArticleController {
     }
 
     @Operation(summary="获取时间轴数据")
-    @AccessIntercepter(second=60,maxCount = 15)
+    @AccessIntercepter(seconds =60,maxCount = 15)
     @GetMapping("/timeline")
     public ResponseResult<List<TimelineVO>> timeline(){
         return ResponseWrapper.handler(()->articleService.listTimeline());

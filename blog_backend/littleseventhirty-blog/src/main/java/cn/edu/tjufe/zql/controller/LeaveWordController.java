@@ -36,7 +36,7 @@ public class LeaveWordController {
 
     @CheckBlacklist
     @Operation(summary="用户留言")
-    @AccessIntercepter(second = 60,maxCount = 60)
+    @AccessIntercepter(seconds = 60,maxCount = 60)
     @GetMapping("/auth/userLeaveWord")
     public ResponseResult<Void> userLeaveWord(@RequestBody @NotNull String content){
         return leaveWordService.addUserLeaveWord(content);
@@ -47,7 +47,7 @@ public class LeaveWordController {
             @Parameter(name = "id", description = "留言板id", in = ParameterIn.QUERY)
     })
     @GetMapping("/list")
-    @AccessIntercepter(second = 60, maxCount = 10)
+    @AccessIntercepter(seconds = 60, maxCount = 10)
     public ResponseResult<List<LeaveWordVO>>  getAllLeaveWord(@RequestParam(value = "id",required = false) String id){
         return ResponseWrapper.handler(()->leaveWordService.getAllLeaveWordList(id));
     }

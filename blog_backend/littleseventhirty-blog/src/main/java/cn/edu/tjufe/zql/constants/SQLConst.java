@@ -6,6 +6,14 @@ package cn.edu.tjufe.zql.constants;
  * @date: 2025/12/15-15:59
  **/
 public class SQLConst {
+    /**
+     * 评论是否通过(0,否)
+     */
+    public static final Integer COMMENT_IS_CHECK = 1;
+
+    /**
+     * 是否通过(0,否)
+     */
     public static final String IS_CHECK="is_check";
 
     /**

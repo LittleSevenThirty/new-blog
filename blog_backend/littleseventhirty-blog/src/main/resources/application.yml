@@ -27,4 +27,7 @@ spring:
 
 # 邮件配置
 mail:
+  article-email-notice: false
   message-mail-notice: false
+  article-reply-notice: false
+  message-reply-notice: false

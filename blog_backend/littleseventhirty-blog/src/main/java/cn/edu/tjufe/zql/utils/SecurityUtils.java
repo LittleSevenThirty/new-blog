@@ -37,4 +37,14 @@ public final class SecurityUtils {
     public static List<String> getUserRolesAndPermissions() {
         return Collections.emptyList(); // 没法获取用户角色，返回空列表
     }
+
+    /**
+     * 判断用户是否登录
+     * @return是否登录
+     */
+    public static boolean isLogin() {
+        // 获取认证
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication!=null&&authentication.getPrincipal() instanceof LoginUser;
+    }
 }

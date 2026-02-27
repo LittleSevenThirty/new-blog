@@ -14,7 +14,7 @@ public @interface AccessIntercepter {
     /**
      * 限制周期（秒）
      */
-    int second();
+    int seconds();
 
     /**
      * 周期内的限制次数

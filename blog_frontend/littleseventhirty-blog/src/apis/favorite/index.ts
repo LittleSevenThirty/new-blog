@@ -21,3 +21,15 @@ export function cancelFavorite(type: number, typeId: string) {
     }
   });
 }
+
+// 是否收藏
+export const isFavorite = (type: number, typeId: string) => {
+  return http({
+    url: '/favorite/whether/favorite',
+    method: "get",
+    params: {
+      type,
+      typeId
+    }
+  });
+}

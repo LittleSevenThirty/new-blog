@@ -18,8 +18,6 @@ export function addComment(data: object) {
   return http({
     url: '/comment/auth/add/comment',
     method: "post",
-    params: {
-      data
-    }
+    data
   });
 }

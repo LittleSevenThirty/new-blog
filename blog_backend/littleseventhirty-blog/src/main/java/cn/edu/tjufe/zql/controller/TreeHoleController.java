@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,14 +35,14 @@ public class TreeHoleController {
 
     @CheckBlacklist
     @Operation(summary = "添加树洞")
-    @AccessIntercepter(second=60,maxCount=60)
+    @AccessIntercepter(seconds =60,maxCount=60)
     @PostMapping("/auth/addTreeHole")
     public ResponseResult<Void> addTreeHole(@Valid @NotNull @RequestBody String content){
         return treeHoleService.addTreeHole(JSON.parseObject(content).getString("content"));
     }
 
     @Operation(summary="查看树洞")
-    @AccessIntercepter(second=60,maxCount=60)
+    @AccessIntercepter(seconds =60,maxCount=60)
     @GetMapping("/getTreeHoleList")
     public ResponseResult<List<TreeHoleVO>> getTreeHole(){
         return ResponseWrapper.handler(()->treeHoleService.getTreeHole());
