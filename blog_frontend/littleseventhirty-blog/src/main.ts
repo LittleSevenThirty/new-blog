@@ -13,7 +13,7 @@ import ElementPlus from 'element-plus';
 // 引入ElementPlus样式
 import 'element-plus/dist/index.css';
 // 这里不要使用动态加载，动态加载的mock是在所有页面后启动，所以axios会出现请求错误问题
-import './mock/index.ts'; // 如果不想启动后端就想要数据需要将这段注释取消掉，配置mock是为了后端数据未准备好时提供假数据用的
+// import './mock/index.ts'; // 如果不想启动后端就想要数据需要将这段注释取消掉，配置mock是为了后端数据未准备好时提供假数据用的
 // 引入自定义指令
 import vViewRequest from './directives/vViewRequest.ts'
 import vSlideIn from "./directives/vSlideIn.ts";
@@ -26,7 +26,7 @@ const app = createApp(App);
 // 注册全局指令，使用时添加前缀v-
 app.directive("view-request", vViewRequest);
 app.directive("slide-in", vSlideIn);
-app.directive("lazy",vLazy);
+app.directive("lazy", vLazy);
 
 // 安装路由
 app.use(router);

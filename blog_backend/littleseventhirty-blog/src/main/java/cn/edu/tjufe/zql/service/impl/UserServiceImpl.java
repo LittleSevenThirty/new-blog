@@ -5,7 +5,9 @@ import cn.edu.tjufe.zql.domain.entity.LoginUser;
 import cn.edu.tjufe.zql.domain.entity.User;
 import cn.edu.tjufe.zql.domain.vo.UserAccountVO;
 import cn.edu.tjufe.zql.mapper.UserMapper;
+import cn.edu.tjufe.zql.service.IIpService;
 import cn.edu.tjufe.zql.service.IUserService;
+import cn.edu.tjufe.zql.utils.IpUtils;
 import cn.edu.tjufe.zql.utils.SecurityUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -19,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,10 +37,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
 
     @Resource
-    private AuthenticationManager authenticationManager;
+    private RedisTemplate redisTemplate;
 
     @Resource
-    private RedisTemplate redisTemplate;
+    private IIpService ipService;
 
     @Override
     public UserAccountVO getUserInfoById(Long id) {
@@ -64,23 +67,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public String login(String username, String password) {
-        // 创建认证对象
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-                password);
-        // 进行认证
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        // 获取认证成功的用户信息
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        // 生成JWT令牌
-        String token = UUID.randomUUID().toString();
-        // 将用户信息存入Redis
-        redisTemplate.opsForValue().set("login:" + token, loginUser);
-        // 返回令牌
-        return token;
-    }
-
-    @Override
     public void logout() {
         // 获取当前用户的认证信息
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -88,6 +74,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             // 从Redis中删除用户信息
             String token = SecurityContextHolder.getContext().getAuthentication().getName();
             redisTemplate.delete("login:" + token);
+        }
+    }
+
+    @Override
+    public void userLoginStatus(Long id, Integer type) {
+        // ip地址
+        String ipAddr = IpUtils.getIpAddr(SecurityUtils.getCurrentHttpRequest());
+        if (IpUtils.isUnknown(ipAddr)) {
+            ipAddr = IpUtils.getHostIp();
+        }
+        User user = User.builder()
+                .userId(id)
+                .loginTime(new Date())
+                .loginType(type)
+                .loginIp(ipAddr)
+                .build();
+        if (updateById(user)) {
+//            ipService.refreshIpDetailAsyncByUidAndLogin(user.getUserId());
         }
     }
 }

@@ -192,7 +192,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             if (commentDTO.getType() == 2) {
                 // 查出回复的该留言用户的邮箱
                 LeaveWord leaveWord = leaveWordMapper.selectOne(new LambdaQueryWrapper<LeaveWord>().eq(LeaveWord::getLeaveWordId, commentDTO.getTypeId()));
-                User replyUser = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getId, leaveWord.getUserId()));
+                User replyUser = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserId, leaveWord.getUserId()));
                 // 用户没绑定邮箱，或者回复的留言是自己
                 if (Objects.equals(replyUser.getEmail(), null) || Objects.equals(replyUser.getEmail(), user.getEmail()))
                     return ResponseResult.success();

@@ -3,6 +3,7 @@ package cn.edu.tjufe.zql.controller;
 import cn.edu.tjufe.zql.annotation.AccessIntercepter;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
+import cn.edu.tjufe.zql.domain.entity.ArticleDetailVO;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.*;
 import cn.edu.tjufe.zql.service.IArticleService;
@@ -150,5 +151,22 @@ public class ArticleController {
     @GetMapping("/timeline")
     public ResponseResult<List<TimelineVO>> timeline(){
         return ResponseWrapper.handler(()->articleService.listTimeline());
+    }
+
+    @Operation(summary = "文章访问量+1")
+    @Parameter(name = "id", description = "文章id", required = true)
+    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @GetMapping("/visit/{id}")
+    public ResponseResult<Void> visit(@PathVariable("id") @NotNull Long id) {
+        articleService.addVisitCount(id);
+        return ResponseWrapper.handler(() -> null);
+    }
+
+    @Operation(summary = "获取文章详情")
+    @Parameter(name = "id", description = "文章id", required = true)
+    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @GetMapping("/detail/{id}")
+    public ResponseResult<ArticleDetailVO> detail(@PathVariable("id") @NotNull Integer id) {
+        return ResponseWrapper.handler((() -> articleService.getArticleDetail(id)));
     }
 }

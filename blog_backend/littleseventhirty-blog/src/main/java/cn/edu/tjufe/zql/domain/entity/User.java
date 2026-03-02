@@ -27,8 +27,6 @@ import java.util.Date;
 @Builder
 @Data
 public class User implements ViewObjectConvertible {
-    // 表标识
-    private Long id;
     // 用户标识
     private Long userId;
     // 用户昵称
@@ -47,6 +45,14 @@ public class User implements ViewObjectConvertible {
     private String email;
     // 注册方式(0邮箱/姓名，1gitee，2github)
     private Integer registerType;
+    //用户登录方式(0邮箱/姓名 1Gitee 2Github)
+    private Integer loginType;
+    // 用户登录ip
+    private String loginIp;
+    // 登录地址
+    private String loginAddress;
+    //是否禁用 0 否 1 是
+    private Integer isDisable;
     // 登录时间
     private Date loginTime;
     // 创建时间

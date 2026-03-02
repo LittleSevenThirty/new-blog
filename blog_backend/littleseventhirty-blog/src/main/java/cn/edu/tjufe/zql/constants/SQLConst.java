@@ -6,6 +6,12 @@ package cn.edu.tjufe.zql.constants;
  * @date: 2025/12/15-15:59
  **/
 public class SQLConst {
+
+    /**
+     * 公开文章的字段标识
+     */
+    public static final Integer PUBLIC_ARTICLE = 1;
+
     /**
      * 评论是否通过(0,否)
      */

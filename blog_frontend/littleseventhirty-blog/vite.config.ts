@@ -2,7 +2,7 @@ import { ConfigEnv, defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 import Components from "unplugin-vue-components/vite";
-import {createSvgIconsPlugin} from "vite-plugin-svg-icons";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 
 // 自定义元素标签集合
@@ -46,8 +46,9 @@ export default defineConfig(({ mode }: ConfigEnv) => {
       host: '0.0.0.0',
       proxy: {
         '/api': {
-          target: `${env.VITE_SERVE}`,
+          target: `${env.VITE_SERVER}`,
           changeOrigin: true,
+          // 前端请求会包含/api前缀，这只是用来作为代理用的，真实请求还是需要去掉
           rewrite: (path) => path.replace(/^\/api/, '')
         }
       }

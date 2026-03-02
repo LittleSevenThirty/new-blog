@@ -12,6 +12,8 @@ import cn.edu.tjufe.zql.utils.SecurityUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +25,8 @@ import java.util.Objects;
  * @date 2026/2/27
  * @github https://github.com/little-seven-thirty
  */
+@Slf4j
+@Service(value = "likeService")
 public class LikeServiceImpl extends ServiceImpl<LikeMapper, Like> implements ILikeService {
     @Resource
     private LikeMapper likeMapper;

@@ -41,19 +41,6 @@ public class UserController {
     }
 
     /**
-     * 登录
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 登录结果
-     */
-    @Operation(summary = "用户登录")
-    @RequestMapping("/login")
-    public ResponseResult<String> login(@RequestParam String username, @RequestParam String password) {
-        return ResponseWrapper.handler(() -> userService.login(username, password));
-    }
-
-    /**
      * 退出登录
      *
      * @return 退出结果

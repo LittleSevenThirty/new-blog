@@ -2,30 +2,37 @@ package cn.edu.tjufe.zql.service.impl;
 
 import cn.edu.tjufe.zql.constants.RedisConst;
 import cn.edu.tjufe.zql.constants.SQLConst;
-import cn.edu.tjufe.zql.domain.entity.Article;
-import cn.edu.tjufe.zql.domain.entity.ArticleTag;
-import cn.edu.tjufe.zql.domain.entity.Category;
-import cn.edu.tjufe.zql.domain.entity.Tag;
+import cn.edu.tjufe.zql.domain.entity.*;
 import cn.edu.tjufe.zql.domain.vo.*;
+import cn.edu.tjufe.zql.enums.CommentEnum;
 import cn.edu.tjufe.zql.enums.CountTypeEnum;
+import cn.edu.tjufe.zql.enums.FavoriteEnum;
+import cn.edu.tjufe.zql.enums.LikeEnum;
 import cn.edu.tjufe.zql.mapper.ArticleMapper;
 import cn.edu.tjufe.zql.mapper.ArticleTagMapper;
 import cn.edu.tjufe.zql.mapper.CategoryMapper;
 import cn.edu.tjufe.zql.mapper.TagMapper;
 import cn.edu.tjufe.zql.service.IArticleService;
+import cn.edu.tjufe.zql.service.ICommentService;
+import cn.edu.tjufe.zql.service.IFavoriteService;
+import cn.edu.tjufe.zql.service.ILikeService;
+import cn.edu.tjufe.zql.utils.IpUtils;
 import cn.edu.tjufe.zql.utils.RedisCache;
+import cn.edu.tjufe.zql.utils.SecurityUtils;
 import cn.edu.tjufe.zql.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -52,6 +59,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Resource
     private TagMapper tagMapper;
 
+    @Resource
+    private ILikeService likeService;
+
+    @Resource
+    private IFavoriteService favoriteService;
+
+    @Resource
+    private ICommentService commentService;
+
     @Override
     public List<InitSearchTitleVO> initSearchByTitle() {
         List<Article> articles = articleMapper.selectList(new LambdaQueryWrapper<Article>().eq(Article::getStatus, SQLConst.PUBLIC_APTICLE));
@@ -62,6 +78,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             })).toList();
         }
         return List.of();
+    }
+
+    @Override
+    public void addVisitCount(Long id) {
+        // 访问量去重
+        HttpServletRequest request= SecurityUtils.getCurrentHttpRequest();
+        // key + id + ip + time(秒)
+        String KEY = RedisConst.ARTICLE_VISIT_COUNT_LIMIT + id + ":" + IpUtils.getIpAddr(request);
+        if(redisCache.getCacheObject(KEY) == null){
+            // 设置间隔时间
+            redisCache.setCacheObject(KEY, 1, RedisConst.ARTICLE_VISIT_COUNT_INTERVAL, TimeUnit.SECONDS);
+
+            if (redisCache.isHasKey(RedisConst.ARTICLE_VISIT_COUNT + id))
+                redisCache.increment(RedisConst.ARTICLE_VISIT_COUNT + id, 1L);
+            else redisCache.setCacheObject(RedisConst.ARTICLE_VISIT_COUNT + id, 0);
+        }
     }
 
     @Override
@@ -210,6 +242,38 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             item.setCategoryId(articles.stream().filter(art -> Objects.equals(art.getId(), article.getId())).findFirst().orElseThrow().getCategoryId());
             item.setTags(tags.stream().filter(tag -> articleTags.stream().anyMatch(articleTag -> Objects.equals(articleTag.getArticleId(), article.getArticleId()) && Objects.equals(articleTag.getTagId(), tag.getTagId()))).map(tag -> tag.asViewObject(TagVO.class)).toList());
         })).toList();
+    }
+
+    @Override
+    public ArticleDetailVO getArticleDetail(Integer id) {
+        Article article = articleMapper.selectOne(new LambdaQueryWrapper<Article>().eq(Article::getStatus, SQLConst.PUBLIC_ARTICLE).and(i -> i.eq(Article::getId, id)));
+        if (StringUtils.isNull(article)) return null;
+        // 文章分类
+        Category category = categoryMapper.selectById(article.getCategoryId());
+        // 文章关系
+        List<ArticleTag> articleTags = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, article.getId()));
+        // 标签
+        List<Tag> tags = tagMapper.selectBatchIds(articleTags.stream().map(ArticleTag::getTagId).toList());
+        // 当前文章的上一篇文章与下一篇文章,大于当前文章的最小文章与小于当前文章的最大文章
+        LambdaQueryWrapper<Article> preAndNextWrapper = new LambdaQueryWrapper<>();
+        preAndNextWrapper.lt(Article::getId, id);
+        Article preArticle = articleMapper.selectOne(preAndNextWrapper.orderByDesc(Article::getId).last(SQLConst.LIMIT_ONE_SQL));
+        preAndNextWrapper.clear();
+        preAndNextWrapper.gt(Article::getId, id);
+        Article nextArticle = articleMapper.selectOne(preAndNextWrapper.orderByAsc(Article::getId).last(SQLConst.LIMIT_ONE_SQL));
+
+        return article.asViewObject(ArticleDetailVO.class, vo -> {
+            vo.setCategoryName(category.getCategoryName());
+            vo.setCategoryId(category.getId());
+            vo.setTags(tags.stream().map(tag -> tag.asViewObject(TagVO.class)).toList());
+            vo.setCommentCount(commentService.count(new LambdaQueryWrapper<Comment>().eq(Comment::getTypeId, article.getId()).eq(Comment::getType, CommentEnum.COMMENT_TYPE_ARTICLE.getType())));
+            vo.setLikeCount(likeService.count(new LambdaQueryWrapper<Like>().eq(Like::getTypeId, article.getId()).eq(Like::getType, LikeEnum.LIKE_TYPE_ARTICLE.getType())));
+            vo.setFavoriteCount(favoriteService.count(new LambdaQueryWrapper<Favorite>().eq(Favorite::getTypeId, article.getId()).eq(Favorite::getType, FavoriteEnum.FAVORITE_TYPE_ARTICLE.getType())));
+            vo.setPreArticleId(preArticle == null ? 0 : preArticle.getId());
+            vo.setPreArticleTitle(preArticle == null ? "" : preArticle.getArticleTitle());
+            vo.setNextArticleId(nextArticle == null ? 0 : nextArticle.getId());
+            vo.setNextArticleTitle(nextArticle == null ? "" : nextArticle.getArticleTitle());
+        });
     }
 
     private <T> void setRedisCache(ArticleVO articleVO, String redisKey, CountTypeEnum countType) {

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
+
 public interface ILikeService extends IService<Like> {
     /**
      * 点赞文章

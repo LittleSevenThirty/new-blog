@@ -1,0 +1,1 @@
+export const ARTICLE_VISIT_PREFIX = "article_visit_"

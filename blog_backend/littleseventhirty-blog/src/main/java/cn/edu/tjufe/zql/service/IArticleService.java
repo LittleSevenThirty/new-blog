@@ -1,6 +1,7 @@
 package cn.edu.tjufe.zql.service;
 
 import cn.edu.tjufe.zql.domain.entity.Article;
+import cn.edu.tjufe.zql.domain.entity.ArticleDetailVO;
 import cn.edu.tjufe.zql.domain.vo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,12 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<InitSearchTitleVO> initSearchByTitle();
+
+    /**
+     * 增加文章访问量
+     * @param id 文章id
+     */
+    void addVisitCount(Long id);
 
     /**
      * 根据搜索内容返回对应结果
@@ -80,4 +87,11 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<CategoryArticleVO> getCategoryArticleList(@NotNull Integer type, @NotNull Integer typeId);
+
+    /**
+     * 获取文章详情
+     * @param id 文章id
+     * @return 文章相关数据
+     */
+    ArticleDetailVO getArticleDetail(Integer id);
 }

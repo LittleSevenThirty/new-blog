@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * @date 2026/2/24
  * @github https://github.com/little-seven-thirty
  */
-@Service("leave_word_service")
+@Service("leaveWordService")
 public class LeaveWordServiceImpl extends ServiceImpl<LeaveWordMapper, LeaveWord> implements ILeaveWordService{
     @Resource
     private CommentMapper commentMapper;
@@ -50,7 +50,7 @@ public class LeaveWordServiceImpl extends ServiceImpl<LeaveWordMapper, LeaveWord
     private UserMapper userMapper;
     @Value("${spring.mail.username}")
     private String mail;
-    @Value("${mail.message-mail-notice}")
+    @Value("${mail.message-email-notice}")
     private Boolean mailNotice;
 
     @Override

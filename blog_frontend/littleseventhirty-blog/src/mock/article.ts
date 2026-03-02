@@ -351,3 +351,60 @@ Mock.mock(articleListByTypeUrl, 'get', {
     }
   ]
 })
+
+// 模拟数据模板 (基于你的 ArticleDetailVO)
+const articleDetailTemplate = {
+  'articleId|+1': 1, // 自增ID
+  'userId|1000-9999': 1,
+  'categoryName': '@ctitle(4, 8)',
+  'categoryId|1-10': 1,
+  'tags|1-3': [
+    {
+      'tagName': '@ctitle(2, 4)',
+      'tagId|+1': 100
+    }
+  ],
+  'articleCover': '@image("200x100", "#89CFF0", "#fff", "png", "封面")',
+  'articleTitle': '@ctitle(10, 20)',
+  'articleContent': '@cparagraph(10, 20)',
+  'articleType|1-3': 1,
+  'isTop|0-1': 1,
+  'visitCount|100-10000': 1,
+  'commentCount|0-500': 1,
+  'likeCount|0-2000': 1,
+  'favoriteCount|0-800': 1,
+  'preArticleId|1-100': 1,
+  'preArticleTitle': '@ctitle(6, 12)',
+  'nextArticleTitle': '@ctitle(6, 12)',
+  'nextArticleId|1-100': 1,
+  'createTime': '@datetime',
+  'updateTime': '@datetime'
+}
+
+// 1. 获取文章详情接口 Mock
+// 注意：后端是 /detail/{id}，这里用正则匹配任意id
+Mock.mock(RegExp('/api/article/detail' + '.*'), 'get', (options) => {
+  // 从 URL 中提取 id (简单处理，可根据实际情况调整)
+  let id = 1;
+  const url = options.url;
+  const idMatch = url.match(/id=(\d+)/);
+  if (idMatch) {
+    id = parseInt(idMatch[1]);
+  }
+
+  return {
+    code: 200,
+    msg: 'success',
+    data: Mock.mock(articleDetailTemplate)
+  }
+})
+
+// 2. 文章访问量+1接口 Mock
+// 后端是 /visit/{id}，Mock 只需返回成功即可，无需真正加1
+Mock.mock(RegExp('/api/article/visit' + '.*'), 'get', (options) => {
+  return {
+    code: 200,
+    msg: 'success',
+    data: null
+  }
+})

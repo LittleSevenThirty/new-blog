@@ -39,14 +39,22 @@ public class WebsiteInfoServiceImpl extends ServiceImpl<WebsiteInfoMapper, Websi
 
     @Override
     public WebsiteInfoVO getWebsiteInfo() {
-        WebsiteInfoVO websiteInfo = websiteInfoMapper.selectById(WebsiteInfoConst.WEBSITE_INFO_ID).asViewObject(WebsiteInfoVO.class);
-        if (websiteInfo != null) {
-            Long articleCount = articleMapper.selectCount(null);
-            if (articleCount <= 0) return websiteInfo;
+        WebsiteInfo websiteInfoEntity = websiteInfoMapper.selectById(WebsiteInfoConst.WEBSITE_INFO_ID);
+        if (websiteInfoEntity == null) {
+            // 如果没有网站信息记录，返回一个默认的WebsiteInfoVO
+            return new WebsiteInfoVO();
+        }
+        
+        WebsiteInfoVO websiteInfo = websiteInfoEntity.asViewObject(WebsiteInfoVO.class);
+        Long articleCount = articleMapper.selectCount(null);
+        if (articleCount > 0) {
             LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
             // 挑选最近更新文章的更新时间作为最近更新时间
             wrapper.select(Article::getUpdateTime).orderByDesc(Article::getUpdateTime).last(SQLConst.LIMIT_ONE_SQL);
-            websiteInfo.setLastUpdateTime(articleMapper.selectOne(wrapper).getUpdateTime());
+            Article latestArticle = articleMapper.selectOne(wrapper);
+            if (latestArticle != null) {
+                websiteInfo.setLastUpdateTime(latestArticle.getUpdateTime());
+            }
             websiteInfo.setArticleCount(articleCount);  // 设置文章数目
             // 获取所有文章内容
             List<String> articleContentList = articleMapper.selectList(null).stream().map(Article::getArticleContent).toList();
@@ -58,12 +66,11 @@ public class WebsiteInfoServiceImpl extends ServiceImpl<WebsiteInfoMapper, Websi
             wrapper.select(Article::getVisitedCount);
             // 获取访问数量
             websiteInfo.setVisitedCount(articleMapper.selectObjs(wrapper).stream().mapToLong(visitedCount -> (long) visitedCount).sum());
-            // 获取分类数量
-            websiteInfo.setCategoryCount(categoryMapper.selectCount(null));
-            // 获取评论数量
-            websiteInfo.setCommentCount(commentMapper.selectCount(null));
-            return websiteInfo;
         }
-        return null;
+        // 获取分类数量
+        websiteInfo.setCategoryCount(categoryMapper.selectCount(null));
+        // 获取评论数量
+        websiteInfo.setCommentCount(commentMapper.selectCount(null));
+        return websiteInfo;
     }
 }

@@ -4,29 +4,29 @@ import { get } from "http";
 import { UserInfo } from "./type";
 
 // 获取登录用户信息
-export function getUserInfo():Promise<AxiosResponse<UserInfo>>{
+export function getUserInfo(): Promise<AxiosResponse<UserInfo>> {
   return http({
-    url:"/user/auth/info",
-    method:"get"
+    url: "/user/auth/info",
+    method: "get"
   });
 }
 
 // 登录
-export function login(username: string, password: string){
+export function login(data: object) {
   return http({
-    url:"/user/login",
-    method:"post",
-    params: {
-      username,
-      password
+    url: "/user/login",
+    method: "post",
+    data: data,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
     }
   });
 }
 
 // 退出登录
-export function logout(){
+export function logout() {
   return http({
-    url:"/user/logout",
-    method:"post"
+    url: "/user/logout",
+    method: "post"
   });
 }

@@ -88,13 +88,31 @@ export const constantRouter = [
             }
         ]
     },
+    // 文章
     {
-        path: "/login",
-        component: () => import("../views/Login/index.vue"),
-        name: "login",
+        path: '/article/:id',
+        component: () => import('../views/Article/index.vue'),
+        name: 'article',
         meta: {
-            title: "登录"
+            title: '文章详情'
         }
+    },
+    // 登录
+    {
+        path: "/welcom",
+        component: () => import("../views/Welcom/index.vue"),
+        name: "welcom",
+        redirect: '/login',
+        children: [
+            {
+                path: '/login',
+                component: () => import('../views/Welcom/Login/index.vue'),
+                name: 'welcome-login',
+                meta: {
+                    title: '用户登录',
+                }
+            }
+        ]
     },
     // 只能放在最后的作为重定向的错误页，后期选择加上错误组件
     {

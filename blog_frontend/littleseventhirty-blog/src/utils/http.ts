@@ -15,6 +15,17 @@ const http: AxiosInstance = axios.create({
 http.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         console.log("全局请求拦截器");
+        const tokenStr = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (tokenStr) {
+            try {
+                const authObject = JSON.parse(tokenStr);
+                if (authObject.token) {
+                    config.headers.Authorization = `Bearer ${authObject.token}`;
+                }
+            } catch (e) {
+                console.error('Token解析错误:', e);
+            }
+        }
         return config;
     },
     (error: AxiosError) => {

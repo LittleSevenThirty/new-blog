@@ -24,10 +24,14 @@ spring:
       timeout: 2000ms      # 操作超时时间
   mail:
     username: 3100649706@qq.com
+  security:
+    jwt:
+      key: jwt-key
+      expire: 7 # 有效时间
 
 # 邮件配置
 mail:
   article-email-notice: false
-  message-mail-notice: false
+  message-email-notice: false
   article-reply-notice: false
   message-reply-notice: false
