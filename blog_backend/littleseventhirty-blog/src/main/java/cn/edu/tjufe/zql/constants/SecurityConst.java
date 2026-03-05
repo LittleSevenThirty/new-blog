@@ -13,6 +13,11 @@ public class SecurityConst {
     public static final String AUTH_CHECK="/user/auth/**";
 
     /**
+     * 测试账号
+     */
+    public static final String ROLE_TESTER = "Test";
+
+    /**
      * 需要校验的文章接口
      */
     public static final String ARTICLE_CHECK = "article/auth/**";

@@ -105,21 +105,15 @@ export function getTimeline() {
 // 获取对应id文章
 export function getArticleDetail(id: string) {
     return http({
-        url: `/article/detail`,
-        method: "get",
-        params: {
-            id
-        },
+        url: `/article/detail/${id}`,
+        method: "get"
     })
 }
 
 // 文章访问量+1
 export function addArticleVisit(id: String) {
     return http({
-        url: `/article/visit`,
-        method: "get",
-        params: {
-            id
-        },
+        url: `/article/visit/${id}`,
+        method: "get"
     });
 }

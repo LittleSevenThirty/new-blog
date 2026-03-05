@@ -39,4 +39,24 @@ public class RedisConst {
      * 文章访问量新增间隔时间，15分钟,单位秒
      */
     public static final Integer ARTICLE_VISIT_COUNT_INTERVAL = 15 * 60;
+
+    /**
+     * 邮箱验证码
+     */
+    public static final String VERIFY_CODE = "verifyCode:";
+
+    /**
+     * 邮箱验证码过期时间
+     */
+    public static final Integer VERIFY_CODE_EXPIRATION = 5;
+
+    /**
+     * 分隔符
+     */
+    public static final String SEPARATOR = ":";
+
+    /**
+     * 重置邮箱
+     */
+    public static final String RESET_EMAIL = "resetEmail";
 }

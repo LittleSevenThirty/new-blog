@@ -3,6 +3,7 @@ package cn.edu.tjufe.zql.domain.entity;
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ import java.util.Date;
 @TableName(value = "t_comment")
 public class Comment implements ViewObjectConvertible {
     // 评论id
+    @TableId("comment_id")
     private Long commentId;
     // 评论类型（1文章，2留言）
     private Integer type;

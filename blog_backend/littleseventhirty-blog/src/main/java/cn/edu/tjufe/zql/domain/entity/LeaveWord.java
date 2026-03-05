@@ -4,6 +4,7 @@ package cn.edu.tjufe.zql.domain.entity;
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ import java.util.Date;
 @TableName("t_leave_word")
 public class LeaveWord implements ViewObjectConvertible {
     @Schema(description ="留言id" )
+    @TableId("leave_word_id")
     private Long leaveWordId;
     @Schema(description = "用户id")
     private Long userId;

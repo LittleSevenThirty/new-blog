@@ -2,6 +2,7 @@
 
 import { Close } from "@element-plus/icons-vue";
 import { MdCatalog } from 'md-editor-v3';
+import "md-editor-v3/lib/preview.css";
 import { computed } from "vue";
 
 const props = defineProps<{

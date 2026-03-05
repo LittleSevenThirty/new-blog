@@ -103,7 +103,7 @@ defineProps({
 </template>
 
 <style scoped lang="scss">
-@import "./index";
+@use "./index.scss" as *;
 
 .parent_container {
   display: flex;

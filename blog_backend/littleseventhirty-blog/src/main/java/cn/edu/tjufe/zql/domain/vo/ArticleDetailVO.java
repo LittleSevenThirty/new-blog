@@ -1,7 +1,6 @@
-package cn.edu.tjufe.zql.domain.entity;
+package cn.edu.tjufe.zql.domain.vo;
 
 
-import cn.edu.tjufe.zql.domain.vo.TagVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

@@ -19,6 +19,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -33,7 +35,7 @@ import java.util.UUID;
  * @github https://github.com/little-seven-thirty
  */
 @Component
-public class SecurityHandler {
+public class SecurityHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
     @Resource
     private JwtUtils jwtUtils;
 
@@ -52,6 +54,7 @@ public class SecurityHandler {
      * @param response       响应
      * @param authentication 认证信息
      */
+    @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -90,8 +93,8 @@ public class SecurityHandler {
             HttpServletResponse response,
             AuthenticationException exception
     ){
-//        loginLogService.loginLog(request, request.getParameter(USER_NAME), 1, exception.getMessage());
-//        WebUtil.renderString(response, ResponseResult.failure(ResponseEnum.USERNAME_OR_PASSWORD_ERROR.getCode(), exception.getMessage()).asJsonString());
+        loginLogService.loginLog(request, request.getParameter(USER_NAME), 1, exception.getMessage());
+        WebUtil.renderString(response, ResponseResult.failure(ResponseEnum.USERNAME_OR_PASSWORD_ERROR.getCode(), exception.getMessage()).asJsonString());
     }
 
     /**

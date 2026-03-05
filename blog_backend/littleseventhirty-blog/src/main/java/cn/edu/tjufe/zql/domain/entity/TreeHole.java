@@ -24,7 +24,7 @@ import java.util.Date;
 @TableName("t_tree_hole")
 public class TreeHole implements ViewObjectConvertible {
     // 树洞ID
-    @TableId(type= IdType.AUTO)
+    @TableId("tree_hole_id")
     private Long treeHoleId;
     // 用户ID
     private Long userId;

@@ -1,18 +1,20 @@
 package cn.edu.tjufe.zql.controller;
 
 import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.domain.dto.UpdateEmailDTO;
+import cn.edu.tjufe.zql.domain.dto.UserUpdateDTO;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.UserAccountVO;
 import cn.edu.tjufe.zql.service.IUserService;
 import cn.edu.tjufe.zql.utils.ResponseWrapper;
 import cn.edu.tjufe.zql.utils.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: littleseventhirty
@@ -50,6 +52,40 @@ public class UserController {
     public ResponseResult<Void> logout() {
         userService.logout();
         return ResponseResult.success();
+    }
+
+    /**
+     * 前台修改用户信息
+     *
+     * @param userUpdateDTO 用户信息
+     * @return 是否成功
+     */
+    @Operation(summary = "修改用户信息")
+    @Parameter(name = "userUpdateDTO", description = "修改用户信息")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @PostMapping("/auth/update")
+    public ResponseResult<Void> updateUser(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
+        return userService.updateUser(userUpdateDTO);
+    }
+
+    /**
+     * 修改用户绑定邮箱
+     * @param updateEmailDTO 所需参数
+     * @return 是否成功
+     */
+    @Operation(summary = "修改用户绑定邮箱")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @PostMapping("/auth/update/email")
+    public ResponseResult<Void> updateEmail(@RequestBody @Valid UpdateEmailDTO updateEmailDTO) {
+        return userService.updateEmailAndVerify(updateEmailDTO);
+    }
+
+    // 第三方登录用户绑定邮箱
+    @Operation(summary = "第三方登录用户绑定邮箱")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @PostMapping("/auth/third/update/email")
+    public ResponseResult<Void> thirdUpdateEmail(@RequestBody @Valid UpdateEmailDTO updateEmailDTO) {
+        return userService.thirdUpdateEmail(updateEmailDTO);
     }
 
 }

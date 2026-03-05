@@ -31,8 +31,10 @@ spring:
   rabbitmq:
     exchange:
       log: log_exchange
+      email: email_exchange
     routingKey:
       log-login: log_routing_key_login
+      email: email_routing_key
 
 # 邮件配置
 mail:

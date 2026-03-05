@@ -25,7 +25,7 @@ import java.util.Date;
 public class Banner implements ViewObjectConvertible {
     // 主键id
     @TableId("banner_id")
-    private Long id;
+    private Long banner_id;
     // 图片路径
     private String path;
     // 图片大小(字节)

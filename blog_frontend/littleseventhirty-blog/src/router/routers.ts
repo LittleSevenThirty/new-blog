@@ -17,6 +17,7 @@ export const constantRouter = [
                 // 默认匹配，即默认嵌套router-view展示页面
                 path: "",
                 name: "home",
+                // @ts-ignore
                 component: () => import("../views/Home/index.vue"),
                 // 配置源数据 可通过$route.meta获取
                 meta: {
@@ -100,10 +101,10 @@ export const constantRouter = [
         path: "/welcom",
         component: () => import("../views/Welcom/index.vue"),
         name: "welcom",
-        redirect: '/login',
+        redirect: '/welcom/login',
         children: [
             {
-                path: '/login',
+                path: 'login',
                 component: () => import('../views/Welcom/Login/index.vue'),
                 name: 'welcome-login',
                 meta: {
@@ -111,6 +112,15 @@ export const constantRouter = [
                 }
             }
         ]
+    },
+    // 设置
+    {
+        path: '/setting',
+        component: () => import('@/views/Setting/index.vue'),
+        name: 'setting',
+        meta: {
+            title: '用户设置',
+        }
     },
     // 只能放在最后的作为重定向的错误页，后期选择加上错误组件
     {

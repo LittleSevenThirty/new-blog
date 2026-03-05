@@ -7,5 +7,6 @@ package cn.edu.tjufe.zql.constants;
  **/
 public class LogConst {
     public static final String GET = "获取";
+    public static final String EMAIL_SEND = "邮件发送";
 }
 

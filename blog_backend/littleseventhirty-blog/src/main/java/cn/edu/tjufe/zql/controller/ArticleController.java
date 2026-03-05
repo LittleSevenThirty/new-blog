@@ -3,7 +3,7 @@ package cn.edu.tjufe.zql.controller;
 import cn.edu.tjufe.zql.annotation.AccessIntercepter;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
-import cn.edu.tjufe.zql.domain.entity.ArticleDetailVO;
+import cn.edu.tjufe.zql.domain.vo.ArticleDetailVO;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.*;
 import cn.edu.tjufe.zql.service.IArticleService;
@@ -167,6 +167,6 @@ public class ArticleController {
     @AccessIntercepter(seconds = 60, maxCount = 60)
     @GetMapping("/detail/{id}")
     public ResponseResult<ArticleDetailVO> detail(@PathVariable("id") @NotNull Integer id) {
-        return ResponseWrapper.handler((() -> articleService.getArticleDetail(id)));
+        return ResponseWrapper.handler(() -> articleService.getArticleDetail(id));
     }
 }

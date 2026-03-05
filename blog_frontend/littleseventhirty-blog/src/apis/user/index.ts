@@ -1,6 +1,5 @@
 import { AxiosResponse } from "axios";
 import http from "../../utils/http";
-import { get } from "http";
 import { UserInfo } from "./type";
 
 // 获取登录用户信息
@@ -29,4 +28,31 @@ export function logout() {
     url: "/user/logout",
     method: "post"
   });
+}
+
+// 修改用户信息
+export function updateUserAccount(data: any) {
+  return http({
+    url: '/user/auth/update',
+    data: data,
+    method: 'post'
+  })
+}
+
+// 修改电子邮箱
+export function updateEmail(data: any) {
+  return http({
+    url: '/user/auth/update/email',
+    data: data,
+    method: 'post'
+  })
+}
+
+// 修改第三方登录电子邮箱
+export function updateThirdEmail(data: any) {
+  return http({
+    url: '/user/auth/third/update/email',
+    data: data,
+    method: 'post'
+  })
 }

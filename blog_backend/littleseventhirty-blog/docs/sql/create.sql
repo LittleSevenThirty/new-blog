@@ -18,6 +18,49 @@ CREATE TABLE `sys_login_log`  (
                                   PRIMARY KEY (`login_log_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2275 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
+-- ----------------------------
+-- Table structure for sys_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_permission`;
+CREATE TABLE `sys_permission`  (
+                                   `permission_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '权限表id',
+                                   `permission_desc` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '描述',
+                                   `permission_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '权限字符',
+                                   `menu_id` bigint NOT NULL COMMENT '菜单id',
+                                   `create_time` datetime NOT NULL COMMENT '创建时间',
+                                   `update_time` datetime NOT NULL COMMENT '更新时间',
+                                   `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
+                                   PRIMARY KEY (`permission_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 159 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for sys_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role`  (
+                             `role_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '角色id',
+                             `role_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色名称',
+                             `role_key` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色字符',
+                             `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态（0：正常，1：停用）',
+                             `order_num` bigint NOT NULL COMMENT '排序',
+                             `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+                             `create_time` datetime NOT NULL COMMENT '创建时间',
+                             `update_time` datetime NOT NULL COMMENT '更新时间',
+                             `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
+                             PRIMARY KEY (`role_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+
+-- ----------------------------
+-- Table structure for sys_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_permission`;
+CREATE TABLE `sys_role_permission`  (
+                                        `role_permission_id` bigint NOT NULL AUTO_INCREMENT COMMENT '关系表id',
+                                        `role_id` bigint NOT NULL COMMENT '角色id',
+                                        `permission_id` bigint NOT NULL COMMENT '权限id',
+                                        PRIMARY KEY (`role_permission_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 327 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 
 -- Table structure for sys_user
@@ -44,6 +87,18 @@ CREATE TABLE `sys_user`
   CHARACTER SET = UTF8MB4
   COLLATE = UTF8MB4_0900_AI_CI
   ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for sys_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_role`;
+CREATE TABLE `sys_user_role`  (
+                                  `user_role_id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                  `user_id` int NOT NULL COMMENT '用户id',
+                                  `role_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色id',
+                                  PRIMARY KEY (`user_role_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
 
 -- Table structure for sys_website_info
 -- create time: 2026/1/8

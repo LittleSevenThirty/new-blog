@@ -32,8 +32,8 @@ onMounted(async () => {
   }
 })
 
-function changeToggle() {
-  mode.value = mode.value == 'light' ? 'dark' : 'light';
+function changeToggle(detail: string) {
+  mode.value = detail;
 }
 
 // 登出函数

@@ -1,7 +1,7 @@
 package cn.edu.tjufe.zql.service;
 
 import cn.edu.tjufe.zql.domain.entity.Article;
-import cn.edu.tjufe.zql.domain.entity.ArticleDetailVO;
+import cn.edu.tjufe.zql.domain.vo.ArticleDetailVO;
 import cn.edu.tjufe.zql.domain.vo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.validation.constraints.NotNull;

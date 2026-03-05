@@ -28,6 +28,14 @@ public enum ResponseEnum {
      * 没有权限
      */
     NO_PERMISSION("1003", "没有权限"),
+    /**
+     * 验证码错误
+     */
+    VERIFY_CODE_ERROR("1005", "验证码错误"),
+    /**
+     * 用户名或密码错误
+     */
+    USERNAME_OR_PASSWORD_ERROR("1001", "用户名或密码错误"),
     ;
 
     private final String code;

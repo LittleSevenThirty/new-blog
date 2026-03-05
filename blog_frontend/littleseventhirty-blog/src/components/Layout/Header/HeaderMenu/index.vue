@@ -75,8 +75,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.addEventListener("scroll", scrollHandle);
-  window.addEventListener("scroll", debounceBackground);
+  window.removeEventListener("scroll", scrollHandle);
+  window.removeEventListener("scroll", debounceBackground);
 });
 </script>
 
@@ -103,7 +103,7 @@ onUnmounted(() => {
         </span>
         <div class="menu_items">
           <!-- 首页 -->
-          <div class="menu_item" @:click="router.push('/')">
+          <div class="menu_item" @click="router.push('/')">
             <span>
               <el-icon>
                 <HomeFilled />
@@ -232,9 +232,11 @@ onUnmounted(() => {
       </div>
       <div class="user_info">
         <template v-if="!userStore.userInfo">
-          <el-tooltip content="点击登陆" placement="bottom" effect="dark" class="box-item">
-            <el-avatar @click="router.push('/welcome')" style="margin-right: 3rem">登录</el-avatar>
-          </el-tooltip>
+          <div @click="router.push('/welcom')">
+            <el-tooltip content="点击登陆" placement="bottom" effect="dark" class="box-item">
+              <el-avatar style="margin-right: 3rem">登录</el-avatar>
+            </el-tooltip>
+          </div>
         </template>
         <template v-else>
           <div style="display:flex">
@@ -344,7 +346,7 @@ nav {
 
     #menus {
       display: flex; // 弹性布局
-      justify-content: lfet; // 弹性布局下，子项在盒子的位置水平集中在左侧
+      justify-content: left; // 弹性布局下，子项在盒子的位置水平集中在左侧
       align-items: center; // 弹性布局下，子项在盒子的位置垂直集中在中间
       width: 100%;
       height: 100%;

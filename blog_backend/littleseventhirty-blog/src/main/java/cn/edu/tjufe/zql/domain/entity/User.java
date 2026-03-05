@@ -4,6 +4,7 @@ package cn.edu.tjufe.zql.domain.entity;
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,7 @@ import java.util.Date;
 @Data
 public class User implements ViewObjectConvertible {
     // 用户标识
+    @TableId("user_id")
     private Long userId;
     // 用户昵称
     private String nickName;

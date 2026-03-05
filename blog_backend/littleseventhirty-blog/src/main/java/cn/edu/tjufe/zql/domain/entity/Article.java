@@ -3,6 +3,7 @@ package cn.edu.tjufe.zql.domain.entity;
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ import java.util.Date;
 @Data
 public class Article implements ViewObjectConvertible {
     // 文章标识
+    @TableId("article_id")  // 自定义主键需要告诉mapper否则mybatis的一些关于id方法会出错
     private Long articleId;
 
     // 作者ID
@@ -44,7 +46,7 @@ public class Article implements ViewObjectConvertible {
     private Long visitedCount;
 
     // 文章类型(1原创，2翻译，3转载）
-    private Short articleType;
+    private Integer articleType;
 
     // 文章是否置顶
     private Integer isTop;

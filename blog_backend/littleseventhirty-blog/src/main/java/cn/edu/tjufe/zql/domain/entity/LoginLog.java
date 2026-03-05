@@ -4,6 +4,7 @@ package cn.edu.tjufe.zql.domain.entity;
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class LoginLog implements Serializable, ViewObjectConvertible {
     @Serial
     private static final long serialVersionUID = 1L;
     //日志编号
+    @TableId("login_log_id")
     private Long loginLogId;
     //用户名称
     private String userName;

@@ -51,4 +51,9 @@ public class SQLConst {
      * 限制查询一条数据
      */
     public static final String LIMIT_ONE_SQL = "LIMIT 1";
+
+    /**
+     * id
+     */
+    public static final String ID = "id";
 }

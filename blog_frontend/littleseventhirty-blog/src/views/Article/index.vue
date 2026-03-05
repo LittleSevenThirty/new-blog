@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import Menu from "../../components/Layout/Menu/index.vue";
 import Header from "../../components/Layout/Header/index.vue";
 import { MdPreview, Themes } from 'md-editor-v3';
+import "md-editor-v3/lib/preview.css";
 import { useColorMode, useTitle } from '@vueuse/core';
 import SvgIcon from "../../components/SvgIcon/index.vue";
 import useWebsiteStore from '../../pinia/store/modules/website';
@@ -86,7 +87,7 @@ const progressY = ref('0%')
 function mdHtml(htmlText: string) {
   // 获取html中的所有文字，去掉空格与标点符号
   const text = htmlText.replace(/<[^>]+>/g, "").replace(/[\r\n]/g, "").replace(/[ ]/g, "").replace(/[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+/g, "")
-  countMd.value = <number>countWords(text.length)
+  countMd.value = Number(countWords(text.length));
 }
 
 // 字数统计
@@ -184,7 +185,7 @@ watch(() => route.params.id, () => {
 })
 
 onMounted(async () => {
-  await getArticleDetailById()
+  await getArticleDetailById();
 });
 
 window.addEventListener("scroll", throttle(() => {

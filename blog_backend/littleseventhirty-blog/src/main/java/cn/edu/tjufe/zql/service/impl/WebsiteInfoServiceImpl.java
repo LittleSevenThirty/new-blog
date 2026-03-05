@@ -30,10 +30,10 @@ import java.util.regex.Pattern;
 @Service(value = "websiteInfoService")
 public class WebsiteInfoServiceImpl extends ServiceImpl<WebsiteInfoMapper, WebsiteInfo> implements IWebsiteInfoService {
     @Resource
-    private WebsiteInfoMapper websiteInfoMapper;    // 网站信息映射类
+    private WebsiteInfoMapper websiteInfoMapper; // 网站信息映射类
 
     @Resource
-    private ArticleMapper articleMapper;    // 文章映射类
+    private ArticleMapper articleMapper; // 文章映射类
     @Resource
     private CategoryMapper categoryMapper;
     @Resource
@@ -44,18 +44,30 @@ public class WebsiteInfoServiceImpl extends ServiceImpl<WebsiteInfoMapper, Websi
         WebsiteInfoVO websiteInfoVO = this.getById(WebsiteInfoConst.WEBSITE_INFO_ID).asViewObject(WebsiteInfoVO.class);
         // 运行时长
         if (StringUtils.isNotNull(websiteInfoVO)) {
-            if (articleMapper.selectCount(null) <= 0)  return websiteInfoVO;
+            if (articleMapper.selectCount(null) <= 0)
+                return websiteInfoVO;
             LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
             wrapper.select(Article::getUpdateTime).orderByDesc(Article::getUpdateTime).last(SQLConst.LIMIT_ONE_SQL);
             websiteInfoVO.setLastUpdateTime(articleMapper.selectOne(wrapper).getUpdateTime());
             websiteInfoVO.setArticleCount(articleMapper.selectCount(null));
-            List<String> listArticleContent = articleMapper.selectList(null).stream().map(Article::getArticleContent).toList();
+            List<String> listArticleContent = articleMapper.selectList(null).stream().map(Article::getArticleContent)
+                    .toList();
             // 合成一个string
             String mergedString = String.join("", listArticleContent);
             websiteInfoVO.setWordCount((long) extractTextFromMarkdown(mergedString).length());
             wrapper.clear();
             wrapper.select(Article::getVisitedCount);
-            websiteInfoVO.setVisitedCount(articleMapper.selectObjs(wrapper).stream().mapToLong(visitCount -> ((java.math.BigInteger) visitCount).longValue()).sum());
+            websiteInfoVO.setVisitedCount(articleMapper.selectObjs(wrapper).stream().mapToLong(visitCount -> {
+                if (visitCount instanceof java.math.BigInteger) {
+                    return ((java.math.BigInteger) visitCount).longValue();
+                } else if (visitCount instanceof Long) {
+                    return (Long) visitCount;
+                } else if (visitCount instanceof Integer) {
+                    return ((Integer) visitCount).longValue();
+                } else {
+                    return 0;
+                }
+            }).sum());
             websiteInfoVO.setCategoryCount(categoryMapper.selectCount(null));
             websiteInfoVO.setCommentCount(commentMapper.selectCount(null));
             return websiteInfoVO;

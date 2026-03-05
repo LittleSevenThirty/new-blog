@@ -15,6 +15,6 @@ import java.util.List;
  **/
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
-    @Select("SELECT * FROM T_ARTICLE WHERE STATUS=#{status} AND IS_DELETED=0 LIMIT #{limit}")
+    @Select("SELECT * FROM t_article WHERE STATUS=#{status} AND IS_DELETED=0 LIMIT #{limit}")
     List<Article> selectRandomArticle(@Param("status") Integer status, @Param("limit") Integer limit);
 }

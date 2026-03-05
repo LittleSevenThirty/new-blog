@@ -2,19 +2,29 @@
 import ContextMenu from "./components/ContextMenu/index.vue";
 import Loading from "./components/Loading/index.vue";
 import useWebsiteStore from "./pinia/store/modules/website.ts";
-import { useDark,useToggle } from "@vueuse/core";
+import { useColorMode, useDark, useToggle } from "@vueuse/core";
 import { onMounted } from "vue";
 
-const websiteStore=useWebsiteStore();
+const websiteStore = useWebsiteStore();
 
-onMounted(()=>{
+onMounted(() => {
   console.log('App组件挂载，开始获取网站信息');
   websiteStore.getInfo();
 })
 
-// useDark({
-//   useDarkOptions
-// })
+//  深色切换
+useDark({
+  selector: 'html',
+  attribute: 'class',
+  valueLight: 'light',
+  valueDark: 'dark'
+})
+
+useDark({
+  onChanged(dark) {
+    useToggle(dark)
+  }
+})
 </script>
 
 <template>
@@ -30,7 +40,7 @@ onMounted(()=>{
   <!-- 2. 阻拦开发者工具查看的组件 -->
   <!-- <DevToolsBlocker/> -->
   <!-- 3. 内容菜单组件 -->
-  <ContextMenu/>
+  <ContextMenu />
 </template>
 
 <style scoped>
@@ -40,9 +50,11 @@ onMounted(()=>{
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }

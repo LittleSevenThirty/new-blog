@@ -29,8 +29,16 @@ public class LoginUser implements UserDetails {
 
     private User user;
 
+    //存储权限信息
+    private List<String> permissions;
+
     public LoginUser(User user) {
         this.user = user;
+    }
+
+    public LoginUser(User user, List<String> permissions) {
+        this.user = user;
+        this.permissions = permissions;
     }
 
     @Override

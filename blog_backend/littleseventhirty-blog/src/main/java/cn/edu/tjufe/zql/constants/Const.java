@@ -11,6 +11,11 @@ package cn.edu.tjufe.zql.constants;
 public class Const {
 
     /**
+     * UTF-8
+     */
+    public static final String UTF_8 = "UTF-8";
+
+    /**
      * 前台请求
      */
     public static final String FRONTEND_REQUEST = "Frontend";
@@ -19,6 +24,11 @@ public class Const {
      * 后台请求
      */
     public static final String BACKEND_REQUEST = "Backend";
+
+    /**
+     * 前台登录类型
+     */
+    public static final String FRONTEND_LOGIN_TYPE = "Login-Type";
 
     /**
      * 前/后 请求头
@@ -34,4 +44,9 @@ public class Const {
      * HTTPS
      */
     public static final String HTTPS = "https://";
+
+    /**
+     * 前台第三方登录返回token
+     */
+    public static final String FRONTEND_THIRD_LOGIN_TOKEN = "Access-Token";
 }

@@ -4,6 +4,7 @@ package cn.edu.tjufe.zql.domain.entity;
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.annotation.security.DenyAll;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ import java.util.Date;
 @TableName("t_like")
 public class Like implements ViewObjectConvertible {
     // 点赞id
+    @TableId("like_id")
     private Long likeId;
     // 点赞用户id
     private Long userId;
