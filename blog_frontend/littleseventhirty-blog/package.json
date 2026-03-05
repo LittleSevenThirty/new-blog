@@ -25,6 +25,7 @@
   "devDependencies": {
     "@types/mockjs": "^1.0.10",
     "@types/node": "^24.6.0",
+    "@types/nprogress": "^0.2.3",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
     "autoprefixer": "^10.4.22",

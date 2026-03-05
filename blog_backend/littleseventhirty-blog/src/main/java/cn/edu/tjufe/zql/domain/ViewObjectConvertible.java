@@ -55,11 +55,16 @@ public interface ViewObjectConvertible {
     private void convert(Field field, Object target) {
         try {
             Field sourceField = this.getClass().getDeclaredField(field.getName());
+
             sourceField.setAccessible(true);
             field.setAccessible(true);
             field.set(target, sourceField.get(this));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+        } catch (NoSuchFieldException e) {
+            // 【关键改动】如果 Entity 里没这个字段，直接跳过，不抛出异常
+            // 这样 VO 中多出的字段可以留给后续的 Consumer 回调手动处理
+            return;
+        }catch (IllegalAccessException e) {
+            throw new RuntimeException("字段访问权限异常: " + field.getName(), e);
         }
     }
 }

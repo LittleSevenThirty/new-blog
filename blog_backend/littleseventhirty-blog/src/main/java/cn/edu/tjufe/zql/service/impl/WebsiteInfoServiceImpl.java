@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author: littleseventhirty
@@ -39,38 +41,44 @@ public class WebsiteInfoServiceImpl extends ServiceImpl<WebsiteInfoMapper, Websi
 
     @Override
     public WebsiteInfoVO getWebsiteInfo() {
-        WebsiteInfo websiteInfoEntity = websiteInfoMapper.selectById(WebsiteInfoConst.WEBSITE_INFO_ID);
-        if (websiteInfoEntity == null) {
-            // 如果没有网站信息记录，返回一个默认的WebsiteInfoVO
-            return new WebsiteInfoVO();
-        }
-        
-        WebsiteInfoVO websiteInfo = websiteInfoEntity.asViewObject(WebsiteInfoVO.class);
-        Long articleCount = articleMapper.selectCount(null);
-        if (articleCount > 0) {
+        WebsiteInfoVO websiteInfoVO = this.getById(WebsiteInfoConst.WEBSITE_INFO_ID).asViewObject(WebsiteInfoVO.class);
+        // 运行时长
+        if (StringUtils.isNotNull(websiteInfoVO)) {
+            if (articleMapper.selectCount(null) <= 0)  return websiteInfoVO;
             LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
-            // 挑选最近更新文章的更新时间作为最近更新时间
             wrapper.select(Article::getUpdateTime).orderByDesc(Article::getUpdateTime).last(SQLConst.LIMIT_ONE_SQL);
-            Article latestArticle = articleMapper.selectOne(wrapper);
-            if (latestArticle != null) {
-                websiteInfo.setLastUpdateTime(latestArticle.getUpdateTime());
-            }
-            websiteInfo.setArticleCount(articleCount);  // 设置文章数目
-            // 获取所有文章内容
-            List<String> articleContentList = articleMapper.selectList(null).stream().map(Article::getArticleContent).toList();
-            // 合并字符串，并去除特殊格式符号，计算字数
-            String llString = String.join("", articleContentList);
-            websiteInfo.setWordCount((long) StringUtils.stripMarkdown(llString).trim().length());
-            // 条件构造器清空，重新构造，
+            websiteInfoVO.setLastUpdateTime(articleMapper.selectOne(wrapper).getUpdateTime());
+            websiteInfoVO.setArticleCount(articleMapper.selectCount(null));
+            List<String> listArticleContent = articleMapper.selectList(null).stream().map(Article::getArticleContent).toList();
+            // 合成一个string
+            String mergedString = String.join("", listArticleContent);
+            websiteInfoVO.setWordCount((long) extractTextFromMarkdown(mergedString).length());
             wrapper.clear();
             wrapper.select(Article::getVisitedCount);
-            // 获取访问数量
-            websiteInfo.setVisitedCount(articleMapper.selectObjs(wrapper).stream().mapToLong(visitedCount -> (long) visitedCount).sum());
+            websiteInfoVO.setVisitedCount(articleMapper.selectObjs(wrapper).stream().mapToLong(visitCount -> ((java.math.BigInteger) visitCount).longValue()).sum());
+            websiteInfoVO.setCategoryCount(categoryMapper.selectCount(null));
+            websiteInfoVO.setCommentCount(commentMapper.selectCount(null));
+            return websiteInfoVO;
         }
-        // 获取分类数量
-        websiteInfo.setCategoryCount(categoryMapper.selectCount(null));
-        // 获取评论数量
-        websiteInfo.setCommentCount(commentMapper.selectCount(null));
-        return websiteInfo;
+        return null;
+    }
+
+    /**
+     * 从Markdown文档中提取文字内容
+     *
+     * @param markdownContent Markdown文档内容
+     * @return 文字内容
+     */
+    private static String extractTextFromMarkdown(String markdownContent) {
+        // 使用正则表达式匹配Markdown文档中的文字内容，并去掉空格
+        Pattern pattern = Pattern.compile("[^#>\\*\\[\\]`\\s]+");
+        Matcher matcher = pattern.matcher(markdownContent);
+
+        StringBuilder result = new StringBuilder();
+        while (matcher.find()) {
+            result.append(matcher.group()).append("\n");
+        }
+
+        return result.toString().trim();
     }
 }

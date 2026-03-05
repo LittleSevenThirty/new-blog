@@ -39,6 +39,31 @@ public class SecurityConst {
      */
     public static final String LEAVE_WORD_CHECK = "/leaveWord/auth/**";
 
+    /**
+     * 需要校验的gpt聊天接口
+     */
+    public static final String CHAT_GPT_CHECK = "/chatGpt/auth/**";
+
+    /**
+     * 需要校验的友链接口
+     */
+    public static final String LINK_CHECK = "/link/auth/**";
+
+    /**
+     * 需要校验的菜单接口
+     */
+    public static final String MENU_CHECK = "/menu/**";
+
+    /**
+     * 需要校验的角色接口
+     */
+    public static final String ROLE_CHECK = "/role/**";
+
+    /**
+     * 需要校验的权限接口
+     */
+    public static final String PERMISSION_CHECK = "/permission/**";
+
     // 路由数组
     public static final String[] AUTH_CHECK_ARRAY={
             AUTH_CHECK,
@@ -48,6 +73,11 @@ public class SecurityConst {
             FAVORITE_CHECK,
             LIKE_CHECK,
             LEAVE_WORD_CHECK,
+            CHAT_GPT_CHECK,
+            LINK_CHECK,
+            MENU_CHECK,
+            ROLE_CHECK,
+            PERMISSION_CHECK
     };
 
     /**

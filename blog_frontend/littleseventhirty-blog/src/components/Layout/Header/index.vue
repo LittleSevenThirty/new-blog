@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { Close, Search as SearchIcon, Setting, Promotion, Sunny, Moon, Position } from '@element-plus/icons-vue';
 import Search from '../../Search/index.vue';
-import Menu from './Menu/index.vue';
+import Menu from './HeaderMenu/index.vue';
 import { useColorMode } from '@vueuse/core';
 import useUserStore from '../../../pinia/store/modules/user';
 import router from '../../../router';

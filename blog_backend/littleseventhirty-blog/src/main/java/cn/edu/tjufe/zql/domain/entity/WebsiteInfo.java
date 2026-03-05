@@ -38,7 +38,7 @@ public class WebsiteInfo implements ViewObjectConvertible {
     // 站点的名称
     private String websiteName;
     // 站点头部的通知文案
-    private String headerNotifation;
+    private String headerNotification;
     // 站点侧边通知
     private String sidebarAnnouncement;
     // 站点的备案信息

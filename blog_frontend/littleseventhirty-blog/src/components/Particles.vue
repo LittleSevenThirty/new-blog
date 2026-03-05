@@ -90,6 +90,7 @@ const createParticles = (count: number) => {
       particle.speedY *= 0.99;
 
       // 绘制粒子
+      ctx.globalAlpha = 0.5; // 添加这一行，设置透明度为 50%，让粒子变淡
       ctx.beginPath();
       ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
       ctx.fillStyle = particle.color;
@@ -122,7 +123,7 @@ const createParticles = (count: number) => {
 };
 
 onMounted(() => {
-  createParticles(50);
+  createParticles(30);
 });
 
 onUnmounted(() => {

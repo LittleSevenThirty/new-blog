@@ -22,9 +22,6 @@ import java.util.Date;
 @Builder
 @Data
 public class Article implements ViewObjectConvertible {
-    // 数据库表标识
-    private Long id;
-
     // 文章标识
     private Long articleId;
 

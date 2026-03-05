@@ -19,7 +19,16 @@ public enum ResponseEnum {
     /**
      * 请求失败
      */
-    FAILURE("500","failure（失败）");
+    FAILURE("500","failure（失败）"),
+    /**
+     * 未登录提示
+     */
+    NOT_LOGIN("1002", "请先登录"),
+    /**
+     * 没有权限
+     */
+    NO_PERMISSION("1003", "没有权限"),
+    ;
 
     private final String code;
 

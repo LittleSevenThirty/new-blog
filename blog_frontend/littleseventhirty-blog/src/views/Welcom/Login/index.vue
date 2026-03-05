@@ -4,6 +4,8 @@ import { Lock, User } from '@element-plus/icons-vue';
 import useUserStore from '../../../pinia/store/modules/user';
 import { login } from '../../../apis/user';
 import { SET_TOKEN } from '../../../utils/auth';
+import { ElMessage } from 'element-plus';
+import router from '../../../router/index.ts';
 
 const form = reactive({
   username: "",
@@ -27,8 +29,15 @@ function userLogin() {
   formRef.value.validate((valid: any) => {
     if (valid) {
       login(form).then((res: any) => {
-        SET_TOKEN(res.data.token, res.data.expire, form.remember);
-      })
+        if (res.code === 200) {
+          SET_TOKEN(res.data.token, res.data.expire, form.remember)
+          ElMessage.success('登录成功')
+          router.push('/')
+          userStore.getInfo()
+        } else {
+          ElMessage.error(res.msg)
+        }
+      });
     }
   })
 }

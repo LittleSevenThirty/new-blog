@@ -8,6 +8,7 @@ import { onMounted } from "vue";
 const websiteStore=useWebsiteStore();
 
 onMounted(()=>{
+  console.log('App组件挂载，开始获取网站信息');
   websiteStore.getInfo();
 })
 

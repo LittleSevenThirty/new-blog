@@ -34,7 +34,7 @@ public class JwtAuthorizeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 提取 Header
+        // 提取 请求Header
         String authorization = request.getHeader("Authorization");
         // 解析jwt
         DecodedJWT jwt = jwtUtils.resolveJwt(authorization);

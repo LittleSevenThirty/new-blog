@@ -34,6 +34,6 @@ public class WebsiteInfoController {
     @Operation(description = "查询网站信息-前端")
     @GetMapping("/front")
     public ResponseResult<WebsiteInfoVO> getFrontArticles() {
-        return ResponseWrapper.handler(() -> websiteInfoService.getWebsiteInfo());
+        return ResponseResult.success(websiteInfoService.getWebsiteInfo());
     }
 }

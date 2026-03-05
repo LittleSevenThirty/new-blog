@@ -10,5 +10,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @date: 2026/1/8-17:24
  **/
 public interface IWebsiteInfoService extends IService<WebsiteInfo> {
+    /**
+     * 查询网站信息
+     * @return 网站信息
+     */
     WebsiteInfoVO getWebsiteInfo();
 }

@@ -28,6 +28,11 @@ spring:
     jwt:
       key: jwt-key
       expire: 7 # 有效时间
+  rabbitmq:
+    exchange:
+      log: log_exchange
+    routingKey:
+      log-login: log_routing_key_login
 
 # 邮件配置
 mail:

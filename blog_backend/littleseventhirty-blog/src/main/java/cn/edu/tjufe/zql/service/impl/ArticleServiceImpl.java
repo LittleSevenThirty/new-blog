@@ -239,39 +239,39 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<Tag> tags=tagMapper.selectByIds(articleTags.stream().map(ArticleTag::getArticleId).toList());
 
         return articles.stream().map(article->article.asViewObject(CategoryArticleVO.class,item->{
-            item.setCategoryId(articles.stream().filter(art -> Objects.equals(art.getId(), article.getId())).findFirst().orElseThrow().getCategoryId());
+            item.setCategoryId(articles.stream().filter(art -> Objects.equals(art.getArticleId(), article.getArticleId())).findFirst().orElseThrow().getCategoryId());
             item.setTags(tags.stream().filter(tag -> articleTags.stream().anyMatch(articleTag -> Objects.equals(articleTag.getArticleId(), article.getArticleId()) && Objects.equals(articleTag.getTagId(), tag.getTagId()))).map(tag -> tag.asViewObject(TagVO.class)).toList());
         })).toList();
     }
 
     @Override
     public ArticleDetailVO getArticleDetail(Integer id) {
-        Article article = articleMapper.selectOne(new LambdaQueryWrapper<Article>().eq(Article::getStatus, SQLConst.PUBLIC_ARTICLE).and(i -> i.eq(Article::getId, id)));
+        Article article = articleMapper.selectOne(new LambdaQueryWrapper<Article>().eq(Article::getStatus, SQLConst.PUBLIC_ARTICLE).and(i -> i.eq(Article::getArticleId, id)));
         if (StringUtils.isNull(article)) return null;
         // 文章分类
         Category category = categoryMapper.selectById(article.getCategoryId());
         // 文章关系
-        List<ArticleTag> articleTags = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, article.getId()));
+        List<ArticleTag> articleTags = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, article.getArticleId()));
         // 标签
         List<Tag> tags = tagMapper.selectBatchIds(articleTags.stream().map(ArticleTag::getTagId).toList());
         // 当前文章的上一篇文章与下一篇文章,大于当前文章的最小文章与小于当前文章的最大文章
         LambdaQueryWrapper<Article> preAndNextWrapper = new LambdaQueryWrapper<>();
-        preAndNextWrapper.lt(Article::getId, id);
-        Article preArticle = articleMapper.selectOne(preAndNextWrapper.orderByDesc(Article::getId).last(SQLConst.LIMIT_ONE_SQL));
+        preAndNextWrapper.lt(Article::getArticleId, id);
+        Article preArticle = articleMapper.selectOne(preAndNextWrapper.orderByDesc(Article::getArticleId).last(SQLConst.LIMIT_ONE_SQL));
         preAndNextWrapper.clear();
-        preAndNextWrapper.gt(Article::getId, id);
-        Article nextArticle = articleMapper.selectOne(preAndNextWrapper.orderByAsc(Article::getId).last(SQLConst.LIMIT_ONE_SQL));
+        preAndNextWrapper.gt(Article::getArticleId, id);
+        Article nextArticle = articleMapper.selectOne(preAndNextWrapper.orderByAsc(Article::getArticleId).last(SQLConst.LIMIT_ONE_SQL));
 
         return article.asViewObject(ArticleDetailVO.class, vo -> {
             vo.setCategoryName(category.getCategoryName());
-            vo.setCategoryId(category.getId());
+            vo.setCategoryId(category.getCategoryId());
             vo.setTags(tags.stream().map(tag -> tag.asViewObject(TagVO.class)).toList());
-            vo.setCommentCount(commentService.count(new LambdaQueryWrapper<Comment>().eq(Comment::getTypeId, article.getId()).eq(Comment::getType, CommentEnum.COMMENT_TYPE_ARTICLE.getType())));
-            vo.setLikeCount(likeService.count(new LambdaQueryWrapper<Like>().eq(Like::getTypeId, article.getId()).eq(Like::getType, LikeEnum.LIKE_TYPE_ARTICLE.getType())));
-            vo.setFavoriteCount(favoriteService.count(new LambdaQueryWrapper<Favorite>().eq(Favorite::getTypeId, article.getId()).eq(Favorite::getType, FavoriteEnum.FAVORITE_TYPE_ARTICLE.getType())));
-            vo.setPreArticleId(preArticle == null ? 0 : preArticle.getId());
+            vo.setCommentCount(commentService.count(new LambdaQueryWrapper<Comment>().eq(Comment::getTypeId, article.getArticleId()).eq(Comment::getType, CommentEnum.COMMENT_TYPE_ARTICLE.getType())));
+            vo.setLikeCount(likeService.count(new LambdaQueryWrapper<Like>().eq(Like::getTypeId, article.getArticleId()).eq(Like::getType, LikeEnum.LIKE_TYPE_ARTICLE.getType())));
+            vo.setFavoriteCount(favoriteService.count(new LambdaQueryWrapper<Favorite>().eq(Favorite::getTypeId, article.getArticleId()).eq(Favorite::getType, FavoriteEnum.FAVORITE_TYPE_ARTICLE.getType())));
+            vo.setPreArticleId(preArticle == null ? 0 : preArticle.getArticleId());
             vo.setPreArticleTitle(preArticle == null ? "" : preArticle.getArticleTitle());
-            vo.setNextArticleId(nextArticle == null ? 0 : nextArticle.getId());
+            vo.setNextArticleId(nextArticle == null ? 0 : nextArticle.getArticleId());
             vo.setNextArticleTitle(nextArticle == null ? "" : nextArticle.getArticleTitle());
         });
     }
