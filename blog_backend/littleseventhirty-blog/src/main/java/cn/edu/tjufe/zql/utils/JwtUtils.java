@@ -173,8 +173,8 @@ public class JwtUtils {
         // 为了简化，这里创建一个基本的LoginUser对象
         User user = new User();
         user.setUserId(userId);
-        user.setUserName(username);
-        user.setIsDelete(0); // 假设用户未删除
+        user.setUsername(username);
+        user.setIsDeleted(0); // 假设用户未删除
         
         return new LoginUser(user);
     }

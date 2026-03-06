@@ -69,7 +69,7 @@ public class SecurityHandler implements AuthenticationSuccessHandler, Authentica
             throw new BadCredentialsException("非法请求");
         }
         Long id = user.getUser().getUserId();
-        String name = user.getUser().getUserName();
+        String name = user.getUser().getUsername();
         // UUID做jwt的id
         String uuid = UUID.randomUUID().toString();
         // 生成jwt

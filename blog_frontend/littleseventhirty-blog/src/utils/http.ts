@@ -26,8 +26,8 @@ let loadingShown = false;
 http.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
         const url = config.url; // 参考：/websiteInfo/front
-        console.log("全局请求拦截器启动，本次请求URL：" + url);
-        console.log("请求配置：", config);
+        // console.log("全局请求拦截器启动，本次请求URL：" + url);
+        // console.log("请求配置：", config);
         // @ts-ignore
         const musicBaseApi = import.meta.env.VITE_MUSIC_BASE_API;
         if (musicBaseApi && url?.startsWith(musicBaseApi)) {
@@ -58,7 +58,7 @@ http.interceptors.request.use(
         return config
     },
     (error: AxiosError) => {
-        console.error("请求错误：", error);
+        // console.error("请求错误：", error);
         return Promise.reject(error);
     }
 );
@@ -66,8 +66,8 @@ http.interceptors.request.use(
 // 响应拦截器
 http.interceptors.response.use(
     (response) => {
-        console.log("全局响应拦截器启动，本次请求URL：" + response.config.url);
-        console.log("响应内容：", response);
+        // console.log("全局响应拦截器启动，本次请求URL：" + response.config.url);
+        // console.log("响应内容：", response);
         let url = response.config?.url;
         let matchingPath = REQUEST_LOADING_PATH.find(path => url?.startsWith(path));
 
@@ -94,8 +94,8 @@ http.interceptors.response.use(
         return response.data
     },
     (error: AxiosError) => {
-        console.log("全局响应拦截器启动，本次错误请求URL：" + error.config?.url);
-        console.log("错误响应内容：", error);
+        // console.log("全局响应拦截器启动，本次错误请求URL：" + error.config?.url);
+        // console.log("错误响应内容：", error);
         let message = error.message;
         if (message == "Network Error") {
             message = "后端接口连接异常";

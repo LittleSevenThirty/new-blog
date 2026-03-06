@@ -55,7 +55,7 @@ public class TreeHoleServiceImpl extends ServiceImpl<TreeHoleMapper, TreeHole> i
         // 批量查询用户信息
         Map<Long, User> userMap=userMapper.selectList(
                 new LambdaQueryWrapper<User>()
-                        .select(User::getUserId,User::getNickName,User::getAvatar)
+                        .select(User::getUserId,User::getNickname,User::getAvatar)
                         .in(User::getUserId,userIds)
         ).stream().collect(Collectors.toMap(User::getUserId, user -> user));
 
@@ -63,7 +63,7 @@ public class TreeHoleServiceImpl extends ServiceImpl<TreeHoleMapper, TreeHole> i
         return treeHoles.stream().map(treeHole -> treeHole.asViewObject(TreeHoleVO.class,(treeHoleVO)->{
             User user=userMap.get(treeHole.getUserId());
             if(user!=null){
-                treeHoleVO.setNickName(user.getNickName());
+                treeHoleVO.setNickName(user.getNickname());
                 treeHoleVO.setAvater(user.getAvatar());
             }
         })).collect(Collectors.toList());

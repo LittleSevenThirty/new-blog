@@ -30,6 +30,7 @@ public class RedisConst {
      */
     public static final String ARTICLE_VISIT_COUNT = "article:visit:count:";
 
+
     /**
      * 存放文章收藏的键
      */
@@ -59,4 +60,14 @@ public class RedisConst {
      * 重置邮箱
      */
     public static final String RESET_EMAIL = "resetEmail";
+
+    /**
+     * 注册
+     */
+    public static final String REGISTER = "register";
+
+    /**
+     * 重置密码
+     */
+    public static final String RESET = "reset";
 }

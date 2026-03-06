@@ -29,7 +29,8 @@ function userLogin() {
   formRef.value.validate((valid: any) => {
     if (valid) {
       login(form).then((res: any) => {
-        if (res.code === 200) {
+        console.log(res);
+        if (res.code == 200) {
           SET_TOKEN(res.data.token, res.data.expire, form.remember)
           ElMessage.success('登录成功')
           router.push('/')

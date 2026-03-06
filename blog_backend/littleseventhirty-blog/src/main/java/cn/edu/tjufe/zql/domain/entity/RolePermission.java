@@ -26,7 +26,6 @@ public class RolePermission implements ViewObjectConvertible {
     @TableId("role_permission_id")
     private Integer rolePermissionId;
     //角色id
-    @TableId
     private Long roleId;
     //权限id
     private Long permissionId;

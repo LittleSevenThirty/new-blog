@@ -63,30 +63,29 @@ CREATE TABLE `sys_role_permission`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 327 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 
--- Table structure for sys_user
--- create time: 2026/1/13
 DROP TABLE IF EXISTS `sys_user`;
-CREATE TABLE `sys_user`
-(
-    `user_id`       bigint unsigned                                               NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '用户标识',
-    `nickname`      varchar(50) CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI  NULL     DEFAULT NULL COMMENT '用户昵称',
-    `username`      varchar(50) CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI  NOT NULL COMMENT '用户名',
-    `gender`        tinyint(1)                                                    NOT NULL DEFAULT 2 COMMENT '性别（0男，1女，2未定义）',
-    `password`      varchar(100) CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI NULL     DEFAULT NULL COMMENT '密码',
-    `avatar`        varchar(255) CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI NOT NULL COMMENT '用户头像',
-    `introduce`     varchar(100) CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI NULL     DEFAULT NULL COMMENT '用户简介',
-    `email`         varchar(50) CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI  NULL     DEFAULT NULL COMMENT '用户邮箱',
-    `register_type` tinyint(1)                                                    NOT NULL COMMENT '注册方式（0邮箱/姓名，1gitee，2github)',
-    `login_type`    tinyint(1)                                                    NULL     DEFAULT NULL COMMENT '登陆方式（0邮箱/姓名，1gitee，2github)',
-    `login_time`    datetime                                                      NOT NULL COMMENT '最近登陆时间',
-    `create_time`   datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`   datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `is_delete`     tinyint(1)                                                    NOT NULL DEFAULT 0 COMMENT '是否删除'
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 53
-  CHARACTER SET = UTF8MB4
-  COLLATE = UTF8MB4_0900_AI_CI
-  ROW_FORMAT = DYNAMIC;
+CREATE TABLE `sys_user`  (
+                             `user_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户id',
+                             `nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户昵称',
+                             `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名',
+                             `gender` tinyint(1) NOT NULL DEFAULT 0 COMMENT '用户性别(0,未定义,1,男,2女)',
+                             `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户密码',
+                             `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户头像',
+                             `intro` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '个人简介',
+                             `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户邮箱',
+                             `register_ip` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '注册ip',
+                             `register_type` tinyint NOT NULL COMMENT '注册方式(0邮箱/姓名 1Gitee 2Github)',
+                             `register_address` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '注册地址',
+                             `login_ip` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '最近登录ip',
+                             `login_address` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '最近登录地址',
+                             `login_type` tinyint NULL DEFAULT NULL COMMENT '最近登录类型(0邮箱/姓名 1Gitee 2Github)',
+                             `login_time` datetime NOT NULL COMMENT '用户最近登录时间',
+                             `is_disable` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否禁用 (0否 1是)',
+                             `create_time` datetime NOT NULL COMMENT '用户创建时间',
+                             `update_time` datetime NOT NULL COMMENT '用户更新时间',
+                             `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
+                             PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 88065989 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for sys_user_role

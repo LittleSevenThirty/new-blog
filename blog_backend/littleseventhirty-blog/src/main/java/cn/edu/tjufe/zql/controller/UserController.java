@@ -1,8 +1,9 @@
 package cn.edu.tjufe.zql.controller;
 
 import cn.edu.tjufe.zql.annotation.AccessIntercepter;
-import cn.edu.tjufe.zql.domain.dto.UpdateEmailDTO;
-import cn.edu.tjufe.zql.domain.dto.UserUpdateDTO;
+import cn.edu.tjufe.zql.annotation.LogAnnotation;
+import cn.edu.tjufe.zql.constants.LogConst;
+import cn.edu.tjufe.zql.domain.dto.*;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.UserAccountVO;
 import cn.edu.tjufe.zql.service.IUserService;
@@ -86,6 +87,30 @@ public class UserController {
     @PostMapping("/auth/third/update/email")
     public ResponseResult<Void> thirdUpdateEmail(@RequestBody @Valid UpdateEmailDTO updateEmailDTO) {
         return userService.thirdUpdateEmail(updateEmailDTO);
+    }
+
+    @Operation(summary = "用户注册")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @LogAnnotation(module = "前台注册", operation = LogConst.INSERT)
+    @PostMapping("/register")
+    public ResponseResult<Void> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
+        return userService.userRegister(userRegisterDTO);
+    }
+
+    @Operation(summary = "重置密码-确认邮件")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @LogAnnotation(module = "邮件确认", operation = LogConst.RESET_CONFIRM)
+    @PostMapping("/reset-confirm")
+    public ResponseResult<Void> resetConfirm(@RequestBody @Valid UserResetConfirmDTO userResetDTO) {
+        return userService.userResetConfirm(userResetDTO);
+    }
+
+    @Operation(summary = "重置密码")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @LogAnnotation(module = "重置密码", operation = LogConst.RESET_PASSWORD)
+    @PostMapping("/reset-password")
+    public ResponseResult<Void> resetPassword(@RequestBody @Valid UserResetPasswordDTO userResetDTO) {
+        return userService.userResetPassword(userResetDTO);
     }
 
 }

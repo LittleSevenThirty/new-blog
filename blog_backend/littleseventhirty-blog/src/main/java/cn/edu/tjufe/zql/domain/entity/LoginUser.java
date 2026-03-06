@@ -53,7 +53,7 @@ public class LoginUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return user.getUsername();
     }
 
     @Override
@@ -73,6 +73,6 @@ public class LoginUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getIsDelete() == 0;
+        return user.getIsDeleted() == 0;
     }
 }

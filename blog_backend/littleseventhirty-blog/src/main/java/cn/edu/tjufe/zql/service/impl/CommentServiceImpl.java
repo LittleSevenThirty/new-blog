@@ -125,7 +125,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 .filter(comment -> {
                     if (Objects.isNull(comment.getParentId())) {
                         User user = userMapper.selectById(comment.getCommentUserId());
-                        comment.setCommentUserNickname(user.getNickName())
+                        comment.setCommentUserNickname(user.getNickname())
                                 .setCommentUserAvatar(user.getAvatar())
                                 .setLikeCount(likeService.getLikeCount(LikeEnum.LIKE_TYPE_COMMENT.getType(), comment.getCommentId()));
                     }
@@ -134,9 +134,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 .peek(comment -> {
                     User user = userMapper.selectById(comment.getCommentUserId());
                     comment.setChildComment(getChildComment(comments, comment.getCommentId()))
-                            .setCommentUserNickname(user.getNickName())
+                            .setCommentUserNickname(user.getNickname())
                             .setCommentUserAvatar(user.getAvatar())
-                            .setReplyUserNickname(userMapper.selectById(comment.getReplyUserId()).getNickName())
+                            .setReplyUserNickname(userMapper.selectById(comment.getReplyUserId()).getNickname())
                             .setLikeCount(likeService.getLikeCount(LikeEnum.LIKE_TYPE_COMMENT.getType(), comment.getCommentId()));
                 }).toList();
     }

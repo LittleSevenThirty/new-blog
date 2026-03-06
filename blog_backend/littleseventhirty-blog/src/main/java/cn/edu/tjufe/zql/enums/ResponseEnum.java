@@ -21,6 +21,10 @@ public enum ResponseEnum {
      */
     FAILURE("500","failure（失败）"),
     /**
+     * 用户名或密码错误
+     */
+    USERNAME_OR_PASSWORD_ERROR("1001", "用户名或密码错误"),
+    /**
      * 未登录提示
      */
     NOT_LOGIN("1002", "请先登录"),
@@ -33,9 +37,9 @@ public enum ResponseEnum {
      */
     VERIFY_CODE_ERROR("1005", "验证码错误"),
     /**
-     * 用户名或密码错误
+     * 用户名或邮箱已存在
      */
-    USERNAME_OR_PASSWORD_ERROR("1001", "用户名或密码错误"),
+    USERNAME_OR_EMAIL_EXIST("1006", "用户名或邮箱已存在"),
     ;
 
     private final String code;

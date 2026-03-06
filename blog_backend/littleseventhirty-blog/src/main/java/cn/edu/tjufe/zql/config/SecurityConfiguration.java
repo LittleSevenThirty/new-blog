@@ -33,17 +33,6 @@ public class SecurityConfiguration  {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 // 配置CORS
-                .cors(cors -> cors
-                        .configurationSource(request -> {
-                            var config = new org.springframework.web.cors.CorsConfiguration();
-                            config.setAllowedOrigins(List.of("*"));
-                            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                            config.setAllowedHeaders(List.of("*"));
-                            config.setExposedHeaders(List.of("*"));
-                            config.setAllowCredentials(true);
-                            return config;
-                        })
-                )
                 .authorizeHttpRequests(config->
                     config.requestMatchers(SecurityConst.AUTH_CHECK_ARRAY).authenticated()  // SecurityConst.AUTH_CHECK_ARRAY里的请求都需要经过认证
                             .anyRequest().permitAll()   // 非SecurityConst.AUTH_CHECK_ARRAY里的请求全部通过
@@ -71,3 +60,15 @@ public class SecurityConfiguration  {
                 .build();
     }
 }
+
+//                .cors(cors -> cors
+//        .configurationSource(request -> {
+//var config = new org.springframework.web.cors.CorsConfiguration();
+//                            config.setAllowedOrigins(List.of("*"));
+//        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//        config.setAllowedHeaders(List.of("*"));
+//        config.setExposedHeaders(List.of("*"));
+//        config.setAllowCredentials(true);
+//                            return config;
+//                        })
+//                                )

@@ -1,8 +1,7 @@
 package cn.edu.tjufe.zql.service.impl;
 
 import cn.edu.tjufe.zql.constants.*;
-import cn.edu.tjufe.zql.domain.dto.UpdateEmailDTO;
-import cn.edu.tjufe.zql.domain.dto.UserUpdateDTO;
+import cn.edu.tjufe.zql.domain.dto.*;
 import cn.edu.tjufe.zql.domain.entity.*;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.UserAccountVO;
@@ -118,11 +117,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (IpUtils.isUnknown(ipAddr)) {
             ipAddr = IpUtils.getHostIp();
         }
+        Date now = new Date();
         User user = User.builder()
                 .userId(id)
-                .loginTime(new Date())
+                .loginTime(now)
                 .loginType(type)
                 .loginIp(ipAddr)
+                .updateTime(now)
                 .build();
         if (updateById(user)) {
             ipService.refreshIpDetailAsyncByUidAndLogin(user.getUserId());
@@ -188,12 +189,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     private boolean userIsExist(String username, String email) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUserName, username).or().eq(User::getEmail, email);
+        wrapper.eq(User::getUsername, username).or().eq(User::getEmail, email);
         return this.userMapper.selectOne(wrapper) != null;
     }
 
     /**
      * 判断验证码是否正确
+     * @param email
+     * @param code
+     * @param type
+     * @return 返回结果是null说明验证码在redis中存在并且玉前端相等
      */
     private ResponseResult<Void> verifyCode(String email, String code, String type) {
         String redisCode = redisCache.getCacheObject(RedisConst.VERIFY_CODE + type + RedisConst.SEPARATOR + email);
@@ -270,16 +275,80 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public User findAccountByNameOrEmail(String text) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUserName, text).or().eq(User::getEmail, text).eq(User::getRegisterType, RegisterOrLoginTypeEnum.EMAIL.getRegisterType());
+        wrapper.eq(User::getUsername, text).or().eq(User::getEmail, text).eq(User::getRegisterType, RegisterOrLoginTypeEnum.EMAIL.getRegisterType());
         return userMapper.selectOne(wrapper);
+    }
+
+    @Override
+    public ResponseResult<Void> userRegister(UserRegisterDTO userRegisterDTO) {
+        // 1.判断验证码是否正确
+        ResponseResult<Void> verifyCode = verifyCode(userRegisterDTO.getEmail(), userRegisterDTO.getCode(), RedisConst.REGISTER);
+        if (verifyCode != null) return verifyCode;
+
+        // 2.判断用户名或邮箱是否已存在
+        if (userIsExist(userRegisterDTO.getUsername(), userRegisterDTO.getEmail())) {
+            return ResponseResult.failure(ResponseEnum.USERNAME_OR_EMAIL_EXIST.getCode(), ResponseEnum.USERNAME_OR_EMAIL_EXIST.getMessage());
+        }
+        // 用户不存在，且验证码正确,3.密码加密
+        String enPassword = bCryptPasswordEncoder.encode(userRegisterDTO.getPassword());
+        Date date = new Date();
+
+        // 获取注册ip地址
+        String ipAddr = IpUtils.getIpAddr(SecurityUtils.getCurrentHttpRequest());
+        if (IpUtils.isUnknown(ipAddr)) {
+            ipAddr = IpUtils.getHostIp();
+        }
+        // 4.保存用户信息
+        User user = User.builder()
+                .userId(null)
+                .nickname(userRegisterDTO.getUsername())
+                .username(userRegisterDTO.getUsername())
+                .password(enPassword)
+                .registerType(RegisterOrLoginTypeEnum.EMAIL.getRegisterType())
+                .registerIp(ipAddr)
+                .gender(UserConst.DEFAULT_GENDER)
+                .avatar(UserConst.DEFAULT_AVATAR)
+                .introduce(UserConst.DEFAULT_INTRODUCTION)
+                .registerType(RegisterOrLoginTypeEnum.EMAIL.getRegisterType())
+                .isDeleted(UserConst.DEFAULT_STATUS)
+                .email(userRegisterDTO.getEmail())
+                .loginTime(date).build();
+        if (this.save(user)) {
+            // 删除验证码
+            ipService.refreshIpDetailAsyncByUidAndRegister(user.getUserId());
+            redisCache.deleteObject(RedisConst.VERIFY_CODE + RedisConst.REGISTER + RedisConst.SEPARATOR + userRegisterDTO.getEmail());
+            return ResponseResult.success();
+        } else {
+            return ResponseResult.failure();
+        }
+    }
+
+    @Override
+    public ResponseResult<Void> userResetConfirm(UserResetConfirmDTO userResetDTO) {
+        // 1.判断验证码是否正确
+        ResponseResult<Void> verifyCode = verifyCode(userResetDTO.getEmail(), userResetDTO.getCode(), RedisConst.RESET);
+        if (verifyCode != null) return verifyCode;
+        return ResponseResult.success();
+    }
+
+    @Override
+    public ResponseResult<Void> userResetPassword(UserResetPasswordDTO userResetDTO) {
+        // 校验验证码
+        ResponseResult<Void> verifyCode = verifyCode(userResetDTO.getEmail(), userResetDTO.getCode(), RedisConst.RESET);
+        if (verifyCode != null) return verifyCode;
+        String password = bCryptPasswordEncoder.encode(userResetDTO.getPassword());
+        User user = User.builder().password(password).build();
+        if (this.update(user, new LambdaQueryWrapper<User>().eq(User::getEmail, userResetDTO.getEmail()))) {
+            // 删除验证码
+            redisCache.deleteObject(RedisConst.VERIFY_CODE + RedisConst.RESET + RedisConst.SEPARATOR + userResetDTO.getEmail());
+            return ResponseResult.success();
+        } else {
+            return ResponseResult.failure();
+        }
     }
 
     private LoginUser handlerLogin(User user, String equipmentHeader) {
         HttpServletRequest request = SecurityUtils.getCurrentHttpRequest();
-        String header = null;
-        if (request != null) {
-            header = request.getHeader(Const.TYPE_HEADER);
-        }
         // 查询用户角色
         List<UserRole> userRoles = userRoleMapper.selectList(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, user.getUserId()));
         List<Role> roles = userRoles.stream().map(role -> roleMapper.selectById(role.getRoleId())).filter(role -> Objects.equals(role.getStatus(), RoleEnum.Role_STATUS_ARTICLE.getStatus())).toList();
@@ -288,7 +357,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new BadCredentialsException(RespConst.ACCOUNT_DISABLED_MSG);
         }
         // 是否测试账号前台
-        if (header == null || (roles.stream().anyMatch(role -> role.getRoleKey().equals(SecurityConst.ROLE_TESTER)) && !header.equals(Const.BACKEND_REQUEST))) {
+        if (equipmentHeader == null || (roles.stream().anyMatch(role -> role.getRoleKey().equals(SecurityConst.ROLE_TESTER)) && !equipmentHeader.equals(Const.BACKEND_REQUEST))) {
             throw new BadCredentialsException(RespConst.TEST_ACCOUNT_MSG);
         }
 
@@ -298,7 +367,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         if (!roles.isEmpty()) {
             // 查询权限关系表
-            List<RolePermission> rolePermissions = rolePermissionMapper.selectBatchIds(roles.stream().map(Role::getRoleId).toList());
+            List<RolePermission> rolePermissions = rolePermissionMapper.selectList(new LambdaQueryWrapper<RolePermission>()
+                    .in(RolePermission::getRoleId,roles.stream().map(Role::getRoleId).collect(Collectors.toList())));
             // 查询角色权限
             List<Long> pIds = rolePermissions.stream().map(RolePermission::getPermissionId).toList();
             List<Permission> permissions = permissionMapper.selectBatchIds(pIds);

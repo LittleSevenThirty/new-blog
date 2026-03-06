@@ -8,8 +8,7 @@
     <div style="width: 100vw;height: 100vh;overflow: hidden;display: flex">
       <!-- 左边区域 -->
       <div class="left-card">
-        <el-image style="width: 100%;height: 100%" fit="cover"
-          src="https://image.kuailemao.xyz/blog/background/压缩水狗.png" />
+        <el-image style="width: 100%;height: 100%" fit="cover" src="" />
       </div>
       <div class="welcome-title">
         <div>欢迎来到我的个人博客</div>

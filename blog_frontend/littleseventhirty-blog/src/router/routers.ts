@@ -101,14 +101,30 @@ export const constantRouter = [
         path: "/welcom",
         component: () => import("../views/Welcom/index.vue"),
         name: "welcom",
-        redirect: '/welcom/login',
+        redirect: '/login',
         children: [
             {
-                path: 'login',
+                path: '/login',
                 component: () => import('../views/Welcom/Login/index.vue'),
                 name: 'welcome-login',
                 meta: {
                     title: '用户登录',
+                }
+            },
+            {
+                path: '/register',
+                component: () => import('../views/Welcom/Register/index.vue'),
+                name: 'welcome-register',
+                meta: {
+                    title: '用户注册',
+                }
+            },
+            {
+                path: '/reset',
+                component: () => import('../views/Welcome/Reset/index.vue'),
+                name: 'welcome-reset',
+                meta: {
+                    title: '重置密码',
                 }
             }
         ]
