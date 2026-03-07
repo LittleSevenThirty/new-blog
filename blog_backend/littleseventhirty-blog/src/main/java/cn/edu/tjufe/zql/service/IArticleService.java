@@ -1,6 +1,9 @@
 package cn.edu.tjufe.zql.service;
 
+import cn.edu.tjufe.zql.domain.dto.ArticleDTO;
+import cn.edu.tjufe.zql.domain.dto.SearchArticleDTO;
 import cn.edu.tjufe.zql.domain.entity.Article;
+import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.ArticleDetailVO;
 import cn.edu.tjufe.zql.domain.vo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -35,6 +38,13 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<SearchArticleByContentVO> searchArticleByContent(String content);
+
+    /**
+     * 搜索文章列表
+     * @param searchArticleDTO 搜索条件
+     * @return 结果
+     */
+    List<ArticleListVO> searchArticle(SearchArticleDTO searchArticleDTO);
 
     /**
      * 获得前5热门文章
@@ -94,4 +104,40 @@ public interface IArticleService extends IService<Article> {
      * @return 文章相关数据
      */
     ArticleDetailVO getArticleDetail(Integer id);
+
+    /**
+     * 后台文章列表
+     * @return 文章列表
+     */
+    List<ArticleListVO> listArticle();
+
+    /**
+     * 修改文章状态
+     * @param id 文章id
+     * @param status 状态
+     * @return 是否成功
+     */
+    ResponseResult<Void> updateStatus(Long id, Integer status);
+
+    /**
+     * 修改文章是否顶置
+     * @param id 文章id
+     * @param isTop 是否顶置
+     * @return 是否成功
+     */
+    ResponseResult<Void> updateIsTop(Long id, Integer isTop);
+
+    /**
+     * 回显文章数据
+     * @param id 文章id
+     * @return 数据
+     */
+    ArticleDTO getArticleDTO(Long id);
+
+    /**
+     * 删除文章
+     * @param id 文章id
+     * @return 是否成功
+     */
+    ResponseResult<Void> deleteArticle(List<Long> id);
 }

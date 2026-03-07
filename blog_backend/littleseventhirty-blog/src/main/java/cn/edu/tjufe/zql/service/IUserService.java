@@ -3,9 +3,12 @@ package cn.edu.tjufe.zql.service;
 import cn.edu.tjufe.zql.domain.dto.*;
 import cn.edu.tjufe.zql.domain.entity.User;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.ArticleListVO;
 import cn.edu.tjufe.zql.domain.vo.UserAccountVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.List;
 
 /**
  * @author: littleseventhirty

@@ -11,5 +11,8 @@ public class LogConst {
     public static final String INSERT = "新增";
     public static final String RESET_PASSWORD = "重置密码";
     public static final String RESET_CONFIRM = "确认邮件";
+    public static final String SEARCH="搜索";
+    public static final String UPDATE="更新";
+    public static final String DELETE="删除";
 }
 

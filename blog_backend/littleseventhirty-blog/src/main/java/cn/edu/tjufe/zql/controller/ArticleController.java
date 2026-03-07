@@ -3,6 +3,8 @@ package cn.edu.tjufe.zql.controller;
 import cn.edu.tjufe.zql.annotation.AccessIntercepter;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
+import cn.edu.tjufe.zql.domain.dto.ArticleDTO;
+import cn.edu.tjufe.zql.domain.dto.SearchArticleDTO;
 import cn.edu.tjufe.zql.domain.vo.ArticleDetailVO;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.*;
@@ -16,6 +18,7 @@ import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -168,5 +171,82 @@ public class ArticleController {
     @GetMapping("/detail/{id}")
     public ResponseResult<ArticleDetailVO> detail(@PathVariable("id") @NotNull Integer id) {
         return ResponseWrapper.handler(() -> articleService.getArticleDetail(id));
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:article:list')")
+    @Operation(summary = "获取所有的文章列表")
+    @LogAnnotation(module = "文章管理", operation = LogConst.GET)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @GetMapping("/back/list")
+    public ResponseResult<List<ArticleListVO>> listArticle() {
+        return ResponseWrapper.handler(() -> articleService.listArticle());
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:article:search')")
+    @Operation(summary = "搜索文章列表")
+    @Parameters({
+            @Parameter(name = "searchArticleDTO", description = "搜索文章信息", required = true)
+    })
+    @LogAnnotation(module = "文章管理", operation = LogConst.SEARCH)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @PostMapping("/back/search")
+    public ResponseResult<List<ArticleListVO>> searchArticle(@RequestBody SearchArticleDTO searchArticleDTO) {
+        return ResponseWrapper.handler(() -> articleService.searchArticle(searchArticleDTO));
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:article:update')")
+    @Operation(summary = "修改文章状态")
+    @Parameters({
+            @Parameter(name = "id", description = "文章id", required = true),
+            @Parameter(name = "status", description = "状态", required = true)
+    })
+    @LogAnnotation(module = "文章管理", operation = LogConst.UPDATE)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @PostMapping("/back/update/status")
+    public ResponseResult<Void> updateArticleStatus(
+            @RequestParam("id") @NotNull Long id,
+            @RequestParam("status") @NotNull Integer status
+    ) {
+        return articleService.updateStatus(id, status);
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:article:update')")
+    @Operation(summary = "修改文章是否置顶")
+    @Parameters({
+            @Parameter(name = "id", description = "文章id", required = true),
+            @Parameter(name = "isTop", description = "是否置顶", required = true)
+    })
+    @LogAnnotation(module = "文章管理", operation = LogConst.UPDATE)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @PostMapping("/back/update/isTop")
+    public ResponseResult<Void> updateArticleIsTop(
+            @RequestParam("id") @NotNull Long id,
+            @RequestParam("isTop") @NotNull Integer isTop
+    ) {
+        return articleService.updateIsTop(id, isTop);
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:article:echo')")
+    @Operation(summary = "回显文章数据")
+    @Parameters({
+            @Parameter(name = "id", description = "文章id", required = true)
+    })
+    @LogAnnotation(module = "文章管理", operation = LogConst.GET)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @GetMapping("/back/echo/{id}")
+    public ResponseResult<ArticleDTO> getArticleEcho(@PathVariable("id") Long id) {
+        return ResponseWrapper.handler(() -> articleService.getArticleDTO(id));
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:article:delete')")
+    @Operation(summary = "删除文章")
+    @Parameters({
+            @Parameter(name = "id", description = "文章id", required = true)
+    })
+    @LogAnnotation(module = "文章管理", operation = LogConst.DELETE)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @DeleteMapping("/back/delete")
+    public ResponseResult<Void> deleteArticle(@RequestBody List<Long> ids) {
+        return articleService.deleteArticle(ids);
     }
 }

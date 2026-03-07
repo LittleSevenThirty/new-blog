@@ -2,16 +2,16 @@ package cn.edu.tjufe.zql.service.impl;
 
 import cn.edu.tjufe.zql.constants.RedisConst;
 import cn.edu.tjufe.zql.constants.SQLConst;
+import cn.edu.tjufe.zql.domain.dto.ArticleDTO;
+import cn.edu.tjufe.zql.domain.dto.SearchArticleDTO;
 import cn.edu.tjufe.zql.domain.entity.*;
+import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.*;
 import cn.edu.tjufe.zql.enums.CommentEnum;
 import cn.edu.tjufe.zql.enums.CountTypeEnum;
 import cn.edu.tjufe.zql.enums.FavoriteEnum;
 import cn.edu.tjufe.zql.enums.LikeEnum;
-import cn.edu.tjufe.zql.mapper.ArticleMapper;
-import cn.edu.tjufe.zql.mapper.ArticleTagMapper;
-import cn.edu.tjufe.zql.mapper.CategoryMapper;
-import cn.edu.tjufe.zql.mapper.TagMapper;
+import cn.edu.tjufe.zql.mapper.*;
 import cn.edu.tjufe.zql.service.IArticleService;
 import cn.edu.tjufe.zql.service.ICommentService;
 import cn.edu.tjufe.zql.service.IFavoriteService;
@@ -21,6 +21,7 @@ import cn.edu.tjufe.zql.utils.RedisCache;
 import cn.edu.tjufe.zql.utils.SecurityUtils;
 import cn.edu.tjufe.zql.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,6 +29,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private TagMapper tagMapper;
 
     @Resource
+    private UserMapper userMapper;
+
+    @Resource
     private ILikeService likeService;
 
     @Resource
@@ -67,6 +72,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Resource
     private ICommentService commentService;
+
+    @Resource
+    private LikeMapper likeMapper;
+
+    @Resource
+    private FavoriteMapper favoriteMapper;
+
+    @Resource
+    private CommentMapper commentMapper;
 
     @Override
     public List<InitSearchTitleVO> initSearchByTitle() {
@@ -165,6 +179,29 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             return articles.stream().map(article -> article.asViewObject(RecommendArticleVO.class)).toList();
         }
         return List.of();
+    }
+
+    @Override
+    public List<ArticleListVO> searchArticle(SearchArticleDTO searchArticleDTO) {
+        // 构造查询条件
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotNull(searchArticleDTO.getArticleTitle()), Article::getArticleTitle, searchArticleDTO.getArticleTitle())
+                .eq(StringUtils.isNotNull(searchArticleDTO.getCategoryId()), Article::getCategoryId, searchArticleDTO.getCategoryId())
+                .eq(StringUtils.isNotNull(searchArticleDTO.getStatus()), Article::getStatus, searchArticleDTO.getStatus())
+                .eq(StringUtils.isNotNull(searchArticleDTO.getIsTop()), Article::getIsTop, searchArticleDTO.getIsTop());
+        // 搜索文章转换类型
+        List<ArticleListVO> articleListVOS = articleMapper.selectList(wrapper).stream().map(article -> article.asViewObject(ArticleListVO.class)).toList();
+        if (!articleListVOS.isEmpty()) {
+            articleListVOS.forEach(articleListVO -> {
+                articleListVO.setCategoryName(categoryMapper.selectById(articleListVO.getCategoryId()).getCategoryName());
+                articleListVO.setUserName(userMapper.selectById(articleListVO.getUserId()).getUsername());
+                // 查询文章标签
+                List<Long> tagIds = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, articleListVO.getArticleId())).stream().map(ArticleTag::getTagId).toList();
+                articleListVO.setTagsName(tagMapper.selectBatchIds(tagIds).stream().map(Tag::getTagName).toList());
+            });
+            return articleListVOS;
+        }
+        return null;
     }
 
     @Override
@@ -287,6 +324,68 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             vo.setNextArticleId(0L);
             vo.setNextArticleTitle("");
         });
+    }
+
+    // 后台问文章列表
+    @Override
+    public List<ArticleListVO> listArticle() {
+        // 按时间排序获取所有文章，转为vo
+        List<ArticleListVO> articleListVOS = articleMapper.selectList(new LambdaQueryWrapper<Article>()
+                .orderByDesc(Article::getCreateTime)).stream().map(article -> article.asViewObject(ArticleListVO.class)).toList();
+        if (!articleListVOS.isEmpty()) {
+            articleListVOS.forEach(articleListVO -> {
+                articleListVO.setCategoryName(categoryMapper.selectById(articleListVO.getCategoryId()).getCategoryName());
+                articleListVO.setUserName(userMapper.selectById(articleListVO.getUserId()).getUsername());
+                // 查询文章标签
+                List<Long> tagIds = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, articleListVO.getArticleId())).stream().map(ArticleTag::getTagId).toList();
+                articleListVO.setTagsName(tagMapper.selectBatchIds(tagIds).stream().map(Tag::getTagName).toList());
+            });
+            return articleListVOS;
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseResult<Void> updateStatus(Long id, Integer status) {
+        if (this.update(new LambdaUpdateWrapper<Article>().eq(Article::getArticleId, id).set(Article::getStatus, status))) {
+            return ResponseResult.success();
+        }
+        return ResponseResult.failure();
+    }
+
+    @Override
+    public ResponseResult<Void> updateIsTop(Long id, Integer isTop) {
+        if (this.update(new LambdaUpdateWrapper<Article>().eq(Article::getArticleId, id).set(Article::getIsTop, isTop))) {
+            return ResponseResult.success();
+        }
+        return ResponseResult.failure();
+    }
+
+    @Override
+    public ArticleDTO getArticleDTO(Long id) {
+        ArticleDTO articleDTO = articleMapper.selectById(id).asViewObject(ArticleDTO.class);
+        if (StringUtils.isNotNull(articleDTO)) {
+            // 查询文章标签
+            List<Long> tagIds = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, articleDTO.getId())).stream().map(ArticleTag::getTagId).toList();
+            articleDTO.setTagId(tagMapper.selectBatchIds(tagIds).stream().map(Tag::getTagId).toList());
+            return articleDTO;
+        }
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public ResponseResult<Void> deleteArticle(List<Long> ids) {
+        if (this.removeByIds(ids)) {
+            // 删除标签关系
+            articleTagMapper.delete(new LambdaQueryWrapper<ArticleTag>().in(ArticleTag::getArticleId, ids));
+            // 删除点赞、收藏、评论
+            likeMapper.delete(new LambdaQueryWrapper<Like>().eq(Like::getType, LikeEnum.LIKE_TYPE_ARTICLE.getType()).and(a -> a.in(Like::getTypeId, ids)));
+            favoriteMapper.delete(new LambdaQueryWrapper<Favorite>().eq(Favorite::getType, FavoriteEnum.FAVORITE_TYPE_ARTICLE.getType()).and(a -> a.in(Favorite::getTypeId, ids)));
+            commentMapper.delete(new LambdaQueryWrapper<Comment>().eq(Comment::getType, CommentEnum.COMMENT_TYPE_ARTICLE.getType()).and(a -> a.in(Comment::getTypeId, ids)));
+            return ResponseResult.success();
+        }
+        return ResponseResult.failure();
     }
 
     private <T> void setRedisCache(ArticleVO articleVO, String redisKey, CountTypeEnum countType) {
