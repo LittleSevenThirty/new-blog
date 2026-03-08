@@ -8,6 +8,11 @@ package cn.edu.tjufe.zql.constants;
 public class SQLConst {
 
     /**
+     * Banner最多数量
+     */
+    public static final Integer BANNER_MAX_COUNT = 5;
+
+    /**
      * 公开文章的字段标识
      */
     public static final Integer PUBLIC_ARTICLE = 1;

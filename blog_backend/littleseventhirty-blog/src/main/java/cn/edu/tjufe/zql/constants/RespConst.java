@@ -48,4 +48,9 @@ public class RespConst {
      * 用户名或密码错误
      */
     public static final String USERNAME_OR_PASSWORD_ERROR_MSG = "用户名或密码错误";
+
+    /**
+     * Banner数量已达上限
+     */
+    public static final String BANNER_MAX_COUNT_MSG = "首页banner数量已达上限";
 }

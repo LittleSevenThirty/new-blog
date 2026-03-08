@@ -2,8 +2,13 @@ package cn.edu.tjufe.zql.controller;
 
 import cn.edu.tjufe.zql.annotation.AccessIntercepter;
 import cn.edu.tjufe.zql.annotation.CheckBlacklist;
+import cn.edu.tjufe.zql.annotation.LogAnnotation;
+import cn.edu.tjufe.zql.constants.LogConst;
+import cn.edu.tjufe.zql.domain.dto.CommentIsCheckDTO;
+import cn.edu.tjufe.zql.domain.dto.SearchCommentDTO;
 import cn.edu.tjufe.zql.domain.dto.UserCommentDTO;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.CommentListVO;
 import cn.edu.tjufe.zql.domain.vo.CommentVO;
 import cn.edu.tjufe.zql.domain.vo.PageVO;
 import cn.edu.tjufe.zql.service.ICommentService;
@@ -14,6 +19,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -52,4 +58,41 @@ public class CommentController {
             @RequestParam Integer pageSize) {
         return ResponseWrapper.handler((() -> commentService.getCommentList(type, typeId, pageNum, pageSize)));
     }
+
+    @PreAuthorize("hasAnyAuthority('blog:comment:list')")
+    @Operation(summary = "后台评论列表")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @LogAnnotation(module="评论管理",operation= LogConst.GET)
+    @GetMapping("/back/list")
+    public ResponseResult<List<CommentListVO>> backList() {
+        return ResponseWrapper.handler(() -> commentService.getBackCommentList(null));
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:comment:search')")
+    @Operation(summary = "搜索后台评论列表")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @LogAnnotation(module="评论管理",operation= LogConst.SEARCH)
+    @PostMapping("/back/search")
+    public ResponseResult<List<CommentListVO>> backList(@RequestBody SearchCommentDTO searchDTO) {
+        return ResponseWrapper.handler(() -> commentService.getBackCommentList(searchDTO));
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:comment:isCheck')")
+    @Operation(summary = "修改评论是否通过")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @LogAnnotation(module="评论管理",operation= LogConst.UPDATE)
+    @PostMapping("/back/isCheck")
+    public ResponseResult<Void> isCheck(@RequestBody @Valid CommentIsCheckDTO commentIsCheckDTO) {
+        return commentService.isCheckComment(commentIsCheckDTO);
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:comment:delete')")
+    @Operation(summary = "删除评论")
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @LogAnnotation(module="评论管理",operation= LogConst.DELETE)
+    @DeleteMapping("/back/delete/{id}")
+    public ResponseResult<Void> delete(@PathVariable("id") Long id) {
+        return commentService.deleteComment(id);
+    }
+
 }

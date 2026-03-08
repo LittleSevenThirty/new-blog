@@ -1,26 +1,26 @@
 import { message } from 'ant-design-vue'
 
-// 查询文章分类
+// 查询文章分类--
 export async function articleCategory() {
   return useGet('/category/list').catch(msg => message.warn(msg))
 }
 
-// 查询文章标签
+// 查询文章标签--
 export async function articleTag() {
   return useGet('/tag/list').catch(msg => message.warn(msg))
 }
 
-// 新增标签
+// 新增标签 --
 export async function addTag(data: any) {
   return usePut('/tag', data).catch(msg => message.warn(msg))
 }
 
-// 新增分类
+// 新增分类 --
 export async function addCategory(data: any) {
   return usePut('/category', data).catch(msg => message.warn(msg))
 }
 
-// 上传文章封面
+// 上传文章封面 --
 export async function uploadCover(data: any) {
   return usePost('/article/upload/articleCover', data, {
     headers: {
@@ -29,17 +29,17 @@ export async function uploadCover(data: any) {
   }).catch(msg => message.warn(msg))
 }
 
-// 发布文章
+// 发布文章--
 export async function publishArticle(data: any) {
   return usePost('/article/publish', data).catch(msg => message.warn(msg))
 }
 
-// 发布错误，删除封面
+// 发布错误，删除封面--
 export async function deleteCover(articleCoverUrl: string) {
   return useGet('/article/delete/articleCover', { articleCoverUrl }).catch(msg => message.warn(msg))
 }
 
-// 上传文章图片
+// 上传文章图片--
 export async function uploadArticleImage(data: any) {
   return usePost('/article/upload/articleImage', data, {
     headers: {

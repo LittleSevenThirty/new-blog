@@ -2,17 +2,23 @@ package cn.edu.tjufe.zql.service.impl;
 
 import cn.edu.tjufe.zql.constants.RedisConst;
 import cn.edu.tjufe.zql.constants.SQLConst;
+import cn.edu.tjufe.zql.domain.dto.CommentIsCheckDTO;
+import cn.edu.tjufe.zql.domain.dto.SearchCommentDTO;
 import cn.edu.tjufe.zql.domain.dto.UserCommentDTO;
 import cn.edu.tjufe.zql.domain.entity.Comment;
 import cn.edu.tjufe.zql.domain.entity.LeaveWord;
+import cn.edu.tjufe.zql.domain.entity.Like;
 import cn.edu.tjufe.zql.domain.entity.User;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.CommentListVO;
 import cn.edu.tjufe.zql.domain.vo.CommentVO;
 import cn.edu.tjufe.zql.domain.vo.PageVO;
+import cn.edu.tjufe.zql.enums.CommentEnum;
 import cn.edu.tjufe.zql.enums.LikeEnum;
 import cn.edu.tjufe.zql.enums.MailBoxAlertEnum;
 import cn.edu.tjufe.zql.mapper.CommentMapper;
 import cn.edu.tjufe.zql.mapper.LeaveWordMapper;
+import cn.edu.tjufe.zql.mapper.LikeMapper;
 import cn.edu.tjufe.zql.mapper.UserMapper;
 import cn.edu.tjufe.zql.service.ICommentService;
 import cn.edu.tjufe.zql.service.ILikeService;
@@ -21,6 +27,7 @@ import cn.edu.tjufe.zql.utils.RedisCache;
 import cn.edu.tjufe.zql.utils.SecurityUtils;
 import cn.edu.tjufe.zql.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -32,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
@@ -46,6 +54,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private ILikeService likeService;
     @Resource
     private IPublicService publicService;
+    @Resource
+    private LikeMapper likeMapper;
     @Resource
     private RedisCache redisCache;
     @Value("${mail.article-email-notice}")
@@ -117,6 +127,66 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 .eq(Comment::getTypeId, typeId)
                 .eq(Comment::getIsCheck, SQLConst.COMMENT_IS_CHECK);
         return new PageVO<>(collect, commentMapper.selectCount(countWrapper));
+    }
+
+    @Override
+    public List<CommentListVO> getBackCommentList(SearchCommentDTO searchDTO) {
+        LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.isNotNull(searchDTO)) {
+            List<User> users = userMapper.selectList(new LambdaQueryWrapper<User>().like(User::getUsername, searchDTO.getCommentUserName()));
+            if (!users.isEmpty())
+                wrapper.in(StringUtils.isNotEmpty(searchDTO.getCommentUserName()), Comment::getCommentUserId, users.stream().map(User::getUserId).collect(Collectors.toList()));
+            else
+                wrapper.eq(StringUtils.isNotNull(searchDTO.getCommentUserName()), Comment::getCommentUserId, null);
+
+            wrapper.like(StringUtils.isNotEmpty(searchDTO.getCommentContent()), Comment::getCommentContent, searchDTO.getCommentContent())
+                    .eq(StringUtils.isNotNull(searchDTO.getType()), Comment::getType, searchDTO.getType())
+                    .eq(StringUtils.isNotNull(searchDTO.getIsCheck()), Comment::getIsCheck, searchDTO.getIsCheck());
+        }
+
+        return commentMapper.selectList(wrapper.orderByDesc(Comment::getCreateTime)).stream().map(comment -> comment.asViewObject(CommentListVO.class,
+                v -> v.setCommentUserName(userMapper.selectById(comment.getCommentUserId()).getUsername()))).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public ResponseResult<Void> isCheckComment(CommentIsCheckDTO isCheckDTO) {
+        LambdaUpdateWrapper<Comment> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Comment::getCommentId, isCheckDTO.getCommentId()).or().eq(Comment::getParentId, isCheckDTO.getCommentId());
+        int updateCount = commentMapper.update(Comment.builder().commentId(isCheckDTO.getCommentId()).isCheck(isCheckDTO.getIsCheck()).build(), wrapper);
+        if (updateCount > 0) {
+            // 同步redis评论数量
+            // 如果是文章评论，则改变redis中文章数量
+            // 1.查询评论所在的文章id
+            Long articleId = commentMapper
+                    .selectOne(
+                            new LambdaQueryWrapper<Comment>()
+                                    .eq(Comment::getCommentId, isCheckDTO.getCommentId())
+                                    .eq(Comment::getType, CommentEnum.COMMENT_TYPE_ARTICLE.getType())).getTypeId();
+            // 2.修改redis数量
+            if (Objects.equals(isCheckDTO.getIsCheck(), SQLConst.COMMENT_IS_CHECK)) {
+                redisCache.incrementCacheMapValue(RedisConst.ARTICLE_COMMENT_COUNT, articleId.toString(), updateCount);
+            } else {
+                redisCache.incrementCacheMapValue(RedisConst.ARTICLE_COMMENT_COUNT, articleId.toString(), -updateCount);
+            }
+            return ResponseResult.success();
+        }
+
+        return ResponseResult.failure();
+    }
+
+    @Override
+    public ResponseResult<Void> deleteComment(Long id) {
+        // 是否还有子评论
+        if (commentMapper.selectCount(new LambdaQueryWrapper<Comment>().eq(Comment::getParentId, id)) > 0) {
+            return ResponseResult.failure("该评论还有子评论");
+        }
+        if (commentMapper.deleteById(id) > 0) {
+            // 删除评论的点赞
+            likeMapper.delete(new LambdaQueryWrapper<Like>().eq(Like::getType, LikeEnum.LIKE_TYPE_COMMENT.getType()).and(a -> a.in(Like::getTypeId, id)));
+            return ResponseResult.success();
+        }
+        return ResponseResult.failure();
     }
 
     // 获取子评论

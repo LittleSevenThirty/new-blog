@@ -3,16 +3,21 @@ package cn.edu.tjufe.zql.service.impl;
 
 import cn.edu.tjufe.zql.constants.FunctionConst;
 import cn.edu.tjufe.zql.constants.SQLConst;
+import cn.edu.tjufe.zql.domain.dto.LeaveWordIsCheckDTO;
+import cn.edu.tjufe.zql.domain.dto.SearchLeaveWordDTO;
 import cn.edu.tjufe.zql.domain.entity.*;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.LeaveWordListVO;
 import cn.edu.tjufe.zql.domain.vo.LeaveWordVO;
 import cn.edu.tjufe.zql.enums.CommentEnum;
+import cn.edu.tjufe.zql.enums.FavoriteEnum;
 import cn.edu.tjufe.zql.enums.LikeEnum;
 import cn.edu.tjufe.zql.enums.MailBoxAlertEnum;
 import cn.edu.tjufe.zql.mapper.*;
 import cn.edu.tjufe.zql.service.ILeaveWordService;
 import cn.edu.tjufe.zql.service.IPublicService;
 import cn.edu.tjufe.zql.utils.SecurityUtils;
+import cn.edu.tjufe.zql.utils.StringUtils;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -97,6 +102,50 @@ public class LeaveWordServiceImpl extends ServiceImpl<LeaveWordMapper, LeaveWord
             return ResponseResult.success();
         }
 
+        return ResponseResult.failure();
+    }
+
+    @Override
+    public List<LeaveWordListVO> getBackLeaveWordList(SearchLeaveWordDTO searchDTO) {
+        LambdaQueryWrapper<LeaveWord> wrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.isNotNull(searchDTO)) {
+            // 搜索
+            List<User> users = userMapper.selectList(new LambdaQueryWrapper<User>().like(User::getUsername, searchDTO.getUserName()));
+            if (!users.isEmpty())
+                wrapper.in(StringUtils.isNotEmpty(searchDTO.getUserName()), LeaveWord::getUserId, users.stream().map(User::getUserId).collect(Collectors.toList()));
+            else
+                wrapper.eq(StringUtils.isNotNull(searchDTO.getUserName()), LeaveWord::getUserId, null);
+
+            wrapper.eq(StringUtils.isNotNull(searchDTO.getIsCheck()), LeaveWord::getIsCheck, searchDTO.getIsCheck());
+            if (StringUtils.isNotNull(searchDTO.getStartTime()) && StringUtils.isNotNull(searchDTO.getEndTime()))
+                wrapper.between(LeaveWord::getCreateTime, searchDTO.getStartTime(), searchDTO.getEndTime());
+        }
+        List<LeaveWord> leaveWords = leaveWordMapper.selectList(wrapper);
+        if (!leaveWords.isEmpty()) {
+            return leaveWords.stream().map(leaveWord -> leaveWord.asViewObject(LeaveWordListVO.class,
+                    v -> v.setUserName(userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserId, leaveWord.getUserId()))
+                            .getUsername()))).toList();
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseResult<Void> isCheckLeaveWord(LeaveWordIsCheckDTO isCheckDTO) {
+        if (leaveWordMapper.updateById(LeaveWord.builder().leaveWordId(isCheckDTO.getId()).isCheck(isCheckDTO.getIsCheck()).build()) > 0)
+            return ResponseResult.success();
+
+        return ResponseResult.failure();
+    }
+
+    @Override
+    public ResponseResult<Void> deleteLeaveWord(List<Long> ids) {
+        if (leaveWordMapper.deleteBatchIds(ids) > 0) {
+            // 删除点赞、收藏、评论
+            likeMapper.delete(new LambdaQueryWrapper<Like>().eq(Like::getType, LikeEnum.LIKE_TYPE_LEAVE_WORD.getType()).and(a -> a.in(Like::getTypeId, ids)));
+            favoriteMapper.delete(new LambdaQueryWrapper<Favorite>().eq(Favorite::getType, FavoriteEnum.FAVORITE_TYPE_LEAVE_WORD.getType()).and(a -> a.in(Favorite::getTypeId, ids)));
+            commentMapper.delete(new LambdaQueryWrapper<Comment>().eq(Comment::getType, CommentEnum.COMMENT_TYPE_LEAVE_WORD.getType()).and(a -> a.in(Comment::getTypeId, ids)));
+            return ResponseResult.success();
+        }
         return ResponseResult.failure();
     }
 }

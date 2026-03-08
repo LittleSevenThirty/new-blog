@@ -1,7 +1,9 @@
 package cn.edu.tjufe.zql.service.impl;
 
+import cn.edu.tjufe.zql.domain.dto.TagDTO;
 import cn.edu.tjufe.zql.domain.entity.ArticleTag;
 import cn.edu.tjufe.zql.domain.entity.Tag;
+import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.TagVO;
 import cn.edu.tjufe.zql.mapper.ArticleTagMapper;
 import cn.edu.tjufe.zql.mapper.TagMapper;
@@ -25,6 +27,12 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
 
     @Resource
     private ArticleTagMapper articleTagMapper;
+
+    @Override
+    public ResponseResult<Void> addTag(TagDTO tagDTO) {
+        if (this.save(tagDTO.asViewObject(Tag.class))) return ResponseResult.success();
+        return ResponseResult.failure();
+    }
 
     @Override
     public List<TagVO> listAllTag() {

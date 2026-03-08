@@ -8,6 +8,7 @@ import cn.edu.tjufe.zql.domain.vo.ArticleDetailVO;
 import cn.edu.tjufe.zql.domain.vo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -66,6 +67,36 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     List<RecommendArticleVO> getRecommendArticles();
+
+    /**
+     * 文章图片上传
+     * @param articleImage 文章图片
+     * @return url
+     */
+    ResponseResult<String> uploadArticleImage(MultipartFile articleImage);
+
+    /**
+     * 上传文章封面
+     *
+     * @param articleCover 文章封面
+     * @return 是否成功
+     */
+    ResponseResult<String> uploadArticleCover(MultipartFile articleCover);
+
+    /**
+     * 发布文章
+     *
+     * @param articleDTO 文章信息
+     * @return 是否成功
+     */
+    ResponseResult<Void> publish(ArticleDTO articleDTO);
+
+    /**
+     * 发布错误删除封面
+     * @param articleCoverUrl 文章封面
+     * @return 是否成功
+     */
+    ResponseResult<Void> deleteArticleCover(String articleCoverUrl);
 
     /**
      * 获取所有文章

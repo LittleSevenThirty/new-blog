@@ -7,19 +7,10 @@ import cn.edu.tjufe.zql.domain.dto.SearchArticleDTO;
 import cn.edu.tjufe.zql.domain.entity.*;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.*;
-import cn.edu.tjufe.zql.enums.CommentEnum;
-import cn.edu.tjufe.zql.enums.CountTypeEnum;
-import cn.edu.tjufe.zql.enums.FavoriteEnum;
-import cn.edu.tjufe.zql.enums.LikeEnum;
+import cn.edu.tjufe.zql.enums.*;
 import cn.edu.tjufe.zql.mapper.*;
-import cn.edu.tjufe.zql.service.IArticleService;
-import cn.edu.tjufe.zql.service.ICommentService;
-import cn.edu.tjufe.zql.service.IFavoriteService;
-import cn.edu.tjufe.zql.service.ILikeService;
-import cn.edu.tjufe.zql.utils.IpUtils;
-import cn.edu.tjufe.zql.utils.RedisCache;
-import cn.edu.tjufe.zql.utils.SecurityUtils;
-import cn.edu.tjufe.zql.utils.StringUtils;
+import cn.edu.tjufe.zql.service.*;
+import cn.edu.tjufe.zql.utils.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -28,8 +19,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -51,6 +45,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Resource
     private ArticleTagMapper articleTagMapper;
+
+    @Resource
+    private FileUploadUtils fileUploadUtils;
 
     @Resource
     private CategoryMapper categoryMapper;
@@ -81,6 +78,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Resource
     private CommentMapper commentMapper;
+
+    @Resource
+    private IArticleTagService articleTagService;
 
     @Override
     public List<InitSearchTitleVO> initSearchByTitle() {
@@ -182,6 +182,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
+    public ResponseResult<String> uploadArticleImage(MultipartFile articleImage) {
+        try {
+            String url = fileUploadUtils.upload_minio(UploadEnum.ARTICLE_IMAGE, articleImage);
+            if (StringUtils.isNotNull(url))
+                return ResponseResult.success(url);
+            else
+                return ResponseResult.failure("上传格式错误");
+        } catch (Exception e) {
+            log.error("文章图片上传失败", e);
+        }
+        return null;
+    }
+
+    @Override
     public List<ArticleListVO> searchArticle(SearchArticleDTO searchArticleDTO) {
         // 构造查询条件
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
@@ -257,6 +271,57 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 .ne(Article::getArticleId, articleId));
         List<Article> limitArticles = articles.stream().limit(SQLConst.RELATED_ARTICLE_COUNT).toList();
         return limitArticles.stream().map(article -> article.asViewObject(RelatedArticleVO.class)).toList();
+    }
+
+    @Override
+    public ResponseResult<String> uploadArticleCover(MultipartFile articleCover) {
+        try {
+            String articleCoverUrl = null;
+            try {
+                articleCoverUrl = fileUploadUtils.upload_minio(UploadEnum.ARTICLE_COVER, articleCover);
+            } catch (FileUploadException e) {
+                return ResponseResult.failure(e.getMessage());
+            }
+            if (StringUtils.isNotNull(articleCoverUrl))
+                return ResponseResult.success(articleCoverUrl);
+            else
+                return ResponseResult.failure("上传格式错误");
+        } catch (Exception e) {
+            log.error("文章封面上传失败", e);
+            return ResponseResult.failure();
+        }
+    }
+
+    // 出现异常，自动回滚，数据库回滚
+    @Transactional
+    @Override
+    public ResponseResult<Void> publish(ArticleDTO articleDTO) {
+        Article article = articleDTO.asViewObject(Article.class, v -> v.setUserId(SecurityUtils.getUserId()));
+        if (this.saveOrUpdate(article)) {
+            // 清除标签关系
+            articleTagMapper.deleteById(article.getArticleId());
+            // 新增标签关系
+            List<ArticleTag> articleTags = articleDTO.getTagId().stream().map(articleTag -> ArticleTag.builder().articleId(article.getArticleId()).tagId(articleTag).build()).toList();
+            articleTagService.saveBatch(articleTags);
+            return ResponseResult.success();
+        }
+        return ResponseResult.failure();
+    }
+
+    @Value("${minio.bucketName}")
+    private String bucketName;
+
+    @Override
+    public ResponseResult<Void> deleteArticleCover(String articleCoverUrl) {
+        try {
+            // 提取图片名称
+            String articleCoverName = articleCoverUrl.substring(articleCoverUrl.indexOf(bucketName) + bucketName.length());
+            fileUploadUtils.deleteFiles_minio(List.of(articleCoverName));
+            return ResponseResult.success();
+        } catch (Exception e) {
+            log.error("删除文章封面失败", e);
+            return ResponseResult.failure();
+        }
     }
 
     @Override

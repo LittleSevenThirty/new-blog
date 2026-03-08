@@ -1,7 +1,10 @@
 package cn.edu.tjufe.zql.service;
 
+import cn.edu.tjufe.zql.domain.dto.LeaveWordIsCheckDTO;
+import cn.edu.tjufe.zql.domain.dto.SearchLeaveWordDTO;
 import cn.edu.tjufe.zql.domain.entity.LeaveWord;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.LeaveWordListVO;
 import cn.edu.tjufe.zql.domain.vo.LeaveWordVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -28,4 +31,24 @@ public interface ILeaveWordService extends IService<LeaveWord> {
      * @return
      */
     ResponseResult<Void> addUserLeaveWord(String content);
+
+    /**
+     * 后台留言列表
+     * @return 结果
+     */
+    List<LeaveWordListVO> getBackLeaveWordList(SearchLeaveWordDTO searchDTO);
+
+    /**
+     * 是否通过留言
+     * @param isCheckDTO 是否通过
+     * @return 是否成功
+     */
+    ResponseResult<Void> isCheckLeaveWord(LeaveWordIsCheckDTO isCheckDTO);
+
+    /**
+     * 删除留言
+     * @param ids id 列表
+     * @return 是否成功
+     */
+    ResponseResult<Void> deleteLeaveWord(List<Long> ids);
 }

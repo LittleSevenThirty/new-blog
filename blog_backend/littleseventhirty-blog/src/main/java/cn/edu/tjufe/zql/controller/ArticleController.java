@@ -15,12 +15,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -165,12 +167,57 @@ public class ArticleController {
         return ResponseWrapper.handler(() -> null);
     }
 
+    @PreAuthorize("hasAnyAuthority('blog:publish:article')")
+    @Operation(summary = "上传文章封面")
+    @Parameter(name = "articleCover", description = "文章封面")
+    @LogAnnotation(module = "文章管理", operation = LogConst.UPLOAD_IMAGE)
+    @AccessIntercepter(seconds = 60, maxCount = 5)
+    @PostMapping("/upload/articleCover")
+    public ResponseResult<String> uploadArticleCover(@RequestParam("articleCover") MultipartFile articleCover) {
+        return articleService.uploadArticleCover(articleCover);
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:publish:article')")
+    @Operation(summary = "发布文章")
+    @Parameter(name = "articleDTO", description = "文章信息")
+    @LogAnnotation(module = "文章管理", operation = LogConst.INSERT)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @PostMapping("/publish")
+    public ResponseResult<Void> publish(@RequestBody @Valid ArticleDTO articleDTO) {
+        return articleService.publish(articleDTO);
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:publish:article')")
+    @Operation(summary = "删除文章封面")
+    @Parameter(name = "articleCover", description = "文章封面")
+    @LogAnnotation(module = "发布错误", operation = LogConst.DELETE)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @GetMapping("/delete/articleCover")
+    public ResponseResult<Void> deleteArticleCover(@RequestParam("articleCoverUrl") String articleCoverUrl) {
+        return articleService.deleteArticleCover(articleCoverUrl);
+    }
+
     @Operation(summary = "获取文章详情")
     @Parameter(name = "id", description = "文章id", required = true)
     @AccessIntercepter(seconds = 60, maxCount = 60)
     @GetMapping("/detail/{id}")
     public ResponseResult<ArticleDetailVO> detail(@PathVariable("id") @NotNull Integer id) {
         return ResponseWrapper.handler(() -> articleService.getArticleDetail(id));
+    }
+
+    @PreAuthorize("hasAnyAuthority('blog:publish:article')")
+    @Operation(summary = "上传文章图片")
+    @Parameters({
+            @Parameter(name = "articleImage", description = "文章图片"),
+            @Parameter(name = "articleId", description = "文章id", required = true)
+    })
+    @LogAnnotation(module = "文章管理", operation = LogConst.UPLOAD_IMAGE)
+    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @PostMapping("/upload/articleImage")
+    public ResponseResult<String> uploadArticleImage(
+            @RequestParam("articleImage") MultipartFile articleImage
+    ) {
+        return articleService.uploadArticleImage(articleImage);
     }
 
     @PreAuthorize("hasAnyAuthority('blog:article:list')")
