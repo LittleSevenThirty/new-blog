@@ -3,6 +3,9 @@ import { theme as antdTheme } from 'ant-design-vue/es'
 import type { ContentWidth, LayoutType, ThemeType } from '~@/layouts/basic-layout/typing'
 import type { AnimationNameValueType } from '~@/config/default-setting'
 import defaultSetting from '~@/config/default-setting'
+import { ref, reactive, watch } from 'vue'
+import { useDark, usePreferredLanguages } from '@vueuse/core'
+import { useLocalStorage } from '@vueuse/core'
 
 /**
  * 布局设置接口
@@ -79,7 +82,14 @@ export const useAppStore = defineStore('app', () => {
     components: {},
   })
 
+  /** 暗色模式状态 */
+  const isDark = useDark()
+
+  /** 语言偏好 */
+  const preferredLanguages = usePreferredLanguages()
+
   /** 语言设置 */
+  const lsLocaleState = useLocalStorage('locale', 'zh-CN')
   const locale = ref<string>(lsLocaleState.value)
 
   /**

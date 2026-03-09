@@ -119,14 +119,14 @@ export const constantRouter = [
                     title: '用户注册',
                 }
             },
-            {
-                path: '/reset',
-                component: () => import('../views/Welcome/Reset/index.vue'),
-                name: 'welcome-reset',
-                meta: {
-                    title: '重置密码',
-                }
-            }
+            // {
+            //     path: '/reset',
+            //     component: () => import('../views/Welcome/Reset/index.vue'),
+            //     name: 'welcome-reset',
+            //     meta: {
+            //         title: '重置密码',
+            //     }
+            // }
         ]
     },
     // 设置

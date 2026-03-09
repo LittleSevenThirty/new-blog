@@ -9,9 +9,19 @@ import { loginApi } from '~/api/common/login'
 import { getQueryParam } from '~/utils/tools'
 import type { LoginMobileParams, LoginParams } from '~@/api/common/login'
 import pageBubble from '@/utils/page-bubble'
+import { message, notification } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
+import { onMounted, onBeforeUnmount } from 'vue'
+import { useAppStore } from '~/stores/app'
+import { storeToRefs } from 'pinia'
+import { useAuthorization } from '~/composables/authorization'
+import { reactive, ref, shallowRef, unref } from 'vue'
+import { useI18nLocale } from '~/composables/i18n-locale'
+import { useUserStore } from '~/stores/user'
+import { useInterval } from '@vueuse/core'
 
-const message = useMessage()
-const notification = useNotification()
+// const message = useMessage()
+// const notification = useNotification()
 const appStore = useAppStore()
 const { layoutSetting } = storeToRefs(appStore)
 const router = useRouter()
@@ -60,8 +70,9 @@ async function submit() {
         type: 'mobile',
       } as unknown as LoginMobileParams
     }
-    const { data } = await loginApi(params)
-    token.value = JSON.stringify({ token: data?.token, expires: data?.expire })
+    console.log("开始发送登录信息")
+    const res = await loginApi(params)
+    token.value = JSON.stringify({ token: res.data?.token, expires: res.data?.expire })
     notification.success({
       message: '登录成功',
       description: '欢迎回来！',
@@ -87,7 +98,7 @@ async function submit() {
     })
     if (e instanceof AxiosError)
       errorAlert.value = true
-
+  } finally {
     submitLoading.value = false
   }
 }

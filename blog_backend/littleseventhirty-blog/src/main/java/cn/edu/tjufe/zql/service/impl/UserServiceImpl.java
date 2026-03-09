@@ -273,7 +273,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public User findAccountByNameOrEmail(String text) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUsername, text).or().eq(User::getEmail, text).eq(User::getRegisterType, RegisterOrLoginTypeEnum.EMAIL.getRegisterType());
+        wrapper.and(w -> w.eq(User::getUsername, text).or().eq(User::getEmail, text).or().eq(User::getUsername, text.toUpperCase())).eq(User::getRegisterType, RegisterOrLoginTypeEnum.EMAIL.getRegisterType());
         return userMapper.selectOne(wrapper);
     }
 

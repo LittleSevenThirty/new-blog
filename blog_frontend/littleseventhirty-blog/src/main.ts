@@ -15,7 +15,7 @@ import 'element-plus/dist/index.css';
 // 黑暗模式
 import 'element-plus/theme-chalk/dark/css-vars.css'
 // 这里不要使用动态加载，动态加载的mock是在所有页面后启动，所以axios会出现请求错误问题
-import './mock/index.ts'; // 如果不想启动后端就想要数据需要将这段注释取消掉，配置mock是为了后端数据未准备好时提供假数据用的
+// import './mock/index.ts'; // 如果不想启动后端就想要数据需要将这段注释取消掉，配置mock是为了后端数据未准备好时提供假数据用的
 // 引入自定义指令
 import vViewRequest from './directives/vViewRequest.ts'
 import vSlideIn from "./directives/vSlideIn.ts";

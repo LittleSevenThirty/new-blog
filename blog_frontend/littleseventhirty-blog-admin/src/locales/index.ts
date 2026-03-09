@@ -1,6 +1,9 @@
 import type { App } from 'vue'
 import type { I18n, I18nOptions } from 'vue-i18n'
 import { createI18n } from 'vue-i18n'
+import { useAppStore } from '~/stores/app'
+import { storeToRefs } from 'pinia'
+import { nextTick, unref } from 'vue'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let i18n: I18n

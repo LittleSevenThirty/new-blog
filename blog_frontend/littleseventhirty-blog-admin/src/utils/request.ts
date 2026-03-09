@@ -30,6 +30,7 @@ const TOKEN_PREFIX = 'Bearer '
 async function requestHandler(config: InternalAxiosRequestConfig & RequestConfigExtra): Promise<InternalAxiosRequestConfig> {
   const useToken = useAuthorization()
   const notification = useNotification()
+  console.log("请求拦截器，本次请求url：" + config.url);
 
   if (useToken.value && config.token !== false) {
     const { token, expires } = JSON.parse(useToken.value)
@@ -58,6 +59,8 @@ async function requestHandler(config: InternalAxiosRequestConfig & RequestConfig
   // 增加多语言的配置
   const { locale } = useI18nLocale()
   config.headers.set('Accept-Language', locale.value ?? 'zh-CN')
+  // 添加客户端类型请求头，后端需要这个来判断是前台还是后台请求
+  config.headers.set('X-Client-Type', 'Backend')
   if (config.loading)
     axiosLoading.addLoading()
 
@@ -154,7 +157,7 @@ function instancePromise<R = any, T = any>(options: AxiosOptions<T> & RequestCon
   const { loading } = options
   return new Promise((resolve, reject) => {
     instance.request(options).then((res: any) => {
-      if (res.code === 200)
+      if (res.code === '200' || res.code === 200)
         resolve(res as any)
       else
         reject(res.msg)

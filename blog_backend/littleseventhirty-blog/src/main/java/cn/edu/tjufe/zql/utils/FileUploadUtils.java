@@ -77,17 +77,17 @@ public class FileUploadUtils {
      * @throws Exception 异常
      */
     public boolean deleteFiles_minio(List<String> fileNames) throws Exception {
-        List<DeleteObject> deleteObjects = fileNames.stream().map(DeleteObject::new).toList();
-        RemoveObjectsArgs removeObjectsArgs = RemoveObjectsArgs.builder()
-                .bucket(bucketName)
-                .objects(deleteObjects)
-                .build();
-        Iterable<Result<DeleteError>> results = client.removeObjects(removeObjectsArgs);
-        for (Result<DeleteError> result : results) {
-            DeleteError error = result.get();
-            log.error("文件: " + error.objectName() + "删除错误; ", error.message());
-            return false;
-        }
+//        List<DeleteObject> deleteObjects = fileNames.stream().map(DeleteObject::new).toList();
+//        RemoveObjectsArgs removeObjectsArgs = RemoveObjectsArgs.builder()
+//                .bucket(bucketName)
+//                .objects(deleteObjects)
+//                .build();
+//        Iterable<Result<DeleteError>> results = client.removeObjects(removeObjectsArgs);
+//        for (Result<DeleteError> result : results) {
+//            DeleteError error = result.get();
+//            log.error("文件: " + error.objectName() + "删除错误; ", error.message());
+//            return false;
+//        }
         return true;
     }
 
@@ -99,27 +99,28 @@ public class FileUploadUtils {
      * @return 是否存在，存在：true，不存在：false
      */
     public boolean isFileExist(String dir, String fileName) {
-        dir = dir.endsWith("/") ? dir : dir + "/";
-        ListObjectsArgs listObjectsArgs = ListObjectsArgs.builder()
-                .bucket(bucketName)
-                .prefix(dir)
-                .build();
-        Iterable<Result<Item>> results = client.listObjects(listObjectsArgs);
-
-        for (Result<Item> result : results) {
-            Item item = null;
-            try {
-                item = result.get();
-            } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
-                     InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
-                     XmlParserException e) {
-                log.error("判断文件是否存在出现错误", e);
-            }
-            if (item != null && item.objectName().equals(dir + fileName)) {
-                return true;
-            }
-        }
-        return false;
+//        dir = dir.endsWith("/") ? dir : dir + "/";
+//        ListObjectsArgs listObjectsArgs = ListObjectsArgs.builder()
+//                .bucket(bucketName)
+//                .prefix(dir)
+//                .build();
+//        Iterable<Result<Item>> results = client.listObjects(listObjectsArgs);
+//
+//        for (Result<Item> result : results) {
+//            Item item = null;
+//            try {
+//                item = result.get();
+//            } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+//                     InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
+//                     XmlParserException e) {
+//                log.error("判断文件是否存在出现错误", e);
+//            }
+//            if (item != null && item.objectName().equals(dir + fileName)) {
+//                return true;
+//            }
+//        }
+//        return false;
+        return true;
     }
 
     /**
@@ -141,25 +142,26 @@ public class FileUploadUtils {
      * @return 是否成功, 成功：true, 失败：false
      */
     public boolean deleteFile(String dir, String fileName) {
-        try {
-            String objectName = dir + fileName; // 构建完整对象名
-            if (!isFileExist(dir, fileName)) {
-                log.error("文件 {} 不存在", fileName);
-                return false;
-            }
-            // 执行删除操作
-            client.removeObject(
-                    RemoveObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object(objectName)
-                            .build()
-            );
-
-            log.info("文件 {} 已成功从 MinIO 中删除", objectName);
-            return true;
-        } catch (Exception e) {
-            log.error("删除 MinIO 文件 {} 失败: {}", fileName, e.getMessage());
-            return false;
-        }
+//        try {
+//            String objectName = dir + fileName; // 构建完整对象名
+//            if (!isFileExist(dir, fileName)) {
+//                log.error("文件 {} 不存在", fileName);
+//                return false;
+//            }
+//            // 执行删除操作
+//            client.removeObject(
+//                    RemoveObjectArgs.builder()
+//                            .bucket(bucketName)
+//                            .object(objectName)
+//                            .build()
+//            );
+//
+//            log.info("文件 {} 已成功从 MinIO 中删除", objectName);
+//            return true;
+//        } catch (Exception e) {
+//            log.error("删除 MinIO 文件 {} 失败: {}", fileName, e.getMessage());
+//            return false;
+//        }
+        return true;
     }
 }

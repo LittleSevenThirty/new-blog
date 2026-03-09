@@ -2,6 +2,10 @@ import { AxiosError } from 'axios'
 import router from '~/router'
 import { useMetaTitle } from '~/composables/meta-title'
 import { setRouteEmitter } from '~@/utils/route-listener'
+import { useUserStore } from '~/stores/user'
+import { useAuthorization } from '~/composables/authorization'
+import { useLoadingCheck } from '~/composables/loading'
+import { useScrollToTop } from '~/composables/loading'
 
 const allowList = ['/login', '/error', '/401', '/404', '/403']
 const loginPath = '/login'

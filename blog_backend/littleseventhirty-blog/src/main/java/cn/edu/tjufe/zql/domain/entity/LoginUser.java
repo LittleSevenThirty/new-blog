@@ -53,6 +53,9 @@ public class LoginUser implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (Objects.nonNull(authorities)) return authorities;
         // 没有的话，转换
+        if (Objects.isNull(permissions)) {
+            return List.of();
+        }
         authorities = permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         return authorities;
     }
