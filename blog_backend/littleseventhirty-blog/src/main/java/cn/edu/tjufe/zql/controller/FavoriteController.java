@@ -1,6 +1,6 @@
 package cn.edu.tjufe.zql.controller;
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.CheckBlacklist;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
@@ -38,7 +38,7 @@ public class FavoriteController {
             @Parameter(name = "type", description = "收藏类型", required = true),
             @Parameter(name = "typeId", description = "收藏id", required = true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 10)
+    @AccessLimit(seconds = 60, maxCount = 10)
     @PostMapping("/auth/favorite")
     public ResponseResult<Void> favorite(
             @Valid @NotNull @RequestParam("type") Integer type,
@@ -52,7 +52,7 @@ public class FavoriteController {
             @Parameter(name = "type", description = "收藏类型", required = true),
             @Parameter(name = "typeId", description = "收藏id", required = true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 10)
+    @AccessLimit(seconds = 60, maxCount = 10)
     @DeleteMapping("/auth/favorite")
     public ResponseResult<Void> cancelFavorite(
             @Valid @NotNull @RequestParam("type") Integer type,
@@ -66,7 +66,7 @@ public class FavoriteController {
             @Parameter(name = "type", description = "收藏类型", required = true),
             @Parameter(name = "typeId", description = "收藏id", required = true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("/whether/favorite")
     public ResponseResult<Boolean> isFavorite(
             @Valid @NotNull @RequestParam("type") Integer type,
@@ -77,7 +77,7 @@ public class FavoriteController {
 
     @PreAuthorize("hasAnyAuthority('blog:favorite:list')")
     @Operation(summary = "后台收藏列表")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="收藏管理",operation= LogConst.GET)
     @GetMapping("/back/list")
     public ResponseResult<List<FavoriteListVO>> backList() {
@@ -86,7 +86,7 @@ public class FavoriteController {
 
     @PreAuthorize("hasAnyAuthority('blog:favorite:search')")
     @Operation(summary = "搜索后台收藏列表")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="收藏管理",operation= LogConst.SEARCH)
     @PostMapping("/back/search")
     public ResponseResult<List<FavoriteListVO>> backList(@RequestBody SearchFavoriteDTO searchDTO) {
@@ -95,7 +95,7 @@ public class FavoriteController {
 
     @PreAuthorize("hasAnyAuthority('blog:favorite:isCheck')")
     @Operation(summary = "修改收藏是否通过")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="收藏管理",operation= LogConst.UPDATE)
     @PostMapping("/back/isCheck")
     public ResponseResult<Void> isCheck(@RequestBody @Valid FavoriteIsCheckDTO favoriteIsCheckDTO) {
@@ -104,7 +104,7 @@ public class FavoriteController {
 
     @PreAuthorize("hasAnyAuthority('blog:favorite:delete')")
     @Operation(summary = "删除收藏")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="收藏管理",operation= LogConst.DELETE)
     @DeleteMapping("/back/delete")
     public ResponseResult<Void> delete(@RequestBody List<Long> ids) {

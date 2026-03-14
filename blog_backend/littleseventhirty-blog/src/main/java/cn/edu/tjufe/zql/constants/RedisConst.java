@@ -42,6 +42,11 @@ public class RedisConst {
     public static final Integer ARTICLE_VISIT_COUNT_INTERVAL = 15 * 60;
 
     /**
+     * 邮箱确认友链通过，状态码
+     */
+    public static final String EMAIL_VERIFICATION_LINK = "email:verification:link:";
+
+    /**
      * 邮箱验证码
      */
     public static final String VERIFY_CODE = "verifyCode:";

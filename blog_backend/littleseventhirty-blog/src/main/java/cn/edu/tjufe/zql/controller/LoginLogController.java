@@ -1,7 +1,7 @@
 package cn.edu.tjufe.zql.controller;
 
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.dto.LoginLogDTO;
@@ -39,7 +39,7 @@ public class LoginLogController {
 
     @PreAuthorize("hasAnyAuthority('system:log:login:list')")
     @Operation(summary = "获取所有登录日志")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/list")
     public ResponseResult<List<LoginLogVO>> getLoginLogList() {
         return ResponseWrapper.handler(() -> loginLogService.searchLoginLog(null));
@@ -48,7 +48,7 @@ public class LoginLogController {
     @PreAuthorize("hasAnyAuthority('system:log:login:search')")
     @Operation(summary = "搜索登录日志")
     @Parameter(name = "loginLogDTO", description = "搜索条件")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="登录日志",operation= LogConst.SEARCH)
     @PostMapping("/search")
     public ResponseResult<List<LoginLogVO>> getLoginLogSearch(@RequestBody LoginLogDTO loginLogDTO) {
@@ -58,7 +58,7 @@ public class LoginLogController {
     @PreAuthorize("hasAnyAuthority('system:log:login:delete')")
     @Operation(summary = "删除/清空登录日志")
     @Parameter(name = "deleteLoginLogDTO", description = "删除的id数组")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="登录日志",operation= LogConst.DELETE)
     @DeleteMapping("/delete")
     public ResponseResult<Void> deleteLoginLog(@RequestBody @Valid LoginLogDeleteDTO deleteLoginLogDTO) {

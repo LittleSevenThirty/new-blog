@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.tjufe.zql.mapper.CommentMapper">
-    <!-- 啥都没有，基本的就够用了 -->
+<!--    类型为1时是文章评论，2是留言  -->
+    <select id="getCommentAsEmail" resultType="cn.edu.tjufe.zql.domain.email.CommentEmail">
+        <if test="type==1">
+            SELECT
+                c.comment_id,
+                c.type,
+                c.type_id,
+                a.article_title AS title,
+                u.avatar,
+                u.nickname,
+                c.comment_content as content,
+                c.create_time as time
+            FROM t_comment as c
+            INNER JOIN t_article as a ON a.article_id=c.type_id and c.comment_id=#{commentId} and c.type=#{type}
+            INNER JOIN sys_user as u ON u.user_id=c.comment_user_id
+        </if>
+        <if test="type == 2">
+            SELECT
+            u.avatar,
+            u.nickname,
+            c.comment_content AS content,
+            c.type_id,
+            c.type,
+            c.create_time AS time
+            FROM
+            t_comment AS c
+            INNER JOIN t_leave_word AS a ON c.type_id = a.id AND c.id = #{commentId} AND c.type = #{type}
+            INNER JOIN sys_user AS u ON c.comment_user_id = u.id
+        </if>
+    </select>
 </mapper>

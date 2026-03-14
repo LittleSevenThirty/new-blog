@@ -1,7 +1,7 @@
 package cn.edu.tjufe.zql.controller;
 
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.dto.RoleDTO;
@@ -40,7 +40,7 @@ public class RoleController {
 
     @PreAuthorize("hasAnyAuthority('system:role:list')")
     @Operation(summary = "获取角色列表")
-    @AccessIntercepter(seconds = 60,maxCount = 60)
+    @AccessLimit(seconds = 60,maxCount = 60)
     @GetMapping("/list")
     public ResponseResult<List<RoleAllVO>> selectAllRole(){
         return ResponseWrapper.handler(()->roleService.selectRole(null));
@@ -49,7 +49,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('system:role:status:update')")
     @Operation(summary = "更新角色状态")
     @Parameter(name = "roleDeleteDTO", description = "修改角色状态")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="角色管理",operation=LogConst.UPDATE)
     @PostMapping("/update/status")
     public ResponseResult<Void> updateStatus(@RequestBody @Valid UpdateRoleStatusDTO updateRoleStatusDTO) {
@@ -59,7 +59,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('system:role:get')")
     @Operation(summary = "获取修改角色信息")
     @Parameter(name = "id", description = "角色id")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/get/{id}")
     public ResponseResult<RoleByIdVO> selectAll(@PathVariable("id") @NotNull Long id) {
         return roleService.selectRoleById(id);
@@ -68,7 +68,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('system:role:update')")
     @Operation(summary = "修改角色信息")
     @Parameter(name = "roleDTO", description = "修改角色所需数据")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="角色管理",operation= LogConst.UPDATE)
     @PutMapping("/update")
     public ResponseResult<Void> updateRole(@RequestBody @Valid RoleDTO roleDTO) {
@@ -78,7 +78,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('system:role:add')")
     @Operation(summary = "添加角色信息")
     @Parameter(name = "roleDTO", description = "添加角色所需数据")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="角色管理",operation= LogConst.INSERT)
     @PutMapping("/add")
     public ResponseResult<Void> addRole(@RequestBody @Valid RoleDTO roleDTO) {
@@ -88,7 +88,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('system:role:delete')")
     @Operation(summary = "根据id删除角色")
     @Parameter(name = "roleDeleteDTO", description = "id数组")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="角色管理",operation= LogConst.DELETE)
     @DeleteMapping("/delete")
     public ResponseResult<Void> deleteRole(@RequestBody @Valid RoleDeleteDTO roleDeleteDTO) {
@@ -98,7 +98,7 @@ public class RoleController {
     @PreAuthorize("hasAnyAuthority('system:role:search')")
     @Operation(summary = "根据条件搜索角色")
     @Parameter(name = "roleSearchDTO", description = "搜索条件")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="角色管理",operation=LogConst.SEARCH)
     @PostMapping("/search")
     public ResponseResult<List<RoleAllVO>> searchRole(@RequestBody RoleSearchDTO roleSearchDTO) {

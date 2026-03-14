@@ -1,7 +1,7 @@
 package cn.edu.tjufe.zql.controller;
 
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.CheckBlacklist;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
@@ -43,7 +43,7 @@ public class LeaveWordController {
 
     @CheckBlacklist
     @Operation(summary="用户留言")
-    @AccessIntercepter(seconds = 60,maxCount = 60)
+    @AccessLimit(seconds = 60,maxCount = 60)
     @GetMapping("/auth/userLeaveWord")
     public ResponseResult<Void> userLeaveWord(@RequestBody @NotNull String content){
         return leaveWordService.addUserLeaveWord(content);
@@ -54,14 +54,14 @@ public class LeaveWordController {
             @Parameter(name = "id", description = "留言板id", in = ParameterIn.QUERY)
     })
     @GetMapping("/list")
-    @AccessIntercepter(seconds = 60, maxCount = 10)
+    @AccessLimit(seconds = 60, maxCount = 10)
     public ResponseResult<List<LeaveWordVO>>  getAllLeaveWord(@RequestParam(value = "id",required = false) String id){
         return ResponseWrapper.handler(()->leaveWordService.getAllLeaveWordList(id));
     }
 
     @PreAuthorize("hasAnyAuthority('blog:leaveword:list')")
     @Operation(summary = "后台留言列表")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="留言管理",operation= LogConst.GET)
     @GetMapping("/back/list")
     public ResponseResult<List<LeaveWordListVO>> backList() {
@@ -70,7 +70,7 @@ public class LeaveWordController {
 
     @PreAuthorize("hasAnyAuthority('blog:leaveword:search')")
     @Operation(summary = "搜索后台留言列表")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="留言管理",operation= LogConst.SEARCH)
     @PostMapping("/back/search")
     public ResponseResult<List<LeaveWordListVO>> backList(@RequestBody SearchLeaveWordDTO searchDTO) {
@@ -79,7 +79,7 @@ public class LeaveWordController {
 
     @PreAuthorize("hasAnyAuthority('blog:leaveword:isCheck')")
     @Operation(summary = "修改留言是否通过")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="留言管理",operation= LogConst.UPDATE)
     @PostMapping("/back/isCheck")
     public ResponseResult<Void> isCheck(@RequestBody @Valid LeaveWordIsCheckDTO leaveWordIsCheckDTO) {
@@ -88,7 +88,7 @@ public class LeaveWordController {
 
     @PreAuthorize("hasAnyAuthority('blog:leaveword:delete')")
     @Operation(summary = "删除留言")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="留言管理",operation= LogConst.DELETE)
     @DeleteMapping("/back/delete")
     public ResponseResult<Void> delete(@RequestBody List<Long> ids) {

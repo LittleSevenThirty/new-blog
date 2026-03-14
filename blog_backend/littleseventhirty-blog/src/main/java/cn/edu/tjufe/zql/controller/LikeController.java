@@ -1,6 +1,6 @@
 package cn.edu.tjufe.zql.controller;
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.CheckBlacklist;
 import cn.edu.tjufe.zql.domain.entity.Like;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
@@ -30,7 +30,7 @@ public class LikeController {
             @Parameter(name = "type", description = "点赞类型", required = true),
             @Parameter(name = "typeId", description = "点赞id", required = true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 10)
+    @AccessLimit(seconds = 60, maxCount = 10)
     @PostMapping("/auth/like")
     public ResponseResult<Void> like(
             @RequestParam("type") @Valid @NotNull Integer type,
@@ -45,7 +45,7 @@ public class LikeController {
             @Parameter(name = "type", description = "点赞类型", required = true),
             @Parameter(name = "typeId", description = "点赞id", required = true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 10)
+    @AccessLimit(seconds = 60, maxCount = 10)
     @DeleteMapping("/auth/like")
     public ResponseResult<Void> cancelLike(
             @RequestParam("type") @Valid @NotNull Integer type,
@@ -59,7 +59,7 @@ public class LikeController {
             @Parameter(name = "type", description = "点赞类型", required = true),
             @Parameter(name = "typeId", description = "点赞id", required = true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("whether/like")
     public ResponseResult<List<Like>> isLike(
             @Valid @NotNull @RequestParam("type") Integer type,

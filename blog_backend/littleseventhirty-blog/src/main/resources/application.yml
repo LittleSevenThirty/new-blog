@@ -22,8 +22,18 @@ spring:
       password: ""         # 本地无密码可空；云服务（如 Azure Redis）必填！
       database: 0          # Redis 有 16 个库（0～15），开发常用 0
       timeout: 2000ms      # 操作超时时间
+  # spring email配置，根据配置自动在spring里创建
   mail:
+    host: smtp.qq.com
+    port: 465
     username: 3100649706@qq.com
+    password: jwggashwraezdfdf
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
   security:
     jwt:
       key: jwt-key
@@ -71,3 +81,8 @@ minio:
   endpoint: http://localhost:9000
   accessKey: minioadmin
   secretKey: minioadmin
+
+web:
+  index:
+    # 网站前端首页
+    path: http://localhost:70/

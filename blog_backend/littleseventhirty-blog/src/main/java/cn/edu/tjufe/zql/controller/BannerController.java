@@ -1,12 +1,11 @@
 package cn.edu.tjufe.zql.controller;
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.entity.Banner;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.service.IBannerService;
-import cn.edu.tjufe.zql.service.impl.BannerServiceImpl;
 import cn.edu.tjufe.zql.utils.ResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,7 +34,7 @@ public class BannerController {
     @Operation(summary = "更新前台首页Banner图片顺序")
     @LogAnnotation(module = "信息管理", operation = LogConst.UPDATE)
     @Parameter(name = "SortOrders", description = "顺序", required = true)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PutMapping("/update/sort/order")
     public ResponseResult<String> updateSortOrder(@RequestBody List<Banner> Banners) {
         return bannerService.updateSortOrder(Banners);
@@ -48,7 +47,7 @@ public class BannerController {
     @Operation(summary = "删除前台首页Banner图片")
     @LogAnnotation(module = "信息管理", operation = LogConst.DELETE)
     @Parameter(name = "id", description = "Banner ID", required = true)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @DeleteMapping("/{id}")
     public ResponseResult<String> delete(@PathVariable("id") Long id) {
         return bannerService.removeBannerById(id);
@@ -62,7 +61,7 @@ public class BannerController {
     @Operation(summary = "添加前台首页Banner图片")
     @LogAnnotation(module = "信息管理", operation = LogConst.INSERT)
     @Parameter(name = "bannerImage", description = "Banner图片", required = true)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/upload/banner")
     public ResponseResult<Banner> uploadArticleImage(
             @RequestParam("bannerImage") MultipartFile bannerImage
@@ -77,7 +76,7 @@ public class BannerController {
      * @return 轮播图路径列表
      */
     @Operation(summary = "前端获取轮播图url")
-    @AccessIntercepter(seconds = 60, maxCount = 25)
+    @AccessLimit(seconds = 60, maxCount = 25)
     @LogAnnotation(module = "信息管理", operation = LogConst.GET)
     @GetMapping("/slideshow")
     public ResponseResult<List<String>> getSlideshowImages() {
@@ -90,7 +89,7 @@ public class BannerController {
     @PreAuthorize("hasAnyAuthority('blog:banner:list')")
     @Operation(summary = "后台获取所有前台首页Banner图片")
     @LogAnnotation(module = "信息管理", operation = LogConst.GET)
-    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("/back/slideshow")
     public ResponseResult<List<Banner>> backGetBanners() {
         return ResponseWrapper.handler(() -> bannerService.backGetBanners());

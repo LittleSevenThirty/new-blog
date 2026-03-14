@@ -1,7 +1,7 @@
 package cn.edu.tjufe.zql.controller;
 
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
@@ -44,7 +44,7 @@ public class PublicController {
             @Parameter(name = "email", description = "邮箱", required = true),
             @Parameter(name = "type", description = "邮箱类型", required = true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 1)
+    @AccessLimit(seconds = 60, maxCount = 1)
     @LogAnnotation(module="邮件发送",operation= LogConst.EMAIL_SEND)
     @GetMapping("/ask-code")
     public ResponseResult<String> askVerifyCode(

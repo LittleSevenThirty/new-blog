@@ -1,6 +1,6 @@
 package cn.edu.tjufe.zql.controller;
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.dto.StationmasterInfoDTO;
@@ -9,7 +9,6 @@ import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.WebsiteInfoVO;
 import cn.edu.tjufe.zql.enums.UploadEnum;
 import cn.edu.tjufe.zql.service.IWebsiteInfoService;
-import cn.edu.tjufe.zql.utils.ResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,7 +36,7 @@ public class WebsiteInfoController {
      *
      * @return
      */
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Operation(description = "查询网站信息-前端")
     @GetMapping("/front")
     public ResponseResult<WebsiteInfoVO> getFrontArticles() {
@@ -50,7 +49,7 @@ public class WebsiteInfoController {
      */
     @PreAuthorize("hasAnyAuthority('blog:get:websiteInfo')")
     @Operation(summary = "查看网站信息-后端")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping
     public ResponseResult<WebsiteInfoVO> selectWebsiteInfo() {
         return ResponseResult.success(websiteInfoService.getWebsiteInfo());
@@ -90,7 +89,7 @@ public class WebsiteInfoController {
     @PreAuthorize("hasAnyAuthority('blog:update:websiteInfo')")
     @Operation(summary = "上传站长头像")
     @Parameter(name = "avatar", description = "头像")
-    @AccessIntercepter(seconds = 60, maxCount = 5)
+    @AccessLimit(seconds = 60, maxCount = 5)
     @LogAnnotation(module="信息管理",operation= LogConst.UPLOAD_IMAGE)
     @PostMapping("/upload/avatar")
     public ResponseResult<String> upload(@RequestParam("avatar") MultipartFile avatar) {
@@ -105,7 +104,7 @@ public class WebsiteInfoController {
     @PreAuthorize("hasAnyAuthority('blog:update:websiteInfo')")
     @Operation(summary = "上传站长资料卡背景")
     @Parameter(name = "background", description = "资料卡片背景")
-    @AccessIntercepter(seconds = 60, maxCount = 5)
+    @AccessLimit(seconds = 60, maxCount = 5)
     @LogAnnotation(module="信息管理",operation= LogConst.UPLOAD_IMAGE)
     @PostMapping("/upload/background")
     public ResponseResult<String> uploadBackground(@RequestParam("background") MultipartFile background) {

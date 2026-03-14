@@ -1,6 +1,6 @@
 package cn.edu.tjufe.zql.controller;
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.dto.CategoryDTO;
@@ -8,7 +8,6 @@ import cn.edu.tjufe.zql.domain.dto.SearchCategoryDTO;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.CategoryVO;
 import cn.edu.tjufe.zql.service.ICategoryService;
-import cn.edu.tjufe.zql.service.impl.CategoryServiceImpl;
 import cn.edu.tjufe.zql.utils.ResponseWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
@@ -34,14 +33,14 @@ public class CategoryController {
     @Operation(summary = "新增分类-文章列表")
     @PreAuthorize("hasAnyAuthority('blog:category:add')")
     @LogAnnotation(module="新增分类",operation= LogConst.INSERT)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PutMapping()
     public ResponseResult<Void> addCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
         return categoryService.addCategory(categoryDTO);
     }
 
     @Operation(summary = "获取所有分类")
-    @AccessIntercepter(seconds =60,maxCount=60)
+    @AccessLimit(seconds =60,maxCount=60)
     @GetMapping("/list")
     public ResponseResult<List<CategoryVO>> allCategoryList(){
         return ResponseWrapper.handler(()->categoryService.listAllCategory());
@@ -50,7 +49,7 @@ public class CategoryController {
     @Operation(summary = "获取分类列表")
     @PreAuthorize("hasAnyAuthority('blog:category:list')")
     @LogAnnotation(module="分类管理",operation= LogConst.GET)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/back/list")
     public ResponseResult<List<CategoryVO>> listArticleCategory() {
         return ResponseWrapper.handler((categoryService::listAllCategory));
@@ -59,7 +58,7 @@ public class CategoryController {
     @Operation(summary = "搜索分类列表")
     @PreAuthorize("hasAnyAuthority('blog:category:search')")
     @LogAnnotation(module="分类管理",operation= LogConst.SEARCH)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/back/search")
     public ResponseResult<List<CategoryVO>> searchCategory(@RequestBody SearchCategoryDTO searchCategoryDTO) {
         return ResponseWrapper.handler(() -> categoryService.searchCategory(searchCategoryDTO));
@@ -68,7 +67,7 @@ public class CategoryController {
     @Operation(summary = "根据id查询分类")
     @PreAuthorize("hasAnyAuthority('blog:category:search')")
     @LogAnnotation(module="分类管理",operation= LogConst.GET)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/back/get/{id}")
     public ResponseResult<CategoryVO> getCategoryById(@PathVariable(value = "id") Long id) {
         return ResponseWrapper.handler(() -> categoryService.getCategoryById(id));
@@ -77,7 +76,7 @@ public class CategoryController {
     @Operation(summary = "修改分类")
     @PreAuthorize("hasAnyAuthority('blog:category:update')")
     @LogAnnotation(module="分类管理",operation= LogConst.UPDATE)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/back/update")
     public ResponseResult<Void> updateCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
         return categoryService.addOrUpdateCategory(categoryDTO);
@@ -86,7 +85,7 @@ public class CategoryController {
     @Operation(summary = "删除分类")
     @PreAuthorize("hasAnyAuthority('blog:category:delete')")
     @LogAnnotation(module="分类管理",operation= LogConst.DELETE)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @DeleteMapping("/back/delete")
     public ResponseResult<Void> deleteCategory(@RequestBody List<Long> ids) {
         return categoryService.deleteCategoryByIds(ids);

@@ -1,6 +1,6 @@
 package cn.edu.tjufe.zql.controller;
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.dto.ArticleDTO;
@@ -41,7 +41,7 @@ public class ArticleController {
      * @return
      */
     @Operation(summary = "初始化标题搜索文章数据")
-    @AccessIntercepter(seconds = 60, maxCount = 5)
+    @AccessLimit(seconds = 60, maxCount = 5)
     @GetMapping("/search/init/title")
     public ResponseResult<List<InitSearchTitleVO>> initSearchByTitle() {
         return ResponseWrapper.handler(() -> articleService.initSearchByTitle());
@@ -57,7 +57,7 @@ public class ArticleController {
     @Parameters({
             @Parameter(name = "content", description = "搜索文章内容片段", required = true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 5)
+    @AccessLimit(seconds = 60, maxCount = 5)
     @GetMapping("/search/by/content")
     public ResponseResult<List<SearchArticleByContentVO>> searchArticleByContent(
             @NotEmpty
@@ -73,7 +73,7 @@ public class ArticleController {
      * @return
      */
     @Operation(summary = "热门内容推荐接口")
-    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("/hot")
     public ResponseResult<List<HotArticleVO>> hotArticles() {
         return ResponseWrapper.handler(() -> articleService.getHotArticles());
@@ -85,7 +85,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/random")
-    @AccessIntercepter(seconds = 60, maxCount = 5)
+    @AccessLimit(seconds = 60, maxCount = 5)
     @Operation(description = "刷一刷获取随机文章")
     public ResponseResult<List<RandomArticleVO>> randomArticles() {
         return ResponseWrapper.handler(() -> articleService.getRandomArticles());
@@ -97,7 +97,7 @@ public class ArticleController {
      * @return
      */
     @LogAnnotation(module = "文章管理", operation = LogConst.GET)
-    @AccessIntercepter(seconds = 60, maxCount = 5)
+    @AccessLimit(seconds = 60, maxCount = 5)
     @Operation(summary = "推荐文章接口")
     @GetMapping("/recommend")
     public ResponseResult<List<RecommendArticleVO>> recommend() {
@@ -112,7 +112,7 @@ public class ArticleController {
      * @return
      */
     @Operation(summary = "获取所有文章列表")
-    @AccessIntercepter(seconds = 60, maxCount = 10)
+    @AccessLimit(seconds = 60, maxCount = 10)
     @LogAnnotation(module = "文章管理", operation = LogConst.GET)
     @Parameters({
             @Parameter(name = "pageNum", description = "页码", required = true),
@@ -128,7 +128,7 @@ public class ArticleController {
             @Parameter(name="categoryId",description = "分类id",required = true),
             @Parameter(name="articleId",description = "文章id",required=true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("/related/{categoryId}/{articleId}")
     public ResponseResult<List<RelatedArticleVO>> related(
             @PathVariable @NotNull Integer categoryId,
@@ -142,7 +142,7 @@ public class ArticleController {
         @Parameter(name="typeId",description = "类型id",required=true),
         @Parameter(name="type",description = "类型",required=true)
     })
-    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("/type/list/{typeId}")
     public ResponseResult<List<CategoryArticleVO>> getCategoryArticle(
             @NotNull @RequestParam("type") Integer type,
@@ -152,7 +152,7 @@ public class ArticleController {
     }
 
     @Operation(summary="获取时间轴数据")
-    @AccessIntercepter(seconds =60,maxCount = 15)
+    @AccessLimit(seconds =60,maxCount = 15)
     @GetMapping("/timeline")
     public ResponseResult<List<TimelineVO>> timeline(){
         return ResponseWrapper.handler(()->articleService.listTimeline());
@@ -160,7 +160,7 @@ public class ArticleController {
 
     @Operation(summary = "文章访问量+1")
     @Parameter(name = "id", description = "文章id", required = true)
-    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("/visit/{id}")
     public ResponseResult<Void> visit(@PathVariable("id") @NotNull Long id) {
         articleService.addVisitCount(id);
@@ -171,7 +171,7 @@ public class ArticleController {
     @Operation(summary = "上传文章封面")
     @Parameter(name = "articleCover", description = "文章封面")
     @LogAnnotation(module = "文章管理", operation = LogConst.UPLOAD_IMAGE)
-    @AccessIntercepter(seconds = 60, maxCount = 5)
+    @AccessLimit(seconds = 60, maxCount = 5)
     @PostMapping("/upload/articleCover")
     public ResponseResult<String> uploadArticleCover(@RequestParam("articleCover") MultipartFile articleCover) {
         return articleService.uploadArticleCover(articleCover);
@@ -181,7 +181,7 @@ public class ArticleController {
     @Operation(summary = "发布文章")
     @Parameter(name = "articleDTO", description = "文章信息")
     @LogAnnotation(module = "文章管理", operation = LogConst.INSERT)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/publish")
     public ResponseResult<Void> publish(@RequestBody @Valid ArticleDTO articleDTO) {
         return articleService.publish(articleDTO);
@@ -191,7 +191,7 @@ public class ArticleController {
     @Operation(summary = "删除文章封面")
     @Parameter(name = "articleCover", description = "文章封面")
     @LogAnnotation(module = "发布错误", operation = LogConst.DELETE)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/delete/articleCover")
     public ResponseResult<Void> deleteArticleCover(@RequestParam("articleCoverUrl") String articleCoverUrl) {
         return articleService.deleteArticleCover(articleCoverUrl);
@@ -199,7 +199,7 @@ public class ArticleController {
 
     @Operation(summary = "获取文章详情")
     @Parameter(name = "id", description = "文章id", required = true)
-    @AccessIntercepter(seconds = 60, maxCount = 60)
+    @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("/detail/{id}")
     public ResponseResult<ArticleDetailVO> detail(@PathVariable("id") @NotNull Integer id) {
         return ResponseWrapper.handler(() -> articleService.getArticleDetail(id));
@@ -212,7 +212,7 @@ public class ArticleController {
             @Parameter(name = "articleId", description = "文章id", required = true)
     })
     @LogAnnotation(module = "文章管理", operation = LogConst.UPLOAD_IMAGE)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/upload/articleImage")
     public ResponseResult<String> uploadArticleImage(
             @RequestParam("articleImage") MultipartFile articleImage
@@ -223,7 +223,7 @@ public class ArticleController {
     @PreAuthorize("hasAnyAuthority('blog:article:list')")
     @Operation(summary = "获取所有的文章列表")
     @LogAnnotation(module = "文章管理", operation = LogConst.GET)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/back/list")
     public ResponseResult<List<ArticleListVO>> listArticle() {
         return ResponseWrapper.handler(() -> articleService.listArticle());
@@ -235,7 +235,7 @@ public class ArticleController {
             @Parameter(name = "searchArticleDTO", description = "搜索文章信息", required = true)
     })
     @LogAnnotation(module = "文章管理", operation = LogConst.SEARCH)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/back/search")
     public ResponseResult<List<ArticleListVO>> searchArticle(@RequestBody SearchArticleDTO searchArticleDTO) {
         return ResponseWrapper.handler(() -> articleService.searchArticle(searchArticleDTO));
@@ -248,7 +248,7 @@ public class ArticleController {
             @Parameter(name = "status", description = "状态", required = true)
     })
     @LogAnnotation(module = "文章管理", operation = LogConst.UPDATE)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/back/update/status")
     public ResponseResult<Void> updateArticleStatus(
             @RequestParam("id") @NotNull Long id,
@@ -264,7 +264,7 @@ public class ArticleController {
             @Parameter(name = "isTop", description = "是否置顶", required = true)
     })
     @LogAnnotation(module = "文章管理", operation = LogConst.UPDATE)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/back/update/isTop")
     public ResponseResult<Void> updateArticleIsTop(
             @RequestParam("id") @NotNull Long id,
@@ -279,7 +279,7 @@ public class ArticleController {
             @Parameter(name = "id", description = "文章id", required = true)
     })
     @LogAnnotation(module = "文章管理", operation = LogConst.GET)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/back/echo/{id}")
     public ResponseResult<ArticleDTO> getArticleEcho(@PathVariable("id") Long id) {
         return ResponseWrapper.handler(() -> articleService.getArticleDTO(id));
@@ -291,7 +291,7 @@ public class ArticleController {
             @Parameter(name = "id", description = "文章id", required = true)
     })
     @LogAnnotation(module = "文章管理", operation = LogConst.DELETE)
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @DeleteMapping("/back/delete")
     public ResponseResult<Void> deleteArticle(@RequestBody List<Long> ids) {
         return articleService.deleteArticle(ids);

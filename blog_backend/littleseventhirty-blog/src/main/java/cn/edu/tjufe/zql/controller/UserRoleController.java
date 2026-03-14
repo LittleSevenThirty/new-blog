@@ -1,7 +1,7 @@
 package cn.edu.tjufe.zql.controller;
 
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.dto.RoleUserDTO;
@@ -46,7 +46,7 @@ public class UserRoleController {
             @Parameter(name = "username", description = "用户名"),
             @Parameter(name = "email", description = "邮箱")
     })
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/user/list")
     public ResponseResult<List<RoleUserVO>> selectUser(
             @NotNull(message = "角色id不能为空") Long roleId,
@@ -63,7 +63,7 @@ public class UserRoleController {
             @Parameter(name = "username", description = "用户名"),
             @Parameter(name = "email", description = "邮箱")
     })
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/not/user/list")
     public ResponseResult<List<RoleUserVO>> selectNotUserByRole(
             @NotNull(message = "角色id不能为空") Long roleId,
@@ -76,7 +76,7 @@ public class UserRoleController {
     @PreAuthorize("hasAnyAuthority('system:user:role:add')")
     @Operation(summary = "添加用户角色关系")
     @Parameter(name = "userRoleDTO", description = "添加的数据")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="用户角色",operation= LogConst.GRANT)
     @PostMapping("/add")
     public ResponseResult<Void> addUserRole(@Valid @RequestBody UserRoleDTO userRoleDTO) {
@@ -86,14 +86,14 @@ public class UserRoleController {
     @PreAuthorize("hasAnyAuthority('system:user:role:delete')")
     @Operation(summary = "删除用户角色关系")
     @Parameter(name = "userRoleDTO", description = "删除的所需数据")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module="用户角色",operation= LogConst.DELETE)
     @DeleteMapping("/delete")
     public ResponseResult<Void> deleteUserRole(@Valid @RequestBody UserRoleDTO userRoleDTO) {
         return userRoleService.deleteUserRole(userRoleDTO);
     }
 
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Operation(summary = "查询拥有用户的角色列表")
     @GetMapping("/role/list")
     public ResponseResult<List<RoleAllVO>> selectPermissionIdRole(
@@ -110,7 +110,7 @@ public class UserRoleController {
             @Parameter(name = "roleName", description = "角色名称"),
             @Parameter(name = "roleKey", description = "角色键")
     })
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Operation(summary = "查询没有该用户的角色列表")
     @GetMapping("/not/role/list")
     public ResponseResult<List<RoleAllVO>> selectUserNotRole(
@@ -123,7 +123,7 @@ public class UserRoleController {
 
     @Operation(summary = "添加角色用户关系")
     @PreAuthorize("hasAnyAuthority('system:user:role:add')")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Parameters({
             @Parameter(name = "roleUserDTO", description = "添加的数据")
     })
@@ -135,7 +135,7 @@ public class UserRoleController {
 
     @Operation(summary = "删除角色用户关系")
     @PreAuthorize("hasAnyAuthority('system:user:role:delete')")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Parameters({
             @Parameter(name = "roleUserDTO", description = "删除的所需数据")
     })

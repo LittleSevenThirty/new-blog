@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2026/1/27
  * @github https://github.com/little-seven-thirty
  */
-@Component
+@Component("redisCache")
 public class RedisCache {
     @Autowired
     private RedisTemplate redisTemplate;

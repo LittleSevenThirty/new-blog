@@ -1,7 +1,7 @@
 package cn.edu.tjufe.zql.controller;
 
 
-import cn.edu.tjufe.zql.annotation.AccessIntercepter;
+import cn.edu.tjufe.zql.annotation.AccessLimit;
 import cn.edu.tjufe.zql.annotation.LogAnnotation;
 import cn.edu.tjufe.zql.constants.LogConst;
 import cn.edu.tjufe.zql.domain.dto.RolePermissionDTO;
@@ -41,7 +41,7 @@ public class RolePermissionController {
             @Parameter(name = "roleName", description = "角色名称"),
             @Parameter(name = "roleKey", description = "角色键")
     })
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Operation(summary = "查询当前权限的角色列表")
     @GetMapping("/role/list")
     public ResponseResult<List<RoleAllVO>> selectPermissionIdRole(
@@ -58,7 +58,7 @@ public class RolePermissionController {
             @Parameter(name = "roleName", description = "角色名称"),
             @Parameter(name = "roleKey", description = "角色键")
     })
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Operation(summary = "查询没有该权限的角色列表")
     @GetMapping("/not/role/list")
     public ResponseResult<List<RoleAllVO>> selectPermissionNotRole(
@@ -71,7 +71,7 @@ public class RolePermissionController {
 
     @Operation(summary = "添加角色权限关系")
     @PreAuthorize("hasAnyAuthority('system:permission:role:add')")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Parameters({
             @Parameter(name = "rolePermissionDTO", description = "添加的数据")
     })
@@ -83,7 +83,7 @@ public class RolePermissionController {
 
     @Operation(summary = "删除角色权限关系")
     @PreAuthorize("hasAnyAuthority('system:permission:role:delete')")
-    @AccessIntercepter(seconds = 60, maxCount = 30)
+    @AccessLimit(seconds = 60, maxCount = 30)
     @Parameters({
             @Parameter(name = "rolePermissionDTO", description = "删除的所需数据")
     })
