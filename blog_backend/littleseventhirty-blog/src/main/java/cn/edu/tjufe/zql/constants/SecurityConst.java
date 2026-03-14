@@ -20,7 +20,7 @@ public class SecurityConst {
     /**
      * 需要校验的文章接口
      */
-    public static final String ARTICLE_CHECK = "article/auth/**";
+    public static final String ARTICLE_CHECK = "/article/auth/**";
 
     /**
      * 需要校验的树洞接口

@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class PublicController {
 
-    @Resource
+    @Resource(name="publicService")
     private IPublicService publicService;
 
     /**

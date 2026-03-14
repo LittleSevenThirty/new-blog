@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
-    @Resource
+    @Resource(name="categoryService")
     private ICategoryService categoryService;
 
     @Operation(summary = "新增分类-文章列表")

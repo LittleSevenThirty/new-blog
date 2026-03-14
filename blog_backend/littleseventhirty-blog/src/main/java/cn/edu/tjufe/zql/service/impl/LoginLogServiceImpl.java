@@ -1,12 +1,17 @@
 package cn.edu.tjufe.zql.service.impl;
 
 import cn.edu.tjufe.zql.constants.Const;
+import cn.edu.tjufe.zql.domain.dto.LoginLogDTO;
+import cn.edu.tjufe.zql.domain.dto.LoginLogDeleteDTO;
 import cn.edu.tjufe.zql.domain.entity.LoginLog;
+import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.LoginLogVO;
 import cn.edu.tjufe.zql.mapper.LoginLogMapper;
 import cn.edu.tjufe.zql.service.ILoginLogService;
 import cn.edu.tjufe.zql.utils.BrowserUtil;
 import cn.edu.tjufe.zql.utils.IpUtils;
 import cn.edu.tjufe.zql.utils.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +20,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -28,6 +35,9 @@ import java.util.Date;
 public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> implements ILoginLogService {
     @Resource
     private RabbitTemplate rabbitTemplate;
+
+    @Resource
+    private LoginLogMapper loginLogMapper;
 
     @Value("${spring.rabbitmq.exchange.log}")
     private String exchange; // 日志交换机的名称
@@ -53,7 +63,7 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
             userName = "未知用户";
         }
         LoginLog logEntity = LoginLog.builder()
-                .userName(userName)
+                .username(userName)
                 .ip(ipAddress)
                 .browser(browserName)
                 .os(os)
@@ -75,5 +85,28 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
             this.save(logEntity);
             log.info("登录日志已保存到数据库");
         }
+    }
+
+    @Override
+    public List<LoginLogVO> searchLoginLog(LoginLogDTO loginLogDTO) {
+        LambdaQueryWrapper<LoginLog> wrapper = new LambdaQueryWrapper<>();
+        if (Objects.nonNull(loginLogDTO)) {
+            wrapper.like(StringUtils.isNotEmpty(loginLogDTO.getAddress()), LoginLog::getAddress, loginLogDTO.getAddress())
+                    .like(StringUtils.isNotEmpty(loginLogDTO.getUsername()), LoginLog::getUsername, loginLogDTO.getUsername())
+                    .eq(StringUtils.isNotNull(loginLogDTO.getState()), LoginLog::getState, loginLogDTO.getState());
+            if (StringUtils.isNotNull(loginLogDTO.getLoginTimeStart()) && StringUtils.isNotNull(loginLogDTO.getLoginTimeEnd())) {
+                wrapper.gt(LoginLog::getCreateTime, loginLogDTO.getLoginTimeStart()).and(a -> a.lt(LoginLog::getCreateTime, loginLogDTO.getLoginTimeEnd()));
+            }
+        }
+        wrapper.orderByDesc(LoginLog::getCreateTime);
+        return loginLogMapper.selectList(wrapper).stream().map(loginLog -> loginLog.asViewObject(LoginLogVO.class,v -> v.setLoginTime(loginLog.getCreateTime()))).toList();
+    }
+
+    @Override
+    public ResponseResult<Void> deleteLoginLog(LoginLogDeleteDTO loginLogDeleteDTO) {
+        if (this.removeByIds(loginLogDeleteDTO.getIds())) {
+            return ResponseResult.success();
+        }
+        return ResponseResult.failure();
     }
 }

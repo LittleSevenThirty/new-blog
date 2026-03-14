@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@Service
+@Service("commentService")
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
 
     @Resource

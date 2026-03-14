@@ -29,7 +29,7 @@ import java.util.List;
 @Validated
 public class FavoriteController {
 
-    @Resource
+    @Resource(name="favoriteService")
     private IFavoriteService favoriteService;
 
     @CheckBlacklist

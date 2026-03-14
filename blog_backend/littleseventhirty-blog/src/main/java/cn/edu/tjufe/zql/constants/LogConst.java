@@ -15,5 +15,6 @@ public class LogConst {
     public static final String UPDATE="更新";
     public static final String DELETE="删除";
     public static final String UPLOAD_IMAGE="图片上传";
+    public static final String GRANT="授权";
 }
 

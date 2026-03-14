@@ -17,10 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  *
@@ -162,6 +159,60 @@ public class FileUploadUtils {
 //            log.error("删除 MinIO 文件 {} 失败: {}", fileName, e.getMessage());
 //            return false;
 //        }
+        return true;
+    }
+
+    /**
+     * 获取目录下的所有文件名称
+     *
+     * @param dir 目录
+     * @return 所有文件全路径名称
+     */
+    public List<String> listFiles(String dir) {
+        // 测试
+        dir = dir.endsWith("/") ? dir : dir + "/";
+        ListObjectsArgs listObjectsArgs = ListObjectsArgs.builder()
+                .bucket(bucketName)
+                .prefix(dir)
+                .build();
+        Iterable<Result<Item>> results = client.listObjects(listObjectsArgs);
+
+        List<String> fileNames = new ArrayList<>();
+        results.forEach(result -> {
+            Item item;
+            try {
+                // 提取出文件名
+                item = result.get();
+                fileNames.add(item.objectName());
+            } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException |
+                     InvalidResponseException | IOException | NoSuchAlgorithmException | ServerException |
+                     XmlParserException e) {
+                log.error("获取文件出现错误", e);
+            }
+        });
+
+        return fileNames;
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param fileNames 文件名称
+     * @return 是否成功
+     * @throws Exception 异常
+     */
+    public boolean deleteFiles(List<String> fileNames) throws Exception {
+        List<DeleteObject> deleteObjects = fileNames.stream().map(DeleteObject::new).toList();
+        RemoveObjectsArgs removeObjectsArgs = RemoveObjectsArgs.builder()
+                .bucket(bucketName)
+                .objects(deleteObjects)
+                .build();
+        Iterable<Result<DeleteError>> results = client.removeObjects(removeObjectsArgs);
+        for (Result<DeleteError> result : results) {
+            DeleteError error = result.get();
+            log.error("文件: " + error.objectName() + "删除错误; ", error.message());
+            return false;
+        }
         return true;
     }
 }

@@ -38,7 +38,7 @@ import java.util.List;
 @Validated
 @Tag(name="留言板",description="留言板相关接口")
 public class LeaveWordController {
-    @Resource
+    @Resource(name="leaveWordService")
     private ILeaveWordService leaveWordService;
 
     @CheckBlacklist

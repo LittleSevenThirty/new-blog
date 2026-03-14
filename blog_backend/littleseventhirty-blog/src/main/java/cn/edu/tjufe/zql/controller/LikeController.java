@@ -21,7 +21,7 @@ import java.util.List;
 @Tag(name = "点赞管理")
 public class LikeController {
 
-    @Resource
+    @Resource(name="likeService")
     private ILikeService likeService;
 
     @CheckBlacklist

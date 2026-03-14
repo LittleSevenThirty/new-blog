@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * @date 2026/2/27
  * @github https://github.com/little-seven-thirty
  */
-@Service
+@Service("favoriteService")
 public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite> implements IFavoriteService {
     @Resource
     private FavoriteMapper favoriteMapper;

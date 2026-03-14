@@ -34,7 +34,7 @@ public class LoginLog implements Serializable, ViewObjectConvertible {
     @TableId("login_log_id")
     private Long loginLogId;
     //用户名称
-    private String userName;
+    private String username;
     //登录ip
     private String ip;
     //登录地址

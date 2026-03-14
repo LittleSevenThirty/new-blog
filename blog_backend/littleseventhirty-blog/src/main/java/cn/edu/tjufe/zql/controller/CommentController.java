@@ -30,7 +30,7 @@ import java.util.List;
 @Validated
 public class CommentController {
 
-    @Resource
+    @Resource(name="commentService")
     private ICommentService commentService;
 
     @CheckBlacklist

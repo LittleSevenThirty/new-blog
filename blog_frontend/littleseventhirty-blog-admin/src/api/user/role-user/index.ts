@@ -1,7 +1,7 @@
 import { message } from 'ant-design-vue'
 
 /**
- * 查询用户的角色
+ * 查询用户的角色--
  * @param userId 用户id
  * @param roleName 角色名称
  * @param roleKey 角色key
@@ -17,7 +17,7 @@ export async function queryUserRole(userId: string, roleName?: string, roleKey?:
 }
 
 /**
- * 未分配该用户的角色列表
+ * 未分配该用户的角色列表--
  * @param userId 用户id
  * @param roleName  角色名称
  * @param roleKey 角色key
@@ -33,7 +33,7 @@ export async function queryUserNotRole(userId: string, roleName?: string, roleKe
 }
 
 /**
- * 添加角色用户关系
+ * 添加角色用户关系--
  * @param data 角色用户关系对象
  */
 export async function addRoleUser(data: any) {
@@ -41,7 +41,7 @@ export async function addRoleUser(data: any) {
 }
 
 /**
- * 删除角色用户关系（取消授权）
+ * 删除角色用户关系（取消授权）--
  * @param data 角色用户关系对象
  */
 export async function deleteRoleUser(data: any) {

@@ -29,11 +29,33 @@ spring:
       key: jwt-key
       expire: 7 # 有效时间
   rabbitmq:
+    # rabbitmq配置
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true # 允许消费者重试
+          max-attempts: 3 # 最大重试次数
+          initial-interval: 6000 # 重试间隔时间
+          multiplier: 2 # 乘子*间隔时间=下一次重试时间，不能超过最大间隔时间
+          max-interval: 10000ms # 最大间隔时间
+    # 信息配置
+    # 交换机，相当于分拣中心
     exchange:
-      log: log_exchange
       email: email_exchange
+      log: log_exchange
+    # 队列，相当于仓库货架
+    queue:
+      email: email_queue
+      log-login: log_login_queue
+      log-system: log_system_queue
+    # 路由健，相当于货架上的标签
     routingKey:
       log-login: log_routing_key_login
+      log-system: log_routing_key_system
       email: email_routing_key
 
 # 邮件配置

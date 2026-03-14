@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class UserController {
 
-    @Resource
+    @Resource(name="userService")
     private IUserService userService;
 
     /**
@@ -112,5 +112,4 @@ public class UserController {
     public ResponseResult<Void> resetPassword(@RequestBody @Valid UserResetPasswordDTO userResetDTO) {
         return userService.userResetPassword(userResetDTO);
     }
-
 }

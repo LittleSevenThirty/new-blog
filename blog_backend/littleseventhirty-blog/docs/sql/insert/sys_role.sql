@@ -1,0 +1,3 @@
+INSERT INTO blog.sys_role (role_id, role_name, role_key, status, order_num, remark, create_time, update_time, is_deleted) VALUES (1, '超级管理员', 'ADMIN', 0, 0, '最高管理者', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO blog.sys_role (role_id, role_name, role_key, status, order_num, remark, create_time, update_time, is_deleted) VALUES (2, '测试角色', 'Test', 0, 1, '测试的用户，没有任何操作权限', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);
+INSERT INTO blog.sys_role (role_id, role_name, role_key, status, order_num, remark, create_time, update_time, is_deleted) VALUES (3, '普通用户', 'USER', 0, 3, '前台普通用户（前台用户默认角色）', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0);

@@ -1,4 +1,31 @@
 -- ----------------------------
+-- Table structure for sys_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_log`;
+CREATE TABLE `sys_log`  (
+                            `log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+                            `module` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模块名称',
+                            `operation` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '操作',
+                            `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '操作人员',
+                            `ip` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'ip地址',
+                            `address` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '操作地点',
+                            `state` tinyint(1) NOT NULL COMMENT '操作状态(0：成功，1：失败，2：异常)',
+                            `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '操作方法',
+                            `req_parameter` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '请求参数',
+                            `req_mapping` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '请求方式',
+                            `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '异常信息',
+                            `return_parameter` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '返回参数',
+                            `req_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '请求地址',
+                            `time` bigint NOT NULL COMMENT '消耗时间(ms)',
+                            `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '接口描述',
+                            `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                            `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+                            `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
+                            PRIMARY KEY (`log_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2867 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+
+-- ----------------------------
 -- Table structure for sys_login_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_login_log`;
@@ -12,11 +39,40 @@ CREATE TABLE `sys_login_log`  (
                                   `type` tinyint(1) NOT NULL COMMENT '登录类型(0：前台，1：后台，2：非法登录)',
                                   `state` tinyint(1) NOT NULL COMMENT '登录状态(0：成功，1：失败)',
                                   `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '登录信息',
-                                  `create_time` datetime NOT NULL COMMENT '用户创建时间',
-                                  `update_time` datetime NOT NULL COMMENT '用户更新时间',
+                                  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '用户创建时间',
+                                  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '用户更新时间',
                                   `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
                                   PRIMARY KEY (`login_log_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2275 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for sys_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu`;
+CREATE TABLE `sys_menu`  (
+                             `menu_id` bigint NOT NULL AUTO_INCREMENT COMMENT '唯一id',
+                             `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
+                             `icon` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图标',
+                             `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '地址',
+                             `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '绑定的哪个组件，默认自带的组件类型分别是：Iframe、RouteView和ComponentError',
+                             `redirect` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '父菜单重定向地址(默认第一个子菜单)',
+                             `affix` tinyint NOT NULL DEFAULT 0 COMMENT '是否是固定页签(0否 1是)',
+                             `parent_id` bigint NULL DEFAULT NULL COMMENT '父级菜单的id',
+                             `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '同路由中的name，主要是用于保活的左右',
+                             `hide_in_menu` tinyint NOT NULL DEFAULT 0 COMMENT '是否隐藏当前菜单(0否 1是)',
+                             `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '如果当前是iframe的模式，需要有一个跳转的url支撑，其不能和path重复，path还是为路由',
+                             `hide_in_breadcrumb` tinyint NOT NULL DEFAULT 1 COMMENT '是否存在于面包屑(0否 1是)',
+                             `hide_children_in_menu` tinyint NOT NULL DEFAULT 1 COMMENT '是否不需要显示所有的子菜单(0否 1是)',
+                             `keep_alive` tinyint NOT NULL DEFAULT 1 COMMENT '是否保活(0否 1是)',
+                             `target` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '全连接跳转模式(\'_blank\' | \'_self\' | \'_parent\')',
+                             `is_disable` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否禁用 (0否 1是)',
+                             `order_num` int NOT NULL DEFAULT 1 COMMENT '排序',
+                             `create_time` datetime NOT NULL COMMENT '创建时间' DEFAULT CURRENT_TIMESTAMP,
+                             `update_time` datetime NOT NULL COMMENT '更新时间' DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                             `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
+                             PRIMARY KEY (`menu_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -27,8 +83,8 @@ CREATE TABLE `sys_permission`  (
                                    `permission_desc` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '描述',
                                    `permission_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '权限字符',
                                    `menu_id` bigint NOT NULL COMMENT '菜单id',
-                                   `create_time` datetime NOT NULL COMMENT '创建时间',
-                                   `update_time` datetime NOT NULL COMMENT '更新时间',
+                                   `create_time` datetime NOT NULL COMMENT '创建时间' DEFAULT CURRENT_TIMESTAMP,
+                                   `update_time` datetime NOT NULL COMMENT '更新时间' DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                    `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
                                    PRIMARY KEY (`permission_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 159 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
@@ -44,12 +100,24 @@ CREATE TABLE `sys_role`  (
                              `status` tinyint NOT NULL DEFAULT 0 COMMENT '状态（0：正常，1：停用）',
                              `order_num` bigint NOT NULL COMMENT '排序',
                              `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-                             `create_time` datetime NOT NULL COMMENT '创建时间',
-                             `update_time` datetime NOT NULL COMMENT '更新时间',
+                             `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                             `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                              `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
                              PRIMARY KEY (`role_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
+
+-- ----------------------------
+-- Table structure for sys_role_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_menu`;
+CREATE TABLE `sys_role_menu` (
+                                 `role_menu_id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+                                 `role_id` bigint NOT NULL COMMENT '角色id',
+                                 `menu_id` bigint NOT NULL COMMENT '菜单id',
+                                 `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
+                                 PRIMARY KEY (`role_menu_id`) USING BTREE
+)ENGINE = InnoDB AUTO_INCREMENT = 1395 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_role_permission
@@ -81,8 +149,8 @@ CREATE TABLE `sys_user`  (
                              `login_type` tinyint NULL DEFAULT NULL COMMENT '最近登录类型(0邮箱/姓名 1Gitee 2Github)',
                              `login_time` datetime NOT NULL COMMENT '用户最近登录时间',
                              `is_disable` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否禁用 (0否 1是)',
-                             `create_time` datetime NOT NULL COMMENT '用户创建时间',
-                             `update_time` datetime NOT NULL COMMENT '用户更新时间',
+                             `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '用户创建时间',
+                             `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '用户更新时间',
                              `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
                              PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 88065989 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
@@ -213,8 +281,8 @@ CREATE TABLE `t_comment`  (
                               `comment_user_id` bigint NOT NULL COMMENT '评论用户的id',
                               `reply_user_id` bigint NULL DEFAULT NULL COMMENT '回复用户的id',
                               `is_check` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否通过 (0否 1是)',
-                              `create_time` datetime NOT NULL COMMENT '评论时间',
-                              `update_time` datetime NOT NULL COMMENT '更新时间',
+                              `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '评论时间',
+                              `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                               `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
                               PRIMARY KEY (`comment_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 131 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
@@ -229,8 +297,8 @@ CREATE TABLE `t_leave_word`  (
                                  `user_id` bigint NOT NULL COMMENT '留言用户id',
                                  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '留言内容',
                                  `is_check` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否通过 (0否 1是)',
-                                 `create_time` datetime NOT NULL COMMENT '留言时间',
-                                 `update_time` datetime NOT NULL COMMENT '更新时间',
+                                 `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '留言时间',
+                                 `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
                                  `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
                                  PRIMARY KEY (`leave_word_id`) USING BTREE
 )ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
@@ -244,8 +312,8 @@ CREATE TABLE `t_like`  (
                            `user_id` bigint NOT NULL COMMENT '点赞的用户id',
                            `type` tinyint NOT NULL COMMENT '点赞类型(1,文章,2,评论,3留言板)',
                            `type_id` bigint NOT NULL COMMENT '点赞的文章id',
-                           `create_time` datetime NOT NULL COMMENT '点赞时间',
-                           `update_time` datetime NOT NULL COMMENT '修改时间',
+                           `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '点赞时间',
+                           `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
                            PRIMARY KEY (`like_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 363 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
@@ -258,7 +326,8 @@ CREATE TABLE `t_favorite` (
   `type` int NOT NULL COMMENT '收藏类型(1,文章 2,留言板)',
   `type_id` bigint NOT NULL COMMENT '类型id',
   `is_check` int DEFAULT 1 COMMENT '是否有效 (0否 1是)',
-  `create_time` datetime NOT NULL COMMENT '收藏时间',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '收藏时间',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
   PRIMARY KEY (`favorite_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
@@ -269,8 +338,8 @@ DROP TABLE IF EXISTS `t_tag`;
 CREATE TABLE `t_tag`  (
                           `tag_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '标签id',
                           `tag_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标签名称',
-                          `create_time` datetime NOT NULL COMMENT '标签创建时间',
-                          `update_time` datetime NOT NULL COMMENT '标签更新时间',
+                          `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '标签创建时间',
+                          `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '标签更新时间',
                           `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
                           PRIMARY KEY (`tag_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
@@ -292,25 +361,3 @@ CREATE TABLE `t_tree_hole`  (
                                 `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除（0：未删除，1：已删除）',
                                 PRIMARY KEY (`tree_hole_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
-
-
-SET FOREIGN_KEY_CHECKS = 1;
-
--- 导出版本（可靠性高）
-CREATE TABLE BLOG.T_ARTICLE
-(
-    ID              bigint unsigned AUTO_INCREMENT COMMENT '表id'
-        PRIMARY KEY,
-    ARTICLE_ID      bigint unsigned   NOT NULL COMMENT '文章id',
-    USER_ID         bigint            NOT NULL COMMENT '作者id',
-    CATEGORY_ID     bigint            NOT NULL COMMENT '分类id',
-    ARTICLE_TITLE   varchar(50)       NOT NULL COMMENT '文章标题',
-    ARTICLE_CONTENT longtext          NOT NULL COMMENT '文章内容',
-    ARTICLE_TYPE    tinyint           NOT NULL COMMENT '类型（1原创 2转载 3翻译）',
-    STATUS          tinyint           NOT NULL COMMENT '文章状态（1公开 2私密 3草稿）',
-    CREATE_TIME     datetime          NOT NULL COMMENT '文章创建时间',
-    UPDATE_TIME     datetime          NOT NULL COMMENT '文章更新时间',
-    IS_DELETED      tinyint DEFAULT 0 NOT NULL COMMENT '是否删除（0未删除，1已删除）',
-    VISITED_COUNT   bigint            NOT NULL COMMENT '访问数量'
-)
-    ROW_FORMAT = DYNAMIC;

@@ -2,14 +2,18 @@ package cn.edu.tjufe.zql.service.impl;
 
 
 import cn.edu.tjufe.zql.constants.SQLConst;
+import cn.edu.tjufe.zql.domain.dto.SearchTreeHoleDTO;
+import cn.edu.tjufe.zql.domain.dto.TreeHoleIsCheckDTO;
 import cn.edu.tjufe.zql.domain.entity.TreeHole;
 import cn.edu.tjufe.zql.domain.entity.User;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.TreeHoleListVO;
 import cn.edu.tjufe.zql.domain.vo.TreeHoleVO;
 import cn.edu.tjufe.zql.mapper.TreeHoleMapper;
 import cn.edu.tjufe.zql.mapper.UserMapper;
 import cn.edu.tjufe.zql.service.ITreeHoleService;
 import cn.edu.tjufe.zql.utils.SecurityUtils;
+import cn.edu.tjufe.zql.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
@@ -67,5 +71,45 @@ public class TreeHoleServiceImpl extends ServiceImpl<TreeHoleMapper, TreeHole> i
                 treeHoleVO.setAvater(user.getAvatar());
             }
         })).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TreeHoleListVO> getBackTreeHoleList(SearchTreeHoleDTO searchDTO) {
+        LambdaQueryWrapper<TreeHole> wrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.isNotNull(searchDTO)) {
+            // 搜索 用户名相关树洞留言
+            List<User> users = userMapper.selectList(new LambdaQueryWrapper<User>().like(User::getUsername, searchDTO.getUserName()));
+            if (!users.isEmpty())
+                wrapper.in(StringUtils.isNotEmpty(searchDTO.getUserName()), TreeHole::getUserId, users.stream().map(User::getUserId).collect(Collectors.toList()));
+            else
+                wrapper.eq(StringUtils.isNotNull(searchDTO.getUserName()), TreeHole::getUserId, null);
+
+            wrapper.eq(StringUtils.isNotNull(searchDTO.getIsCheck()), TreeHole::getIsCheck, searchDTO.getIsCheck());
+            if (StringUtils.isNotNull(searchDTO.getStartTime()) && StringUtils.isNotNull(searchDTO.getEndTime()))
+                wrapper.between(TreeHole::getCreateTime, searchDTO.getStartTime(), searchDTO.getEndTime());
+        }
+        List<TreeHole> treeHoles = treeHoleMapper.selectList(wrapper);
+        if (!treeHoles.isEmpty()) {
+            return treeHoles.stream().map(treeHole -> treeHole.asViewObject(TreeHoleListVO.class,
+                    v -> v.setUserName(userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getUserId, treeHole.getUserId()))
+                            .getUsername()))).toList();
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseResult<Void> isCheckTreeHole(TreeHoleIsCheckDTO isCheckDTO) {
+        if (treeHoleMapper.updateById(TreeHole.builder().treeHoleId(isCheckDTO.getTreeHoleId()).isCheck(isCheckDTO.getIsCheck()).build()) > 0)
+            return ResponseResult.success();
+
+        return ResponseResult.failure();
+    }
+
+    @Override
+    public ResponseResult<Void> deleteTreeHole(List<Long> ids) {
+        if (treeHoleMapper.deleteBatchIds(ids) > 0) {
+            return ResponseResult.success();
+        }
+        return ResponseResult.failure();
     }
 }

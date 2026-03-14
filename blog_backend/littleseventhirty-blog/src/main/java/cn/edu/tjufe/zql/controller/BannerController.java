@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/banner")
 public class BannerController {
-    @Resource
+    @Resource(name="bannerService")
     private IBannerService bannerService;
 
     /**

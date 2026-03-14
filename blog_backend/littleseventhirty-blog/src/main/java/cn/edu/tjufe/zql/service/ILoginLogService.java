@@ -1,8 +1,14 @@
 package cn.edu.tjufe.zql.service;
 
+import cn.edu.tjufe.zql.domain.dto.LoginLogDTO;
+import cn.edu.tjufe.zql.domain.dto.LoginLogDeleteDTO;
 import cn.edu.tjufe.zql.domain.entity.LoginLog;
+import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.LoginLogVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
  *
@@ -20,4 +26,18 @@ public interface ILoginLogService extends IService<LoginLog> {
      * @param message 信息
      */
     void loginLog(HttpServletRequest request, String userName, Integer state, String message);
+
+    /**
+     * 搜索/显示登录日志
+     * @param loginLogDTO 查询条件
+     * @return  数据列表
+     */
+    List<LoginLogVO> searchLoginLog(LoginLogDTO loginLogDTO);
+
+    /**
+     * 删除登录日志
+     * @param loginLogDeleteDTO 删除条件
+     * @return 是否成功
+     */
+    ResponseResult<Void> deleteLoginLog(LoginLogDeleteDTO loginLogDeleteDTO);
 }

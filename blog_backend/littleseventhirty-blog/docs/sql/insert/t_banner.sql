@@ -1,0 +1,6 @@
+INSERT INTO blog.t_banner (banner_id, path, size, type, user_id, `order`, create_time) VALUES (1, 'https://little-seven.oss-cn-beijing.aliyuncs.com/banner/b1.jpg', 1024000, 'jeg', 1, 1, '2026-03-04 21:31:35');
+INSERT INTO blog.t_banner (banner_id, path, size, type, user_id, `order`, create_time) VALUES (2, 'https://little-seven.oss-cn-beijing.aliyuncs.com/banner/b2.jpg', 1024000, 'image/jpeg', 1, 2, '2026-03-04 21:31:35');
+INSERT INTO blog.t_banner (banner_id, path, size, type, user_id, `order`, create_time) VALUES (3, 'https://little-seven.oss-cn-beijing.aliyuncs.com/banner/b3.webp', 1024000, 'image/jpeg', 1, 3, '2026-03-04 21:31:35');
+INSERT INTO blog.t_banner (banner_id, path, size, type, user_id, `order`, create_time) VALUES (4, 'https://little-seven.oss-cn-beijing.aliyuncs.com/banner/b4.jpg', 1024000, 'image/jpeg', 1, 3, '2026-03-04 21:31:35');
+INSERT INTO blog.t_banner (banner_id, path, size, type, user_id, `order`, create_time) VALUES (5, 'https://little-seven.oss-cn-beijing.aliyuncs.com/banner/b5.jpeg', 1024000, 'image/jpeg', 1, 3, '2026-03-04 21:31:35');
+INSERT INTO blog.t_banner (banner_id, path, size, type, user_id, `order`, create_time) VALUES (6, 'https://little-seven.oss-cn-beijing.aliyuncs.com/banner/b6.jpg', 1024000, 'image/jpeg', 1, 3, '2026-03-04 21:31:35');

@@ -2,6 +2,23 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/docs/sql/create.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/docs/sql/insert.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/sys_menu.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/sys_permission.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/sys_role.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/sys_role_menu.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/sys_role_permission.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/sys_user.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/sys_user_role.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/sys_website_info.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_article.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_article_tag.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_banner.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_category.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_comment.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_favorite.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_leave_word.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_like.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_tag.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/insert/t_tree_hole.sql" dialect="MySQL" />
   </component>
 </project>
