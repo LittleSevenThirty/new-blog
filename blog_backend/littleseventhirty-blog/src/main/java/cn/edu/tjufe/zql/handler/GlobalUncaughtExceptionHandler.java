@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  *
  * @authro 钟奇林
- * @description 并发线程发生错误异常时，不可使用try-catch，使用该类统一处理，
+ * @description 并发线程发生错误异常时，不可使用try-catch，使用该类统一处理（不是全局异常处理器）
  * @date 2026/3/6
  * @github https://github.com/little-seven-thirty
  */

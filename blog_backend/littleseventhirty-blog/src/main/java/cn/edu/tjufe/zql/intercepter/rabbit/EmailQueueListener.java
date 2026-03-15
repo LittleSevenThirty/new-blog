@@ -18,9 +18,9 @@ import cn.edu.tjufe.zql.utils.TimeUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import jakarta.annotation.Resource;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.Context;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +29,8 @@ import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.ObjectError;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.Map;
 import java.util.Objects;
@@ -54,11 +56,15 @@ public class EmailQueueListener {
     private UserMapper userMapper;
     @Resource
     private LeaveWordMapper leaveWordMapper;
+    @Resource
+    private TemplateEngine templateEngine;
 
     @Value("${spring.mail.username}")
     private String username;
     @Value("${web.index.path}")
     private String webIndexPath;
+    @Value("${mail.link.apply.redirect-url}")
+    private String linkApplyRedirectUrl;
 
 
     /**
@@ -125,9 +131,10 @@ public class EmailQueueListener {
                 message.setTime(TimeUtils.format(messageUser.getCreateTime(), DateUtils.YYYY_MM_DD_HH_MM_SS));
             });
         }
-        // 发送邮件
+        // 发送邮件 ①构建邮件内容
         MimeMessage mimeMessage = null;
         if(MailBoxAlertEnum.REGISTER.getCodeStr().equals(type)){
+            // 注册邮件
             mimeMessage=sendHTMLMail(email,MailBoxAlertEnum.REGISTER.getSubject(),MailBoxAlertEnum.REGISTER.getTemplateName(),Map.of(
                     "expirationTime","5分钟",
                     "code",code,
@@ -135,6 +142,7 @@ public class EmailQueueListener {
                     "openSourceAddress",""
             ));
         }else if (MailBoxAlertEnum.RESET.getCodeStr().equals(type)) {
+            // 重置密码邮件
             mimeMessage = sendHTMLMail(email, MailBoxAlertEnum.RESET.getSubject(), MailBoxAlertEnum.RESET.getTemplateName(), Map.of(
                     "expirationTime", "5分钟",
                     "code", code,
@@ -142,15 +150,91 @@ public class EmailQueueListener {
                     "openSourceAddress", "https://gitee.com/kuailemao/ruyu-blog"
             ));
         } else if (MailBoxAlertEnum.RESET_EMAIL.getCodeStr().equals(type)) {
+            // 重置邮箱邮件
             mimeMessage = sendHTMLMail(email, MailBoxAlertEnum.RESET_EMAIL.getSubject(), MailBoxAlertEnum.RESET_EMAIL.getTemplateName(), Map.of(
                     "expirationTime", "5分钟",
                     "code", code,
                     "toUrl", webIndexPath,
                     "openSourceAddress", "https://gitee.com/kuailemao/ruyu-blog"
             ));
-        }
+        }else if(MailBoxAlertEnum.FRIEND_LINK_APPLICATION.getCodeStr().equals(type)){
+            // 友链申请邮件
+            mimeMessage=sendHTMLMail(email,MailBoxAlertEnum.FRIEND_LINK_APPLICATION.getSubject(), MailBoxAlertEnum.FRIEND_LINK_APPLICATION.getTemplateName(), Map.of(
+                    "name",data.get("name"),
+                    "url",data.get("url"),
+                    "description",data.get("description"),
+                    "background",data.get("background"),
+                    "linkEmail",data.get("linkEmail"),
+                    "toUrl",webIndexPath,
+                    "verifyCode",linkApplyRedirectUrl+"?verifyCode"+encode
+            ));
+        }else if(MailBoxAlertEnum.FRIEND_LINK_APPLICATION_PASS.getCodeStr().equals(type)){
+            // 友链申请通过邮件
+            mimeMessage=sendHTMLMail(email,MailBoxAlertEnum.FRIEND_LINK_APPLICATION_PASS.getSubject(), MailBoxAlertEnum.FRIEND_LINK_APPLICATION_PASS.getTemplateName(), Map.of(
+                    "toUrl", webIndexPath + "link",
+                    "openSourceAddress", ""
+            ));
+        }else if(MailBoxAlertEnum.COMMENT_NOTIFICATION_EMAIL.getCodeStr().equals(type)){
+            // 有新评论邮件
+            mimeMessage = sendHTMLMail(email, MailBoxAlertEnum.COMMENT_NOTIFICATION_EMAIL.getSubject(), MailBoxAlertEnum.COMMENT_NOTIFICATION_EMAIL.getTemplateName(), Map.of(
+                    "toUrl", commentEmail.getUrl(),
+                    "type", commentEmail.getType(),
+                    "title", commentEmail.getTitle(),
+                    "url", commentEmail.getUrl(),
+                    "avatar", commentEmail.getAvatar(),
+                    "nickname", commentEmail.getNickname(),
+                    "content", commentEmail.getContent(),
+                    "time", commentEmail.getTime()
+            ));
+        }else if (MailBoxAlertEnum.REPLY_COMMENT_NOTIFICATION_EMAIL.getCodeStr().equals(type)) {
+            // 有评论回复邮件
+            mimeMessage = sendHTMLMail(email, MailBoxAlertEnum.REPLY_COMMENT_NOTIFICATION_EMAIL.getSubject(), MailBoxAlertEnum.REPLY_COMMENT_NOTIFICATION_EMAIL.getTemplateName(), toReplyMap(replyCommentEmail));
+        }else if (MailBoxAlertEnum.MESSAGE_NOTIFICATION_EMAIL.getCodeStr().equals(type)) {
+            mimeMessage = sendHTMLMail(email, MailBoxAlertEnum.MESSAGE_NOTIFICATION_EMAIL.getSubject(), MailBoxAlertEnum.MESSAGE_NOTIFICATION_EMAIL.getTemplateName(), Map.of(
+                    "toUrl", leaveWordEmail.getUrl(),
+                    "avatar", leaveWordEmail.getAvatar(),
+                    "nickname", leaveWordEmail.getNickname(),
+                    "content", leaveWordEmail.getContent(),
+                    "time", leaveWordEmail.getTime()
+            ));
+        } else mimeMessage = null;
+
+        if(Objects.isNull(mimeMessage))return;
+        mailSender.send(mimeMessage);
+        log.info("{}邮件发送成功",email);
     }
 
+    /**
+     * 构建回复评论邮件内容
+     * @param replyCommentEmail 回复评论实体信息
+     * @return
+     */
+    private Map<String,Object> toReplyMap(ReplyCommentEmail replyCommentEmail) {
+        return Map.ofEntries(
+                Map.entry("toUrl", replyCommentEmail.getUrl()),
+                Map.entry("type", replyCommentEmail.getType()),
+                Map.entry("title", replyCommentEmail.getTitle()),
+                Map.entry("url", replyCommentEmail.getUrl()),
+                Map.entry("avatar", replyCommentEmail.getAvatar()),
+                Map.entry("nickname", replyCommentEmail.getNickname()),
+                Map.entry("content", replyCommentEmail.getContent()),
+                Map.entry("time", replyCommentEmail.getTime()),
+                Map.entry("replyAvatar", replyCommentEmail.getReplyAvatar()),
+                Map.entry("replyNickname", replyCommentEmail.getReplyNickname()),
+                Map.entry("replyContent", replyCommentEmail.getReplyContent()),
+                Map.entry("replyTime", replyCommentEmail.getReplyTime())
+        );
+    }
+
+
+    /**
+     * 构造HTML邮件
+     * @param toMail 送达方
+     * @param subject 主题
+     * @param template 邮件模板名称
+     * @param model 邮件内容
+     * @return
+     */
     private MimeMessage sendHTMLMail(String toMail, String subject, String template, Map<String, Object> model){
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
@@ -159,9 +243,14 @@ public class EmailQueueListener {
             helper.setTo(toMail);
             helper.setSubject(subject);
             helper.setFrom(username);
-
-        }catch(Exception e){
-
+            Context context = new Context();
+            context.setVariables(model);
+            String htmlContent=templateEngine.process(template,context);
+            helper.setText(htmlContent, true);
+        }catch(MessagingException e){
+            // 处理异常
+            log.error("发送邮件失败：{}", e.getMessage());
         }
+        return helper.getMimeMessage();
     }
 }

@@ -10,6 +10,10 @@ package cn.edu.tjufe.zql.constants;
  */
 public class FunctionConst {
     /**
+     * 未知用户标记
+     */
+    public static final String UNKNOWN_USER = "unknown-user404";
+    /**
      * 留言接口留言内容的长度
      */
     public static final int LEAVE_WORD_CONTENT_LENGTH=2000;

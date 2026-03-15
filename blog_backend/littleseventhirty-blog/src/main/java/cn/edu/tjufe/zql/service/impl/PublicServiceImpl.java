@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author: littleseventhirty
- * @description: 公共服务实现类
+ * @description: 公共服务实现类(包含rabbitmq邮件生产者)
  * @date: 2026/2/26
  **/
 @Slf4j
@@ -34,6 +34,12 @@ public class PublicServiceImpl implements IPublicService {
     @Value("${spring.rabbitmq.exchange.email}")
     private String exchange;
 
+    /**
+     * 发送邮箱验证码
+     * @param type  邮箱类型
+     * @param email  邮箱地址
+     * @return
+     */
     @Override
     public String registerEmailVerifyCode(String type, String email) {
         // 加锁，防止同一时间被同一人调用多次

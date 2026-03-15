@@ -36,8 +36,10 @@ public class Log implements Serializable, ViewObjectConvertible {
     private Long logId;
     //模块名称
     private String module;
-    //操作
+    //操作类型
     private String operation;
+    // 操作描述
+    private String description;
     //操作人员
     private String userName;
     //ip地址
@@ -60,8 +62,6 @@ public class Log implements Serializable, ViewObjectConvertible {
     private String reqAddress;
     //消耗时间(ms)
     private Long time;
-    // 操作描述
-    private String description;
     //创建时间
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;

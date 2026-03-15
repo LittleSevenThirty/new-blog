@@ -22,4 +22,18 @@ public interface IIpService {
      * @param uid 用户id
      */
     void refreshIpDetailAsyncByUidAndRegister(Long uid);
+
+    /**
+     * 异步刷新登录日志ip详情获取
+     *
+     * @param loginLogId 登录日志id
+     */
+    void refreshIpDetailAsyncByLogIdAndLogin(Long loginLogId);
+
+    /**
+     * 异步刷新操作日志ip详情获取
+     *
+     * @param logId 操作日志id
+     */
+    void refreshIpDetailAsyncByLogId(Long logId);
 }

@@ -40,6 +40,18 @@ public enum ResponseEnum {
      * 用户名或邮箱已存在
      */
     USERNAME_OR_EMAIL_EXIST("1006", "用户名或邮箱已存在"),
+    /**
+     * 参数错误提示
+     */
+    PARAM_ERROR("1007", "参数错误"),
+    /**
+     * 其它故障
+     */
+    OTHER_ERROR("1008", "其他故障"),
+    /**
+     * 文件上传错误
+     */
+    FILE_UPLOAD_ERROR("1011", "文件上传错误"),
     ;
 
     private final String code;

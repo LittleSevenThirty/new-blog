@@ -34,6 +34,13 @@ spring:
           auth: true
           ssl:
             enable: true
+  # thymeleaf配置
+  thymeleaf:
+    cache: false  # 开发时关闭缓存
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
   security:
     jwt:
       key: jwt-key
@@ -70,6 +77,11 @@ spring:
 
 # 邮件配置
 mail:
+  link:
+    apply:
+      redirect-uri: http://localhost:8080/link/email/apply
+      # 邮箱审核友链回调地址（如果不开启）apply-notice 则无需在意该配置，随便填写即可
+      # redirect-uri: http://[(后端地址:端口)/(域名)]/link/email/apply
   article-email-notice: false
   message-email-notice: false
   article-reply-notice: false

@@ -26,7 +26,7 @@ import java.util.Objects;
 /**
  *
  * @authro 钟奇林
- * @description
+ * @description 登录日志服务类(rabbitmq登录日志队列message生产者)
  * @date 2026/3/3
  * @github https://github.com/little-seven-thirty
  */
