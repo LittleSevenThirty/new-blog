@@ -137,7 +137,7 @@ function updateIsCheckFunc(id: string, isCheck: any, record: any) {
   record.isCheckloading = true
   isCheck = isCheck ? 1 : 0
   isCheckLink({ id, isCheck }).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success(res.msg)
       record.isCheckloading = false
     }
@@ -148,7 +148,7 @@ function updateIsCheckFunc(id: string, isCheck: any, record: any) {
 function onDelete(ids?: string[]) {
   if (ids) {
     deleteLink(ids).then((res) => {
-      if (res.code === 200) {
+      if (res.code == 200) {
         message.success('删除成功')
         refreshFunc()
       }
@@ -165,7 +165,7 @@ function onDelete(ids?: string[]) {
       cancelText: '取消',
       onOk: () => {
         deleteLink(ids as string[]).then((res) => {
-          if (res.code === 200) {
+          if (res.code == 200) {
             message.success('删除成功')
             refreshFunc()
           }
@@ -182,11 +182,7 @@ const contentModel = reactive({
 </script>
 
 <template>
-  <layout
-    :form-state="formData"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formData" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
       <a-form-item label="用户名称" name="userName" style="margin-right: 1rem">
         <a-input v-model:value="formData.userName" placeholder="输入用户名称" style="width: 15em" />
@@ -195,11 +191,7 @@ const contentModel = reactive({
         <a-input v-model:value="formData.name" placeholder="输入用户名称" style="width: 15em" />
       </a-form-item>
       <a-form-item label="是否通过" name="isCheck" style="margin-right: 1rem">
-        <a-select
-          v-model:value="formData.isCheck"
-          style="width: 13em"
-          placeholder="是否通过"
-        >
+        <a-select v-model:value="formData.isCheck" style="width: 13em" placeholder="是否通过">
           <a-select-option :value="1">
             是
           </a-select-option>
@@ -208,10 +200,7 @@ const contentModel = reactive({
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item
-        label="创建时间"
-        name="time"
-      >
+      <a-form-item label="创建时间" name="time">
         <a-range-picker v-model:value="formData.time" :placeholder="['开始时间', '结束时间']" />
       </a-form-item>
     </template>
@@ -225,7 +214,9 @@ const contentModel = reactive({
       <!-- 查看框 -->
       <a-modal v-model:open="contentModel.show" width="700px">
         <template #title>
-          <span style="color: #1677FF"><MessageOutlined /></span><span style="margin-left: 0.2rem">查看内容</span>
+          <span style="color: #1677FF">
+            <MessageOutlined />
+          </span><span style="margin-left: 0.2rem">查看内容</span>
         </template>
         <template #footer>
           <a-button @click="contentModel.show = false">
@@ -236,31 +227,16 @@ const contentModel = reactive({
       </a-modal>
     </template>
     <template #table-content>
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-      >
+        :row-key="record => record.id" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'isCheck'">
-            <a-switch
-              v-model:checked="record.isCheck"
-              checked-children="是"
-              un-checked-children="否"
-              :loading="record.isCheckloading"
-              @change="updateIsCheckFunc(record.id, record.isCheck, record)"
-            />
+            <a-switch v-model:checked="record.isCheck" checked-children="是" un-checked-children="否"
+              :loading="record.isCheckloading" @change="updateIsCheckFunc(record.id, record.isCheck, record)" />
           </template>
           <template v-if="column.dataIndex === 'operation'">
-            <a-popconfirm
-              title="是否确定删除"
-              ok-text="Yes"
-              cancel-text="No"
-              @confirm="onDelete([record.id])"
-            >
+            <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="onDelete([record.id])">
               <a-button type="link" style="padding: 0">
                 <template #icon>
                   <DeleteOutlined />
@@ -315,6 +291,4 @@ const contentModel = reactive({
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

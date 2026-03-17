@@ -22,10 +22,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Method;
@@ -105,7 +102,7 @@ public class LogAspect {
                     .ip(ipAddr)
                     .exception(e.getMessage())
                     .reqMapping(request.getMethod())
-                    .userName(StringUtils.isNull(user) ? FunctionConst.UNKNOWN_USER : user.getUsername())
+                    .username(StringUtils.isNull(user) ? FunctionConst.UNKNOWN_USER : user.getUsername())
                     .state(2)
                     .exception(e.getMessage())
                     .method(className + "." + methodName + "()")
@@ -156,9 +153,10 @@ public class LogAspect {
                 .module(logAnnotation.module())
                 .operation(logAnnotation.operation())
                 .ip(ipAddress)
+                .address("")
                 .description(operation.summary())
                 .reqMapping(request.getMethod())
-                .userName(StringUtils.isNull(user) ? FunctionConst.UNKNOWN_USER : user.getUsername())
+                .username(StringUtils.isNull(user) ? FunctionConst.UNKNOWN_USER : user.getUsername())
                 .method(className + "." + methodName + "()")
                 .reqParameter(!multipartFiles.isEmpty() ? multipartFiles.toString() : JSON.toJSONString(joinPoint.getArgs()))
                 .returnParameter(JSON.toJSONString(result))

@@ -6,10 +6,10 @@ import type {
 import {
   VueDraggable,
 } from 'vue-draggable-plus'
-import {ref} from 'vue'
-import {message, UploadProps} from 'ant-design-vue'
-import {backGetBanners, deleteBanner, updateOrder, uploadBanner} from "~/api/blog/banners";
-import {compressImage} from "~/utils/CompressedImage.ts";
+import { ref } from 'vue'
+import { message, UploadProps } from 'ant-design-vue'
+import { backGetBanners, deleteBanner, updateOrder, uploadBanner } from "~/api/blog/banners";
+import { compressImage } from "~/utils/CompressedImage.ts";
 
 // 图片类型
 interface FileItem {
@@ -88,7 +88,7 @@ async function beforeUpload(file: UploadProps['fileList'][number]) {
   formData.append('bannerImage', compressedFile, compressedFile.name);
   uploading.value = true;
   uploadBanner(formData, handleProgress).then(async (res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       getFileList()
       message.success('上传成功')
     }
@@ -130,7 +130,7 @@ function sortOrderFunc(_: DraggableEvent) {
   <div class="carousel">
     <div class="flex">
       <VueDraggable :disabled="disabled" ref="el" v-if="fileList" v-model="fileList" :onEnd="sortOrderFunc"
-                    style="display: flex" animation="150">
+        style="display: flex" animation="150">
         <template v-for="(file) in fileList" :key="file.id">
           <div class="preview_list">
             <div class="m-2 w-[100px] h-[100px]">
@@ -140,13 +140,13 @@ function sortOrderFunc(_: DraggableEvent) {
             <div class="grey_cover m-2 w-[100px] h-[100px] bg-gray-300 rounded-2xl relative">
               <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black flex">
                 <div style="font-size: 20px;" class="text-gray-400 hover:text-black duration-300"
-                     @click="handlePreview(file)">
-                  <ZoomInOutlined/>
+                  @click="handlePreview(file)">
+                  <ZoomInOutlined />
                 </div>
                 <div class="mx-1"></div>
                 <div style="font-size: 20px;" class="text-gray-400 hover:text-black duration-300"
-                     @click="deleteBannerFunc(file.id)">
-                  <DeleteOutlined/>
+                  @click="deleteBannerFunc(file.id)">
+                  <DeleteOutlined />
                 </div>
               </div>
             </div>
@@ -154,24 +154,18 @@ function sortOrderFunc(_: DraggableEvent) {
         </template>
         <div class="flex flex-col justify-center items-center">
           <div v-if="uploading"
-               class="m-2 w-[100px] h-[100px] text-gray-400 flex justify-center items-center rounded-2xl bg-gray-300">
+            class="m-2 w-[100px] h-[100px] text-gray-400 flex justify-center items-center rounded-2xl bg-gray-300">
             上传中...
           </div>
-          <a-progress :show-info="false" v-if="uploading" :percent="progress ?? 0" size="small" class="ml-1"/>
+          <a-progress :show-info="false" v-if="uploading" :percent="progress ?? 0" size="small" class="ml-1" />
         </div>
       </VueDraggable>
       <!-- 上传按钮 -->
-      <a-upload
-          class="ant-upload ant-upload-picture-card m-2"
-          v-model="fileList"
-          list-type="picture-card"
-          :showUploadList="false"
-          :before-upload="beforeUpload"
-          v-show="fileList && fileList.length < 5"
-      >
+      <a-upload class="ant-upload ant-upload-picture-card m-2" v-model="fileList" list-type="picture-card"
+        :showUploadList="false" :before-upload="beforeUpload" v-show="fileList && fileList.length < 5">
         <div class="el-upload el-upload--picture-card">
           <div class="icon">
-            <PlusOutlined/>
+            <PlusOutlined />
           </div>
         </div>
       </a-upload>
@@ -190,7 +184,6 @@ function sortOrderFunc(_: DraggableEvent) {
 </template>
 
 <style scoped lang="scss">
-
 .preview_list {
   position: relative;
 

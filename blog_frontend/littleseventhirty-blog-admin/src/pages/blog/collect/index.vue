@@ -121,7 +121,7 @@ function updateIsCheckFunc(id: string, isCheck: any, record: any) {
   record.isCheckloading = true
   isCheck = isCheck ? 1 : 0
   isCheckFavorite({ id, isCheck }).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success('操作成功')
       record.isCheckloading = false
     }
@@ -132,7 +132,7 @@ function updateIsCheckFunc(id: string, isCheck: any, record: any) {
 function onDelete(ids?: string[]) {
   if (ids) {
     deleteFavorite(ids).then((res) => {
-      if (res.code === 200) {
+      if (res.code == 200) {
         message.success('删除成功')
         refreshFunc()
       }
@@ -149,7 +149,7 @@ function onDelete(ids?: string[]) {
       cancelText: '取消',
       onOk: () => {
         deleteFavorite(ids as string[]).then((res) => {
-          if (res.code === 200) {
+          if (res.code == 200) {
             message.success('删除成功')
             refreshFunc()
           }
@@ -175,21 +175,13 @@ function viewFunc(id?: string) {
 </script>
 
 <template>
-  <layout
-    :form-state="formData"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formData" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
       <a-form-item label="用户名称" name="userName" style="margin-right: 1rem">
         <a-input v-model:value="formData.userName" placeholder="输入用户名称" style="width: 15em" />
       </a-form-item>
       <a-form-item label="收藏类型" name="type" style="margin-right: 1rem">
-        <a-select
-          v-model:value="formData.type"
-          style="width: 13em"
-          placeholder="收藏类型"
-        >
+        <a-select v-model:value="formData.type" style="width: 13em" placeholder="收藏类型">
           <a-select-option :value="1">
             文章
           </a-select-option>
@@ -199,11 +191,7 @@ function viewFunc(id?: string) {
         </a-select>
       </a-form-item>
       <a-form-item label="是否通过" name="isCheck" style="margin-right: 1rem">
-        <a-select
-          v-model:value="formData.isCheck"
-          style="width: 13em"
-          placeholder="是否通过"
-        >
+        <a-select v-model:value="formData.isCheck" style="width: 13em" placeholder="是否通过">
           <a-select-option :value="1">
             是
           </a-select-option>
@@ -212,15 +200,13 @@ function viewFunc(id?: string) {
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item
-        label="创建时间"
-        name="time"
-      >
+      <a-form-item label="创建时间" name="time">
         <a-range-picker v-model:value="formData.time" :placeholder="['开始时间', '结束时间']" />
       </a-form-item>
     </template>
     <template #operate-btn>
-      <a-button type="default" style="margin-right: 10px" :disabled="state.selectedRowKeys.length !== 1" @click="viewFunc()">
+      <a-button type="default" style="margin-right: 10px" :disabled="state.selectedRowKeys.length !== 1"
+        @click="viewFunc()">
         <template #icon>
           <MessageOutlined />
         </template>
@@ -235,7 +221,9 @@ function viewFunc(id?: string) {
       <!-- 查看框 -->
       <a-modal v-model:open="contentModel.show" width="800px">
         <template #title>
-          <span style="color: #1677FF"><MessageOutlined /></span><span style="margin-left: 0.2rem">查看内容</span>
+          <span style="color: #1677FF">
+            <MessageOutlined />
+          </span><span style="margin-left: 0.2rem">查看内容</span>
         </template>
         <template #footer>
           <a-button @click="contentModel.show = false">
@@ -246,23 +234,13 @@ function viewFunc(id?: string) {
       </a-modal>
     </template>
     <template #table-content>
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-      >
+        :row-key="record => record.id" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'isCheck'">
-            <a-switch
-              v-model:checked="record.isCheck"
-              checked-children="是"
-              un-checked-children="否"
-              :loading="record.isCheckloading"
-              @change="updateIsCheckFunc(record.id, record.isCheck, record)"
-            />
+            <a-switch v-model:checked="record.isCheck" checked-children="是" un-checked-children="否"
+              :loading="record.isCheckloading" @change="updateIsCheckFunc(record.id, record.isCheck, record)" />
           </template>
           <template v-if="column.dataIndex === 'type'">
             <a-tag color="blue">
@@ -279,12 +257,7 @@ function viewFunc(id?: string) {
               </template>
               <span style="margin-left: 3px">查看</span>
             </a-button>
-            <a-popconfirm
-              title="是否确定删除"
-              ok-text="Yes"
-              cancel-text="No"
-              @confirm="onDelete([record.id])"
-            >
+            <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="onDelete([record.id])">
               <a-button type="link" style="padding: 0">
                 <template #icon>
                   <DeleteOutlined />
@@ -315,6 +288,4 @@ function viewFunc(id?: string) {
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

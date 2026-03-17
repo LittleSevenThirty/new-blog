@@ -304,7 +304,7 @@ function scrollWork() {
               <div class="copyright">
                 <div class="author">
                   <svg-icon name="article_author"></svg-icon>
-                  <strong>本文作者： {{ websiteStore.webInfo?.webMasterName }}</strong>
+                  <strong>本文作者： {{ websiteStore.webInfo?.webmasterName }}</strong>
                 </div>
                 <div class="link">
                   <svg-icon name="author_link"></svg-icon>
@@ -471,7 +471,7 @@ function scrollWork() {
           <div class="copyright">
             <div class="author">
               <svg-icon name="article_author"></svg-icon>
-              <strong>本文作者： {{ websiteStore.webInfo?.webMasterName }}</strong>
+              <strong>本文作者： {{ websiteStore.webInfo?.webmasterName }}</strong>
             </div>
             <div class="link">
               <svg-icon name="author_link"></svg-icon>

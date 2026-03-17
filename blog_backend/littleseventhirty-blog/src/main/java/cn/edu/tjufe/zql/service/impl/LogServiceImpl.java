@@ -38,7 +38,7 @@ public class LogServiceImpl extends ServiceImpl<LogMapper, Log> implements ILogS
         if (Objects.nonNull(logDTO)) {
             wrapper.like(StringUtils.isNotEmpty(logDTO.getIp()),Log::getIp, logDTO.getIp())
                     .like(StringUtils.isNotEmpty(logDTO.getModule()),Log::getModule, logDTO.getModule())
-                    .like(StringUtils.isNotEmpty(logDTO.getUserName()),Log::getUserName, logDTO.getUserName())
+                    .like(StringUtils.isNotEmpty(logDTO.getUserName()),Log::getUsername, logDTO.getUserName())
                     .like(StringUtils.isNotEmpty(logDTO.getOperation()),Log::getOperation, logDTO.getOperation())
                     .eq(StringUtils.isNotNull(logDTO.getState()),Log::getState, logDTO.getState());
             if (StringUtils.isNotNull(logDTO.getLogTimeStart()) && StringUtils.isNotNull(logDTO.getLogTimeEnd())) {

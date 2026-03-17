@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue'
-import {Image, Modal, Form, Input, Upload, message, Pagination} from 'ant-design-vue'
-import type {UploadProps, FormInstance} from 'ant-design-vue'
-import type {Rule} from 'ant-design-vue/es/form'
-import {createAlbum, photoAndAlbumList, uploadPhoto, updateAlbum, deletePhotoOrAlbum} from "~/api/blog/photo";
-import {compressImage} from "~/utils/CompressedImage.ts";
+import { ref, onMounted } from 'vue'
+import { Image, Modal, Form, Input, Upload, message, Pagination } from 'ant-design-vue'
+import type { UploadProps, FormInstance } from 'ant-design-vue'
+import type { Rule } from 'ant-design-vue/es/form'
+import { createAlbum, photoAndAlbumList, uploadPhoto, updateAlbum, deletePhotoOrAlbum } from "~/api/blog/photo";
+import { compressImage } from "~/utils/CompressedImage.ts";
 
 // 统一的数据接口
 interface BaseItem {
@@ -43,19 +43,19 @@ async function refreshFunc() {
     pageSize: pageSize.value,
     parentId: currentAlbumId.value
   }).then(res => {
-    console.log("平铺数据",res.data.page)
+    console.log("平铺数据", res.data.page)
     const flatData = res.data.page
     // 构建树形结构
     const buildTree = (items: (Album | Photo)[], parentId: number | null = null): (Album | Photo)[] => {
       return items
-          .filter(item => item.parentId === parentId)
-          .map(item => {
-            if (item.type === 1) {
-              const children = buildTree(items, item.id)
-              return {...item, children} as Album
-            }
-            return item
-          })
+        .filter(item => item.parentId === parentId)
+        .map(item => {
+          if (item.type === 1) {
+            const children = buildTree(items, item.id)
+            return { ...item, children } as Album
+          }
+          return item
+        })
     }
 
     // 从根节点开始构建
@@ -70,7 +70,7 @@ const showModal = ref(false)
 const modalType = ref<1 | 2 | 3>(1)
 const formRef = ref<FormInstance>()
 const formRules: Record<string, Rule[]> = {
-  name: [{required: true, type: 'string', message: '请输入名称', trigger: 'blur'}]
+  name: [{ required: true, type: 'string', message: '请输入名称', trigger: 'blur' }]
 }
 const formState = ref({
   id: 0,
@@ -105,8 +105,8 @@ const loadCurrentItems = async () => {
       pageSize: pageSize.value,
       parentId: currentAlbumId.value
     })
-    
-    if (res.code === 200) {
+
+    if (res.code == 200) {
       console.log("分页数据", res.data)
       // 更新数据和总数
       currentItems.value = res.data.page  // 当前页的数据
@@ -149,12 +149,12 @@ const updateBreadcrumb = async (album: Album) => {
           pageSize: 1000,  // 获取足够多的数据以构建路径
           parentId: null   // 从根目录开始查找
         })
-        
-        if (res.code === 200) {
+
+        if (res.code == 200) {
           const items = res.data.list
           const path: Album[] = []
           let currentId: number | null = album.id
-          
+
           // 从当前相册往上查找父级
           while (currentId !== null) {
             const current = items.find(item => item.id === currentId) as Album
@@ -165,7 +165,7 @@ const updateBreadcrumb = async (album: Album) => {
               break
             }
           }
-          
+
           breadcrumbPath.value = path
         }
       }
@@ -181,12 +181,12 @@ const enterAlbum = async (album: Album) => {
   if (currentAlbumId.value === album.id) {
     return
   }
-  
+
   // 如果是从根目录进入相册，保存当前页码
   if (currentAlbumId.value === null) {
     rootPageNumber.value = currentPage.value
   }
-  
+
   currentAlbumId.value = album.id
   await updateBreadcrumb(album)  // 等待面包屑更新完成
   // 进入新相册时重置分页到第一页
@@ -252,8 +252,8 @@ const handleDelete = async (item: Album | Photo) => {
     okType: 'danger',
     async onOk() {
       try {
-        const res = await deletePhotoOrAlbum({id: item.id, type: item.type,parentId: item.parentId})
-        if (res.code === 200) {
+        const res = await deletePhotoOrAlbum({ id: item.id, type: item.type, parentId: item.parentId })
+        if (res.code == 200) {
           message.success('删除成功')
           // 如果当前页已经没有数据了，则返回上一页
           if (currentItems.value.length === 1 && currentPage.value > 1) {
@@ -338,7 +338,7 @@ const handleSubmit = async () => {
         description: formState.value.description,
         parentId: formState.value.parentId
       })
-      if (res.code === 200) {
+      if (res.code == 200) {
         message.success('创建相册成功')
         await loadCurrentItems()
       }
@@ -349,7 +349,7 @@ const handleSubmit = async () => {
         name: formState.value.name,
         description: formState.value.description,
       })
-      if (res.code === 200) {
+      if (res.code == 200) {
         message.success('修改相册成功')
         await loadCurrentItems()
       }
@@ -375,7 +375,7 @@ const handleSubmit = async () => {
 
         // 上传压缩后的图片
         const res = await uploadPhoto(formData)
-        if (res.code === 200) {
+        if (res.code == 200) {
           message.success('上传照片成功')
           await loadCurrentItems()
         }
@@ -422,7 +422,8 @@ onMounted(() => {
             </button>
           </div>
           <div class="right-actions">
-            <button class="btn primary refresh" :class="{ 'loading': loading }" @click="loadCurrentItems" :disabled="loading">
+            <button class="btn primary refresh" :class="{ 'loading': loading }" @click="loadCurrentItems"
+              :disabled="loading">
               <i class="icon">🔄</i>
               <span>{{ loading ? '加载中...' : '刷新' }}</span>
             </button>
@@ -462,9 +463,7 @@ onMounted(() => {
             <div class="grid-container">
               <template v-for="item in currentItems" :key="item.id">
                 <!-- 相册项 -->
-                <div v-if="item.type === 1"
-                     class="list-item album-item"
-                     @click="enterAlbum(item as Album)">
+                <div v-if="item.type === 1" class="list-item album-item" @click="enterAlbum(item as Album)">
                   <div class="item-image album-icon">
                     <i class="icon">📁</i>
                   </div>
@@ -483,11 +482,7 @@ onMounted(() => {
                 <!-- 照片项 -->
                 <div v-else class="list-item">
                   <div class="item-image">
-                    <Image
-                        :src="item.url"
-                        :alt="item.name"
-                        preview
-                    />
+                    <Image :src="item.url" :alt="item.name" preview />
                   </div>
                   <div class="item-content">
                     <h3>{{ item.name }}</h3>
@@ -505,40 +500,20 @@ onMounted(() => {
 
         <!-- 分页器 -->
         <div class="pagination-container">
-          <Pagination
-              v-if="total > 0"
-              v-model:current="currentPage"
-              :pageSize="pageSize"
-              :total="total"
-              :show-size-changer="false"
-              @change="handlePageChange"
-          />
+          <Pagination v-if="total > 0" v-model:current="currentPage" :pageSize="pageSize" :total="total"
+            :show-size-changer="false" @change="handlePageChange" />
         </div>
 
         <!-- 使用 Ant Design Vue 的模态框 -->
-        <Modal
-            :visible="showModal"
-            :title="modalType === 1 ? '新建相册' : modalType === 2 ? '上传照片' : '编辑相册'"
-            @cancel="handleCancel"
-            @ok="handleSubmit"
-            :maskClosable="false"
-            :destroyOnClose="true"
-        >
-          <Form
-              :model="formState"
-              ref="formRef"
-              :rules="formRules"
-          >
+        <Modal :visible="showModal" :title="modalType === 1 ? '新建相册' : modalType === 2 ? '上传照片' : '编辑相册'"
+          @cancel="handleCancel" @ok="handleSubmit" :maskClosable="false" :destroyOnClose="true">
+          <Form :model="formState" ref="formRef" :rules="formRules">
             <Form.Item label="名称" name="name">
-              <Input v-model:value="formState.name" placeholder="请输入名称"/>
+              <Input v-model:value="formState.name" placeholder="请输入名称" />
             </Form.Item>
 
             <Form.Item v-if="modalType === 1 || modalType === 3" label="描述" name="description">
-              <Input.TextArea
-                  v-model:value="formState.description"
-                  :rows="3"
-                  placeholder="请输入描述"
-              />
+              <Input.TextArea v-model:value="formState.description" :rows="3" placeholder="请输入描述" />
             </Form.Item>
 
             <Form.Item v-if="modalType === 2" label="照片" name="file">
@@ -552,15 +527,10 @@ onMounted(() => {
                     </p>
                   </div>
                 </Upload>
-                <Image
-                    v-if="previewUrl"
-                    :src="previewUrl"
-                    :preview="{
-                visible: previewVisible,
-                onVisibleChange: handlePreviewChange
-              }"
-                    style="display: none;"
-                />
+                <Image v-if="previewUrl" :src="previewUrl" :preview="{
+                  visible: previewVisible,
+                  onVisibleChange: handlePreviewChange
+                }" style="display: none;" />
               </div>
             </Form.Item>
           </Form>
@@ -572,5 +542,4 @@ onMounted(() => {
 
 <style scoped lang="scss">
 @import "./style/index";
-
 </style>

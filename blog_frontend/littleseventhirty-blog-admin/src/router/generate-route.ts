@@ -75,7 +75,7 @@ export function generateTreeRoutes(menus: MenuData) {
   const routeDataMap = new Map<string | number, RouteRecordRaw>()
   const menuDataMap = new Map<string | number, MenuDataItem>()
   for (const menuItem of menus) {
-    if (!menuItem.id)
+    if (!menuItem.menuId)
       continue
     const route = {
       path: menuItem.path,
@@ -86,7 +86,7 @@ export function generateTreeRoutes(menus: MenuData) {
         title: menuItem?.title as string,
         icon: menuItem?.icon as string,
         keepAlive: menuItem?.keepAlive,
-        id: menuItem?.id,
+        id: menuItem?.menuId,
         parentId: menuItem?.parentId,
         affix: menuItem?.affix,
         parentKeys: menuItem?.parentKeys,
@@ -99,17 +99,17 @@ export function generateTreeRoutes(menus: MenuData) {
       },
     } as RouteRecordRaw
     const menu = formatMenu(route)
-    routeDataMap.set(menuItem.id, route)
-    menuDataMap.set(menuItem.id, menu)
+    routeDataMap.set(menuItem.menuId, route)
+    menuDataMap.set(menuItem.menuId, menu)
   }
   const routeData: RouteRecordRaw[] = []
   const menuData: MenuData = []
 
   for (const menuItem of menus) {
-    if (!menuItem.id)
+    if (!menuItem.menuId)
       continue
-    const currentRoute = routeDataMap.get(menuItem.id)
-    const currentItem = menuDataMap.get(menuItem.id)
+    const currentRoute = routeDataMap.get(menuItem.menuId)
+    const currentItem = menuDataMap.get(menuItem.menuId)
     if (!menuItem.parentId) {
       if (currentRoute && currentItem) {
         routeData.push(currentRoute)

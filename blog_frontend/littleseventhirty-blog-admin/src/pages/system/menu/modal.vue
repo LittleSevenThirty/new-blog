@@ -45,14 +45,14 @@ function convertDataStructure(data: any, type: string = 'menu') {
     let newItem
     if (type === 'role') {
       newItem = {
-        value: item.id as number,
+        value: item.roleId as number,
         label: item.roleName as string,
         children: [] as any[],
       }
     }
     else {
       newItem = newItem = {
-        value: item.id as number,
+        value: item.menuId as number,
         label: item.title as string,
         children: [] as any[],
       }
@@ -123,17 +123,9 @@ async function handleOpen() {
               <span>上级菜单</span>
             </a-tooltip>
           </template>
-          <a-tree-select
-            v-model:value="viewForm.parentId"
-            show-search
-            style="width: 100%"
-            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            placeholder="请选择上级菜单"
-            allow-clear
-            :tree-default-expand-all="false"
-            :tree-data="treeData"
-            tree-node-filter-prop="label"
-          />
+          <a-tree-select v-model:value="viewForm.parentId" show-search style="width: 100%"
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" placeholder="请选择上级菜单" allow-clear
+            :tree-default-expand-all="false" :tree-data="treeData" tree-node-filter-prop="label" />
         </a-form-item>
         <div style="display: flex">
           <a-form-item label="菜单标题" style="margin-right: 1em">
@@ -161,21 +153,27 @@ async function handleOpen() {
                   <a-tab-pane key="1" tab="线性风格">
                     <div class="icon">
                       <div v-for="(icon, index) of icons1" :key="index">
-                        <span @click="addIcon(icon)"> <component :is="icon" style="font-size: 1.3rem" /> </span>
+                        <span @click="addIcon(icon)">
+                          <component :is="icon" style="font-size: 1.3rem" />
+                        </span>
                       </div>
                     </div>
                   </a-tab-pane>
                   <a-tab-pane key="2" tab="实低风格" force-render>
                     <div class="icon">
                       <div v-for="(icon, index) of icons2" :key="index">
-                        <span @click="addIcon(icon)"> <component :is="icon" style="font-size: 1.3rem" /> </span>
+                        <span @click="addIcon(icon)">
+                          <component :is="icon" style="font-size: 1.3rem" />
+                        </span>
                       </div>
                     </div>
                   </a-tab-pane>
                   <a-tab-pane key="3" tab="双色风格">
                     <div class="icon">
                       <div v-for="(icon, index) of icons3" :key="index">
-                        <span @click="addIcon(icon)"> <component :is="icon" style="font-size: 1.3rem" /> </span>
+                        <span @click="addIcon(icon)">
+                          <component :is="icon" style="font-size: 1.3rem" />
+                        </span>
                       </div>
                     </div>
                   </a-tab-pane>
@@ -200,13 +198,8 @@ async function handleOpen() {
                 <span>权限控制</span>
               </a-tooltip>
             </template>
-            <a-select
-              v-model:value="viewForm.roleId"
-              style="width: 120px"
-              mode="multiple"
-              :options="roles"
-              placeholder="访问角色"
-            />
+            <a-select v-model:value="viewForm.roleId" style="width: 120px" mode="multiple" :options="roles"
+              placeholder="访问角色" />
           </a-form-item>
         </div>
         <div style="display: flex">

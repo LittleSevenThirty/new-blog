@@ -3,6 +3,7 @@ package cn.edu.tjufe.zql.domain.entity;
 
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -28,7 +29,7 @@ import java.util.Date;
 @Data
 public class Favorite implements ViewObjectConvertible {
     //收藏id
-    @TableId("favorite_id")
+    @TableId(value = "favorite_id", type = IdType.AUTO)
     private Long favoriteId;
     //收藏的用户id
     private Long userId;

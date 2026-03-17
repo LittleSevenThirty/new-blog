@@ -21,7 +21,7 @@ import java.io.IOException;
 /**
  *
  * @authro 钟奇林
- * @description
+ * @description spring security验证jwt的过滤器类
  * @date 2026/3/2
  * @github https://github.com/little-seven-thirty
  */

@@ -3,6 +3,7 @@ package cn.edu.tjufe.zql.handler;
 
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.enums.ResponseEnum;
+import cn.edu.tjufe.zql.exception.BlackListException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -49,11 +50,11 @@ public class GlobalExceptionHandler {
         return ResponseResult.failure(ResponseEnum.FILE_UPLOAD_ERROR.getCode(), bindingResult);
     }
 
-//    @ExceptionHandler(BlackListException.class)
-//    public ResponseResult<Void> handlerBlackListException(BlackListException e){
-//        log.error("黑名单异常:{}({})", e.getMessage(), e.getStackTrace());
-//        return ResponseResult.failure(RespEnum.BLACK_LIST_ERROR.getCode(), e.getMessage());
-//    }
+    @ExceptionHandler(BlackListException.class)
+    public ResponseResult<Void> handlerBlackListException(BlackListException e){
+        log.error("黑名单异常:{}({})", e.getMessage(), e.getStackTrace());
+        return ResponseResult.failure(ResponseEnum.BLACK_LIST_ERROR.getCode(), e.getMessage());
+    }
 
     /**
      * 兜底的异常处理器（最大的异常处理器，任何未包含的异常处理都会被这个方法拦截

@@ -4,21 +4,20 @@ import useWebsiteStore from "../pinia/store/modules/website.ts";
 const websiteStore = useWebsiteStore();
 
 console.log("infoCard");
-console.log(websiteStore.webInfo?.webMasterProfileBackground);
+console.log(websiteStore.webInfo?.webmasterProfileBackground);
 </script>
 
 <template>
   <div v-slide-in class="info_container">
     <!-- 背景图片 -->
-    <div class="background_image"
-      :style="`background-image: url(${websiteStore.webInfo?.webMasterProfileBackground});`"></div>
+    <div class="background_image" :style="`background-image: url(${websiteStore.webInfo?.ProfileBackground});`"></div>
     <!-- 头像 -->
     <div class="avatar_wrapper">
-      <el-avatar :src="websiteStore.webInfo?.webMasteravatar" size="large" />
+      <el-avatar :src="websiteStore.webInfo?.webM\masteravatar" size="large" />
     </div>
     <!-- 站点信息 -->
     <div class="webmaster_name">
-      {{ websiteStore.webInfo?.webMasterName }}
+      {{ websiteStore.webInfo?.webmasterName }}
       <div class="title_decorate">
         <div class="line"></div>
         <div class="dot"></div>
@@ -27,8 +26,8 @@ console.log(websiteStore.webInfo?.webMasterProfileBackground);
     </div>
     <!-- 个人简介 -->
     <div class="webmaster_copy">
-      <el-tooltip v-bind:content="websiteStore.webInfo?.webMasterCopy" placement="bottom" :show-after="500">
-        <span>{{ websiteStore.webInfo?.webMasterCopy }}</span>
+      <el-tooltip v-bind:content="websiteStore.webInfo?.webmasterCopy" placement="bottom" :show-after="500">
+        <span>{{ websiteStore.webInfo?.webmasterCopy }}</span>
       </el-tooltip>
     </div>
     <!-- 内容数目 -->

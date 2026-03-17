@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 /**
  *
  * @authro 钟奇林
- * @description email消息队列监听者（消费者）
+ * @description email消息队列监听者（消费者）-对应生产者是PublicServiceImpl
  * @date 2026/3/14
  * @github https://github.com/little-seven-thirty
  */
@@ -63,8 +63,8 @@ public class EmailQueueListener {
     private String username;
     @Value("${web.index.path}")
     private String webIndexPath;
-    @Value("${mail.link.apply.redirect-url}")
-    private String linkApplyRedirectUrl;
+    @Value("${mail.link.apply.redirect-uri}")
+    private String linkApplyRedirectUri;
 
 
     /**
@@ -166,7 +166,7 @@ public class EmailQueueListener {
                     "background",data.get("background"),
                     "linkEmail",data.get("linkEmail"),
                     "toUrl",webIndexPath,
-                    "verifyCode",linkApplyRedirectUrl+"?verifyCode"+encode
+                    "verifyCode",linkApplyRedirectUri+"?verifyCode"+encode
             ));
         }else if(MailBoxAlertEnum.FRIEND_LINK_APPLICATION_PASS.getCodeStr().equals(type)){
             // 友链申请通过邮件

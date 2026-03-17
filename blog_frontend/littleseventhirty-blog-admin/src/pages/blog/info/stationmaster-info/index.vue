@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-import {LoadingOutlined, PlusOutlined, UploadOutlined} from '@ant-design/icons-vue'
-import type {UploadProps} from 'ant-design-vue'
-import {message} from 'ant-design-vue'
-import {updateStationmaster, uploadAckgroundImage, uploadAvatar} from "~/api/blog/webInfo";
-import {compressImage} from "~/utils/CompressedImage.ts";
+import { ref } from 'vue'
+import { LoadingOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons-vue'
+import type { UploadProps } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
+import { updateStationmaster, uploadAckgroundImage, uploadAvatar } from "~/api/blog/webInfo";
+import { compressImage } from "~/utils/CompressedImage.ts";
 
 const emit = defineEmits(["reset:stationmaster:info"])
 
@@ -23,7 +23,7 @@ interface FormDataType {
   githubLink: string;
 }
 
-const formData:Partial<FormDataType> = reactive(props.info as object)
+const formData: Partial<FormDataType> = reactive(props.info as object)
 
 /**
  * 将文件转换为 Base64 字符串
@@ -46,7 +46,7 @@ const imageAvatarUrl = ref<string>()
 // 背景上传
 const backFileList = ref<UploadProps['fileList']>([])
 
-if(formData.webmasterAvatar && formData.webmasterProfileBackground){
+if (formData.webmasterAvatar && formData.webmasterProfileBackground) {
   imageAvatarUrl.value = formData.webmasterAvatar as string
   const myUrl = new URL(formData.webmasterProfileBackground as string);
   const fileName = myUrl.pathname.split('/').pop();
@@ -59,7 +59,7 @@ if(formData.webmasterAvatar && formData.webmasterProfileBackground){
 async function beforeUploadAvatar(file: UploadProps['fileList'][number]) {
   loading.value = true
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/webp'
-  if (!isJpgOrPng){
+  if (!isJpgOrPng) {
     message.error('文件格式必须是jpg或png或webp')
     return
   }
@@ -77,10 +77,10 @@ async function beforeUploadAvatar(file: UploadProps['fileList'][number]) {
   })
 
   const webmasterAvatar = new FormData()
-  webmasterAvatar.append('avatar', compressedFile,compressedFile.name)
+  webmasterAvatar.append('avatar', compressedFile, compressedFile.name)
 
   uploadAvatar(webmasterAvatar).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success('头像上传成功')
     } else {
       message.error(`头像上传失败：${res.msg}`)
@@ -92,28 +92,28 @@ async function beforeUploadAvatar(file: UploadProps['fileList'][number]) {
 
 async function beforeUploadAckgroundImag(file: UploadProps['fileList'][number]) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/webp'
-  if (!isJpgOrPng){
+  if (!isJpgOrPng) {
     message.error('文件格式必须是jpg或png或webp')
     return
   }
 
   const compressedFile = await compressImage(file)
   const isLt03M = compressedFile.size / 1024 / 1024 < 0.3
-  if (!isLt03M){
+  if (!isLt03M) {
     message.error('图片压缩后大小必须小于 0.3MB')
     return
   }
 
   const webmasterAvatar = new FormData()
-  webmasterAvatar.append('background', compressedFile,compressedFile.name)
+  webmasterAvatar.append('background', compressedFile, compressedFile.name)
   uploadAckgroundImage(webmasterAvatar).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       backFileList.value = [{
         thumbUrl: res.data,
         name: new URL(res.data).pathname.split('/').pop(),
       }]
       message.success('资料卡背景图上传成功')
-    }else{
+    } else {
       message.error(`资料卡背景图上传失败：${res.msg}`)
     }
   })
@@ -122,16 +122,16 @@ async function beforeUploadAckgroundImag(file: UploadProps['fileList'][number]) 
 }
 
 // 修改
-function updateStationmasterInfo(){
+function updateStationmasterInfo() {
   updateStationmaster(formData).then(res => {
-    if(res.code === 200){
+    if (res.code == 200) {
       message.success('保存成功')
     }
   })
 }
 
 // 重置
-function resetStationmasterInfo(){
+function resetStationmasterInfo() {
   emit('reset:stationmaster:info')
 }
 
@@ -141,18 +141,12 @@ function resetStationmasterInfo(){
   <div class="info">
     <a-form>
       <div class="avatar">
-        <a-upload
-            :file-list="avatarFileList"
-            name="avatar"
-            list-type="picture-card"
-            class="avatar-uploader"
-            :show-upload-list="false"
-            :before-upload="beforeUploadAvatar"
-        >
+        <a-upload :file-list="avatarFileList" name="avatar" list-type="picture-card" class="avatar-uploader"
+          :show-upload-list="false" :before-upload="beforeUploadAvatar">
           <img v-if="imageAvatarUrl" :src="imageAvatarUrl" alt="avatar">
           <div v-else>
-            <LoadingOutlined v-if="loading"/>
-            <PlusOutlined v-else/>
+            <LoadingOutlined v-if="loading" />
+            <PlusOutlined v-else />
             <div class="ant-upload-text">
               头像上传
             </div>
@@ -160,24 +154,18 @@ function resetStationmasterInfo(){
         </a-upload>
       </div>
       <a-form-item label="名称">
-        <a-input v-model:value="formData.webmasterName"/>
+        <a-input v-model:value="formData.webmasterName" />
       </a-form-item>
       <a-form-item label="文案">
-        <a-input v-model:value="formData.webmasterCopy"/>
+        <a-input v-model:value="formData.webmasterCopy" />
       </a-form-item>
       <a-form-item label="背景">
         <div>
-          <a-upload
-              :file-list="backFileList"
-              list-type="picture"
-              name="background"
-              :show-upload-list="{showRemoveIcon: false}"
-              :before-upload="beforeUploadAckgroundImag"
-              :max-count="1"
-          >
+          <a-upload :file-list="backFileList" list-type="picture" name="background"
+            :show-upload-list="{ showRemoveIcon: false }" :before-upload="beforeUploadAckgroundImag" :max-count="1">
             <div style="display: flex;">
               <a-button>
-                <UploadOutlined/>
+                <UploadOutlined />
                 背景上传
               </a-button>
             </div>
@@ -189,10 +177,10 @@ function resetStationmasterInfo(){
       </a-form-item>
       <a-divider>相关链接</a-divider>
       <a-form-item label="Github">
-        <a-input v-model:value="formData.githubLink"/>
+        <a-input v-model:value="formData.githubLink" />
       </a-form-item>
       <a-form-item label="Gitee&nbsp;&nbsp;">
-        <a-input v-model:value="formData.giteeLink"/>
+        <a-input v-model:value="formData.giteeLink" />
       </a-form-item>
       <div style="display: flex;justify-content: center">
         <a-button type="primary" @click="updateStationmasterInfo" style="margin-right: 1rem">

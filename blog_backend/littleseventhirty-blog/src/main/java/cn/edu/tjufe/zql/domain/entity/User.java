@@ -3,6 +3,7 @@ package cn.edu.tjufe.zql.domain.entity;
 
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -29,7 +30,7 @@ import java.util.Date;
 @Data
 public class User implements ViewObjectConvertible {
     // 用户标识
-    @TableId("user_id")
+    @TableId(value = "user_id", type = IdType.AUTO)
     private Long userId;
     // 用户昵称
     @TableField("nickname")

@@ -10,7 +10,7 @@ const value = ref(data[0])
 const info = ref()
 
 websiteInfo().then((res) => {
-  if (res.code === 200) {
+  if (res.code == 200) {
     info.value = res.data
     res.data.startTime = dayjs(res.data.startTime)
   }
@@ -70,9 +70,9 @@ isDark.value = useDark().value
 </template>
 
 <style scoped lang="scss">
-.info_container{
+.info_container {
   margin-bottom: 4rem;
   display: flex;
   justify-content: center;
-  }
+}
 </style>

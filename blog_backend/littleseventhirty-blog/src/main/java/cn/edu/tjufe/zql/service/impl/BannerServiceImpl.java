@@ -4,7 +4,6 @@ import cn.edu.tjufe.zql.constants.RespConst;
 import cn.edu.tjufe.zql.constants.SQLConst;
 import cn.edu.tjufe.zql.domain.entity.Banner;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
-import cn.edu.tjufe.zql.enums.ResponseEnum;
 import cn.edu.tjufe.zql.enums.UploadEnum;
 import cn.edu.tjufe.zql.mapper.BannerMapper;
 import cn.edu.tjufe.zql.service.IBannerService;
@@ -50,7 +49,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
     @Override
     public List<Banner> backGetBanners() {
         List<Banner> banners = bannerMapper.selectList(new LambdaQueryWrapper<Banner>().orderByAsc(Banner::getOrder));
-        if (!banners.isEmpty()){
+        if (!banners.isEmpty()) {
             return banners;
         }
         return List.of();
@@ -65,7 +64,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
                 if (bannerMapper.selectCount(null) >= SQLConst.BANNER_MAX_COUNT) {
                     return ResponseResult.failure(RespConst.BANNER_MAX_COUNT_MSG);
                 }
-                bannerUrl = fileUploadUtils.upload_minio(UploadEnum.UI_BANNERS, bannerImage);
+                bannerUrl = fileUploadUtils.upload(UploadEnum.UI_BANNERS, bannerImage);
                 Banner banner = Banner.builder().size(bannerImage.getSize())
                         .type(bannerImage.getContentType())
                         .userId(SecurityUtils.getUserId())
@@ -97,7 +96,7 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
         bannerMapper.delete(Wrappers.emptyWrapper());
         //  重新排序
         for (int i = 0; i < banners.size(); i++) {
-            banners.get(i).setOrder(((long)i + 1));
+            banners.get(i).setOrder(((long) i + 1));
             bannerMapper.insert(banners.get(i));
         }
         return ResponseResult.success();

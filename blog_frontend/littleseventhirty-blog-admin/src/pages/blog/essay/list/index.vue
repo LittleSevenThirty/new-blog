@@ -54,7 +54,7 @@ const state = reactive<{
 })
 
 interface DataType {
-  id: string
+  articleId: string
   title: string
   key: string
   orderNum: number
@@ -75,7 +75,7 @@ function onSelectChange(selectedRowKeys: Key[]) {
 const columns: any = [
   {
     title: '编号',
-    dataIndex: 'id',
+    dataIndex: 'articleId',
     align: 'center',
   },
   {
@@ -168,7 +168,7 @@ async function onFinish(values: any) {
 function updateArticleStatusFunc(id: string, status: number, record: any) {
   record.statusLoading = true
   updateArticleStatus({ id, status }).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success('状态修改成功')
       record.statusLoading = false
     }
@@ -179,7 +179,7 @@ function updateArticleStatusFunc(id: string, status: number, record: any) {
 function updateIsTopFunc(id: string, isTop: boolean, record: any) {
   record.isToploading = true
   updateArticleTop({ id, isTop: isTop ? 1 : 0 }).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success('操作成功')
       record.isToploading = false
     }
@@ -190,7 +190,7 @@ function updateIsTopFunc(id: string, isTop: boolean, record: any) {
 function onDelete(ids?: string[]) {
   if (ids) {
     deleteArticle(ids).then((res) => {
-      if (res.code === 200) {
+      if (res.code == 200) {
         message.success('删除成功')
         refreshFunc()
       }
@@ -207,7 +207,7 @@ function onDelete(ids?: string[]) {
       cancelText: '取消',
       onOk: () => {
         deleteArticle(ids as string[]).then((res) => {
-          if (res.code === 200) {
+          if (res.code == 200) {
             message.success('删除成功')
             refreshFunc()
           }
@@ -222,33 +222,20 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
 </script>
 
 <template>
-  <layout
-    :form-state="formData"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formData" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
       <a-form-item label="标题" name="articleTitle" style="margin-right: 1rem">
         <a-input v-model:value="formData.articleTitle" placeholder="输入文章标题" style="width: 15em" />
       </a-form-item>
       <a-form-item label="分类" name="categoryId" style="margin-right: 1rem">
         <a-space>
-          <a-select
-            v-if="categoryList"
-            v-model:value="formData.categoryId"
-            placeholder="选择分类"
-            style="width: 13em"
-            :options="categoryList.map(item => ({ value: item.id, label: item.categoryName }))"
-          />
+          <a-select v-if="categoryList" v-model:value="formData.categoryId" placeholder="选择分类" style="width: 13em"
+            :options="categoryList.map(item => ({ value: item.categoryId, label: item.categoryName }))" />
         </a-space>
       </a-form-item>
       <a-form-item label="状态" name="status" style="margin-right: 1rem">
         <a-space>
-          <a-select
-            v-model:value="formData.status"
-            style="width: 10em"
-            placeholder="选择状态"
-          >
+          <a-select v-model:value="formData.status" style="width: 10em" placeholder="选择状态">
             <a-select-option :value="1">
               公开
             </a-select-option>
@@ -262,11 +249,7 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
         </a-space>
       </a-form-item>
       <a-form-item label="是否顶置" name="isTop" style="margin-right: 1rem">
-        <a-select
-          v-model:value="formData.isTop"
-          style="width: 13em"
-          placeholder="是否顶置"
-        >
+        <a-select v-model:value="formData.isTop" style="width: 13em" placeholder="是否顶置">
           <a-select-option :value="1">
             是
           </a-select-option>
@@ -289,12 +272,9 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
         </template>
         删除
       </a-button>
-      <a-button
-        class="green"
-        style="margin-right: 10px"
+      <a-button class="green" style="margin-right: 10px"
         :disabled="state.selectedRowKeys.length === 0 || state.selectedRowKeys.length > 1"
-        @click="$router.push({ path: '/blog/essay/publish', query: { id: state.selectedRowKeys[0] } })"
-      >
+        @click="$router.push({ path: '/blog/essay/publish', query: { id: state.selectedRowKeys[0] } })">
         <template #icon>
           <FileSyncOutlined />
         </template>
@@ -302,14 +282,9 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
       </a-button>
     </template>
     <template #table-content>
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-      >
+        :row-key="record => record.articleId" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'articleCover'">
             <a-image :src="record.articleCover" style="width: 70px; height: 50px" />
@@ -318,6 +293,7 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
             <a-tag>{{ record.categoryName }}</a-tag>
           </template>
           <template v-if="column.dataIndex === 'tagsName'">
+            <!-- 问题1 -->
             <template v-if="record.tagsName.length <= 2">
               <a-tag v-for="tag in record.tagsName" :key="tag" color="blue">
                 {{ tag }}
@@ -341,13 +317,8 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
           </template>
           <template v-if="column.dataIndex === 'status'">
             <a-space>
-              <a-select
-                v-model:value="record.status"
-                style="width: 6em"
-                size="small"
-                :loading="record.statusLoading"
-                @change="updateArticleStatusFunc(record.id, record.status, record)"
-              >
+              <a-select v-model:value="record.status" style="width: 6em" size="small" :loading="record.statusLoading"
+                @change="updateArticleStatusFunc(record.articleId, record.status, record)">
                 <a-select-option :value="1">
                   公开
                 </a-select-option>
@@ -361,20 +332,17 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
             </a-space>
           </template>
           <template v-if="column.dataIndex === 'isTop'">
-            <a-switch
-              v-model:checked="record.isTop"
-              checked-children="是"
-              un-checked-children="否"
-              :loading="record.isToploading"
-              @change="updateIsTopFunc(record.id, record.isTop, record)"
-            />
+            <a-switch v-model:checked="record.isTop" checked-children="是" un-checked-children="否"
+              :loading="record.isToploading" @change="updateIsTopFunc(record.articleId, record.isTop, record)" />
           </template>
           <template v-if="column.dataIndex === 'visitCount'">
-            <span style="color: darkred"><FireFilled /></span>
+            <span style="color: darkred">
+              <FireFilled />
+            </span>
             {{ record.visitCount }}
           </template>
           <template v-if="column.dataIndex === 'operation'">
-            <a :href="`${domain}article/${record.id}`" target="_blank">
+            <a :href="`${domain}article/${record.articleId}`" target="_blank">
               <a-button type="link" style="padding: 0">
                 <template #icon>
                   <LinkOutlined />
@@ -382,18 +350,14 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
                 <span style="margin-left: 3px">跳转</span>
               </a-button>
             </a>
-            <a-button type="link" style="padding: 0" @click="$router.push({ path: '/blog/essay/publish', query: { id: record.id } })">
+            <a-button type="link" style="padding: 0"
+              @click="$router.push({ path: '/blog/essay/publish', query: { id: record.articleId } })">
               <template #icon>
                 <FileSyncOutlined />
               </template>
               <span style="margin-left: 3px">修改</span>
             </a-button>
-            <a-popconfirm
-              title="是否确定删除"
-              ok-text="Yes"
-              cancel-text="No"
-              @confirm="onDelete([record.id])"
-            >
+            <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="onDelete([record.articleId])">
               <a-button type="link" style="padding: 0">
                 <template #icon>
                   <DeleteOutlined />
@@ -422,6 +386,4 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

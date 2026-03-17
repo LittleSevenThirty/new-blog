@@ -23,7 +23,7 @@ watch(modalOpen, async () => {
   if (data && data.length > 0) {
     options.value = data.map((item: any) => {
       return {
-        value: item.id as number,
+        value: item.menuId as number,
         label: item.title as string,
       }
     })
@@ -67,20 +67,11 @@ function filterOption(input: string, option: any) {
           <a-input v-model:value="formData.permissionKey" placeholder="请输入权限字符" />
         </a-form-item>
         <a-form-item label="权限菜单">
-          <a-select
-            v-model:value="formData.permissionMenuId"
-            show-search
-            placeholder="选择所在的菜单"
-            style="width: 200px"
-            :options="options"
-            :filter-option="filterOption"
-          />
+          <a-select v-model:value="formData.permissionMenuId" show-search placeholder="选择所在的菜单" style="width: 200px"
+            :options="options" :filter-option="filterOption" />
         </a-form-item>
         <a-form-item label="权限描述" style="margin-top: 2rem">
-          <a-textarea
-            v-model:value="formData.permissionDesc" placeholder="权限字符该权限的描述" show-count
-            :maxlength="100"
-          />
+          <a-textarea v-model:value="formData.permissionDesc" placeholder="权限字符该权限的描述" show-count :maxlength="100" />
         </a-form-item>
       </a-form>
     </a-modal>

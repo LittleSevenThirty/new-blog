@@ -93,7 +93,7 @@ function deleteLog(ids: string[]) {
     cancelText: '取消',
     onOk: () => {
       deleteLogByIds(ids).then((res) => {
-        if (res.code === 200) {
+        if (res.code == 200) {
           message.success('删除成功')
           state.selectedRowKeys = []
           refreshFunc()
@@ -117,7 +117,7 @@ function deleteAll() {
     cancelText: '取消',
     onOk: () => {
       deleteLogByIds(ids).then((res) => {
-        if (res.code === 200) {
+        if (res.code == 200) {
           message.success('清空成功')
           refreshFunc()
         }
@@ -234,28 +234,15 @@ const state = reactive<{
 </script>
 
 <template>
-  <layout
-    :form-state="formState"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formState" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
-      <a-form-item
-        label="操作地址"
-        name="ip"
-      >
+      <a-form-item label="操作地址" name="ip">
         <a-input v-model:value="formState.ip" placeholder="请输入操作地址" style="width: 250px" />
       </a-form-item>
-      <a-form-item
-        label="系统模块"
-        name="module"
-      >
+      <a-form-item label="系统模块" name="module">
         <a-input v-model:value="formState.module" placeholder="请输入系统模块" style="width: 250px" />
       </a-form-item>
-      <a-form-item
-        label="操作人员"
-        name="userName"
-      >
+      <a-form-item label="操作人员" name="userName">
         <a-input v-model:value="formState.userName" placeholder="请输入操作人员" style="width: 250px" />
       </a-form-item>
       <a-form-item label="类型" name="operation" style="margin-left: 1.8rem">
@@ -277,15 +264,14 @@ const state = reactive<{
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item
-        label="操作时间"
-        name="time"
-      >
-        <a-range-picker v-model:value="formState.time" placement="topLeft" :placeholder="['开始时间', '结束时间']" style="width: 250px" />
+      <a-form-item label="操作时间" name="time">
+        <a-range-picker v-model:value="formState.time" placement="topLeft" :placeholder="['开始时间', '结束时间']"
+          style="width: 250px" />
       </a-form-item>
     </template>
     <template #operate-btn>
-      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)" @click="deleteLog(state.selectedRowKeys as string[])">
+      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)"
+        @click="deleteLog(state.selectedRowKeys as string[])">
         <template #icon>
           <DeleteOutlined />
         </template>
@@ -305,16 +291,9 @@ const state = reactive<{
       </a-button>
     </template>
     <template #table-content>
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-        :pagination="{ total: page.total }"
-        @change="pageChange"
-      >
+        :row-key="record => record.id" size="small" :pagination="{ total: page.total }" @change="pageChange">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'userName'">
             <a-tag v-if="record.userName === 'unknown-1702606997'" color="pink">
@@ -370,26 +349,38 @@ const state = reactive<{
         <div class="log-detail">
           <div>
             <div>
-              <label>操作模块：</label><div>{{ logDetail.module }}</div>
+              <label>操作模块：</label>
+              <div>{{ logDetail.module }}</div>
             </div>
-            <div><label>请求地址：</label><div>{{ logDetail.reqAddress }}</div></div>
+            <div><label>请求地址：</label>
+              <div>{{ logDetail.reqAddress }}</div>
+            </div>
           </div>
           <div>
-            <div><label>登录信息：</label><div>{{ logDetail.userName }} / {{ logDetail.ip }} / {{ logDetail.address }}</div></div>
-            <div><label>请求方式：</label><div>{{ logDetail.reqMapping }}</div></div>
+            <div><label>登录信息：</label>
+              <div>{{ logDetail.userName }} / {{ logDetail.ip }} / {{ logDetail.address }}</div>
+            </div>
+            <div><label>请求方式：</label>
+              <div>{{ logDetail.reqMapping }}</div>
+            </div>
           </div>
           <div>
-            <div><label>操作方法：</label><div>{{ logDetail.method }}</div></div>
+            <div><label>操作方法：</label>
+              <div>{{ logDetail.method }}</div>
+            </div>
           </div>
           <div>
             <div>
               <label>
                 请求参数：
-              </label><div>{{ logDetail.reqParameter }}</div>
+              </label>
+              <div>{{ logDetail.reqParameter }}</div>
             </div>
           </div>
           <div>
-            <div><label>返回参数：</label><div>{{ logDetail.returnParameter }}</div></div>
+            <div><label>返回参数：</label>
+              <div>{{ logDetail.returnParameter }}</div>
+            </div>
           </div>
           <div>
             <div>
@@ -435,13 +426,16 @@ const state = reactive<{
               </div>
             </div>
             <div>
-              <label>消耗时间：</label><div>
+              <label>消耗时间：</label>
+              <div>
                 <a-tag color="blue">
                   {{ logDetail.time }}毫秒
                 </a-tag>
               </div>
             </div>
-            <div><label>操作时间：</label><div>{{ logDetail.loginTime }}</div></div>
+            <div><label>操作时间：</label>
+              <div>{{ logDetail.loginTime }}</div>
+            </div>
           </div>
         </div>
       </a-modal>
@@ -450,26 +444,31 @@ const state = reactive<{
 </template>
 
 <style scoped lang="scss">
-.log-detail{
+.log-detail {
   display: flex;
   flex-direction: column;
   // 文本自动换行
   word-break: break-all;
-  div{
+
+  div {
     display: flex;
     margin-top: 1rem;
+
     @media(max-width: 768px) {
       display: block;
     }
-    div{
+
+    div {
       display: flex;
       width: 100%;
-      label{
+
+      label {
         font-weight: bold;
         width: 7em;
         font-size: 1rem;
       }
-      div{
+
+      div {
         margin-top: 0;
       }
     }

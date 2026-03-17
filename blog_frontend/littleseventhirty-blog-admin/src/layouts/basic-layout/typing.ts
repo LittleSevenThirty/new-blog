@@ -8,7 +8,7 @@ export type Key = string | number
 
 export interface MenuDataItem {
   // 唯一id
-  id?: string | number
+  menuId?: string | number
   // 标题
   title: string | (() => VNodeChild)
   // 图标

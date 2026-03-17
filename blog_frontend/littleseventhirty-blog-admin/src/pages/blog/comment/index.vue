@@ -26,9 +26,10 @@ const commnetDataList: Ref<UnwrapRef<MenuData>> = ref([])
 
 async function onFinish(values: any) {
   isLoading.value = true
-  const { data } = await searchComment(values)
+  const res = await searchComment(values)
+  console.log("我是search:" + res.msg);
   isLoading.value = false
-  commnetDataList.value = buildTree(data)
+  commnetDataList.value = buildTree(res.data)
 }
 
 function onFinishFailed(errorInfo: any) {
@@ -86,9 +87,10 @@ onMounted(() => {
  * 获取菜单列表
  */
 async function getMenuList() {
-  const { data } = await commentList()
-  menuData.value = data
-  commnetDataList.value = buildTree(data)
+  const res = await commentList()
+  console.log("我是commentList:" + res.msg);
+  menuData.value = res.data
+  commnetDataList.value = buildTree(res.data)
   isLoading.value = false
 }
 
@@ -114,7 +116,7 @@ function buildTree(data: any[]) {
  * @param data 原始数据
  */
 function buildChildren(parent: MenuDataItem, data: any[]) {
-  const children = data.filter(item => item.parentId === parent.id)
+  const children = data.filter(item => item.parentId === parent.menuId)
   children.forEach((child) => {
     child.key = child.id
     child.isCheck = child.isCheck === 1
@@ -174,7 +176,8 @@ function updateIsCheckFunc(id: string, isCheck: any, record: any) {
   record.isCheckloading = true
   isCheck = isCheck ? 1 : 0
   isCheckComment({ id, isCheck }).then((res) => {
-    if (res.code === 200) {
+    console.log("我是isCheck:" + res.msg);
+    if (res.code == 200) {
       message.success('操作成功，相关子评论将变成同一状态')
       record.isCheckloading = false
       refreshFunc()
@@ -187,7 +190,8 @@ function updateIsCheckFunc(id: string, isCheck: any, record: any) {
  */
 async function onDelete(id: string) {
   deleteComment(id).then((res) => {
-    if (res.code === 200) {
+    console.log("我是delete:" + res.msg);
+    if (res.code == 200) {
       message.success('删除成功')
       refreshFunc()
     }
@@ -198,23 +202,13 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
 </script>
 
 <template>
-  <layout
-    :form-state="formState"
-    @update:refreshFunc="refreshFunc"
-    @update:onFinish="onFinish"
-    @update:onFinishFailed="onFinishFailed"
-  >
+  <layout :form-state="formState" @update:refreshFunc="refreshFunc" @update:onFinish="onFinish"
+    @update:onFinishFailed="onFinishFailed">
     <template #form-items>
-      <a-form-item
-        label="评论用户"
-        name="commentUserName"
-      >
+      <a-form-item label="评论用户" name="commentUserName">
         <a-input v-model:value="formState.commentUserName" placeholder="请输入评论用户" />
       </a-form-item>
-      <a-form-item
-        label="评论内容"
-        name="commentContent"
-      >
+      <a-form-item label="评论内容" name="commentContent">
         <a-input v-model:value="formState.commentContent" placeholder="请输入评论内容" />
       </a-form-item>
       <a-form-item label="评论类型" name="type" style="width: 240px">
@@ -257,16 +251,12 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
     </template>
     <template #table-content>
       <div>
-        <a-table
-          :columns="columns"
-          :data-source="commnetDataList"
-          :expanded-row-keys="expand.expandedRowKeys"
-          :loading="isLoading"
-          @expand="handleExpand"
-        >
+        <a-table :columns="columns" :data-source="commnetDataList" :expanded-row-keys="expand.expandedRowKeys"
+          :loading="isLoading" @expand="handleExpand">
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'operation'">
-              <a :href="record.type === 1 ? `${domain}article/${record.typeId}` : `${domain}message/detail/${record.typeId}`" target="_blank">
+              <a :href="record.type === 1 ? `${domain}article/${record.typeId}` : `${domain}message/detail/${record.typeId}`"
+                target="_blank">
                 <a-button type="link" style="padding: 0;">
                   <template #icon>
                     <LinkOutlined />
@@ -274,12 +264,7 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
                   <span style="margin-inline-start:1px">跳转</span>
                 </a-button>
               </a>
-              <a-popconfirm
-                title="是否确定删除"
-                ok-text="Yes"
-                cancel-text="No"
-                @confirm="onDelete(record.id)"
-              >
+              <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="onDelete(record.id)">
                 <a-button type="link" style="padding: 0">
                   <template #icon>
                     <DeleteOutlined />
@@ -289,13 +274,8 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
               </a-popconfirm>
             </template>
             <template v-if="column.dataIndex === 'isCheck'">
-              <a-switch
-                v-model:checked="record.isCheck"
-                checked-children="是"
-                un-checked-children="否"
-                :loading="record.isCheckloading"
-                @change="updateIsCheckFunc(record.id, record.isCheck, record)"
-              />
+              <a-switch v-model:checked="record.isCheck" checked-children="是" un-checked-children="否"
+                :loading="record.isCheckloading" @change="updateIsCheckFunc(record.id, record.isCheck, record)" />
             </template>
             <template v-if="column.dataIndex === 'type'">
               <a-tag color="blue">
@@ -312,7 +292,8 @@ const domain = import.meta.env.VITE_APP_DOMAIN_NAME_FRONT
                 <template #content>
                   {{ record.commentContent }}
                 </template>
-                {{ record.commentContent.length > 10 ? `${record.commentContent.substring(0, 10)}...` : record.commentContent }}
+                {{ record.commentContent.length > 10 ? `${record.commentContent.substring(0, 10)}...` :
+                  record.commentContent }}
               </a-popover>
             </template>
             <template v-if="column.dataIndex === 'createTime'">

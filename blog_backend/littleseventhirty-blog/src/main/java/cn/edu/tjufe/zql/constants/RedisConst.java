@@ -75,4 +75,14 @@ public class RedisConst {
      * 重置密码
      */
     public static final String RESET = "reset";
+
+    /**
+     * 缓存黑名单--uid
+     */
+    public static final String BLACK_LIST_UID_KEY = "blackList:uid:";
+
+    /**
+     * 缓存黑名单--ip
+     */
+    public static final String BLACK_LIST_IP_KEY = "blackList:ip:";
 }

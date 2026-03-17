@@ -176,7 +176,7 @@ function deleteRole(ids: string[], type?: number) {
       cancelText: '取消',
       onOk: () => {
         roleDelete(ids).then((res) => {
-          if (res.code === 200) {
+          if (res.code == 200) {
             message.success('删除成功')
             state.selectedRowKeys = []
             refreshFunc()
@@ -187,7 +187,7 @@ function deleteRole(ids: string[], type?: number) {
     return
   }
   roleDelete(ids).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success('删除成功')
       state.selectedRowKeys = []
       refreshFunc()
@@ -213,22 +213,12 @@ async function updateOrInsertRole(id?: string) {
 </script>
 
 <template>
-  <layout
-    :form-state="formState"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formState" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
-      <a-form-item
-        label="角色名称"
-        name="roleName"
-      >
+      <a-form-item label="角色名称" name="roleName">
         <a-input v-model:value="formState.roleName" placeholder="请输入角色名称" style="width: 250px" />
       </a-form-item>
-      <a-form-item
-        label="角色字符"
-        name="roleKey"
-      >
+      <a-form-item label="角色字符" name="roleKey">
         <a-input v-model:value="formState.roleKey" placeholder="请输入角色字符" style="width: 250px" />
       </a-form-item>
       <a-form-item label="状态" name="status" style="width: 240px">
@@ -241,10 +231,7 @@ async function updateOrInsertRole(id?: string) {
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item
-        label="创建时间"
-        name="time"
-      >
+      <a-form-item label="创建时间" name="time">
         <a-range-picker v-model:value="formState.time" :placeholder="['开始时间', '结束时间']" />
       </a-form-item>
     </template>
@@ -261,7 +248,8 @@ async function updateOrInsertRole(id?: string) {
         </template>
         修改
       </a-button>
-      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)" @click="deleteRole(state.selectedRowKeys as string[], 0)">
+      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)"
+        @click="deleteRole(state.selectedRowKeys as string[], 0)">
         <template #icon>
           <DeleteOutlined />
         </template>
@@ -275,14 +263,9 @@ async function updateOrInsertRole(id?: string) {
       </a-button>
     </template>
     <template #table-content>
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-      >
+        :row-key="record => record.id" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'status'">
             <a-switch v-model:checked="record.status" @change="statusBtn(record.id, record.status)" />
@@ -294,12 +277,7 @@ async function updateOrInsertRole(id?: string) {
               </template>
               <span style="margin-inline-start:1px">修改</span>
             </a-button>
-            <a-popconfirm
-              title="是否确定删除"
-              ok-text="Yes"
-              cancel-text="No"
-              @confirm="deleteRole([record.id])"
-            >
+            <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="deleteRole([record.id])">
               <a-button type="link" style="padding: 0;margin-left: 5px">
                 <template #icon>
                   <DeleteOutlined />
@@ -307,7 +285,8 @@ async function updateOrInsertRole(id?: string) {
                 <span style="margin-inline-start:1px">删除</span>
               </a-button>
             </a-popconfirm>
-            <a-button type="link" style="padding: 0;margin-left: 5px" @click="$router.push({ path: '/role/authorization', query: { id: record.id, name: record.roleName } })">
+            <a-button type="link" style="padding: 0;margin-left: 5px"
+              @click="$router.push({ path: '/role/authorization', query: { id: record.id, name: record.roleName } })">
               <template #icon>
                 <KeyOutlined />
               </template>
@@ -320,17 +299,10 @@ async function updateOrInsertRole(id?: string) {
           </template>
         </template>
       </a-table>
-      <MyModal
-        :open="modalInfo.open"
-        :title="modalInfo.title"
-        :tree-data="treeData"
-        :form-data="formData"
-        @update:close="closeModal"
-      />
+      <MyModal :open="modalInfo.open" :title="modalInfo.title" :tree-data="treeData" :form-data="formData"
+        @update:close="closeModal" />
     </template>
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

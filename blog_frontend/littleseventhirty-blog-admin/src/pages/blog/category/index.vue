@@ -20,7 +20,7 @@ const formState = reactive({
 })
 
 interface DataType {
-  id: string
+  categoryId: string
   title: string
   key: string
   orderNum: number
@@ -31,7 +31,7 @@ interface DataType {
 const columns: any = [
   {
     title: '分类编号',
-    dataIndex: 'id',
+    dataIndex: 'categoryId',
     align: 'center',
   },
   {
@@ -141,7 +141,7 @@ function deleteCategory(ids: string[], type?: number) {
       cancelText: '取消',
       onOk: () => {
         deleteCategoryByIds(ids).then((res) => {
-          if (res.code === 200) {
+          if (res.code == 200) {
             message.success('删除成功')
             state.selectedRowKeys = []
             refreshFunc()
@@ -152,7 +152,7 @@ function deleteCategory(ids: string[], type?: number) {
     return
   }
   deleteCategoryByIds(ids).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success('删除成功')
       state.selectedRowKeys = []
       refreshFunc()
@@ -179,9 +179,9 @@ async function updateOrInsertCategory(id?: string) {
 // 确定
 async function modelOk() {
   modalInfo.loading = true
-  if (formData.value.id) {
+  if (formData.value.categoryId) {
     await updateCategory(formData.value).then((res) => {
-      if (res.code === 200) {
+      if (res.code == 200) {
         modalInfo.loading = false
         message.success('修改成功')
       }
@@ -189,7 +189,7 @@ async function modelOk() {
   }
   else {
     await addCategory(formData.value).then((res) => {
-      if (res.code === 200) {
+      if (res.code == 200) {
         modalInfo.loading = false
         message.success('添加成功')
       }
@@ -201,22 +201,12 @@ async function modelOk() {
 </script>
 
 <template>
-  <layout
-    :form-state="formState"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formState" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
-      <a-form-item
-        label="分类名称"
-        name="categoryName"
-      >
+      <a-form-item label="分类名称" name="categoryName">
         <a-input v-model:value="formState.categoryName" placeholder="请输入分类名称" style="width: 250px" />
       </a-form-item>
-      <a-form-item
-        label="创建时间"
-        name="time"
-      >
+      <a-form-item label="创建时间" name="time">
         <a-range-picker v-model:value="formState.time" :placeholder="['开始时间', '结束时间']" />
       </a-form-item>
     </template>
@@ -227,13 +217,15 @@ async function modelOk() {
         </template>
         新增
       </a-button>
-      <a-button class="green" :disabled="!hasSelected" @click="updateOrInsertCategory(state.selectedRowKeys[0] as string)">
+      <a-button class="green" :disabled="!hasSelected"
+        @click="updateOrInsertCategory(state.selectedRowKeys[0] as string)">
         <template #icon>
           <FileSyncOutlined />
         </template>
         修改
       </a-button>
-      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)" @click="deleteCategory(state.selectedRowKeys as string[], 0)">
+      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)"
+        @click="deleteCategory(state.selectedRowKeys as string[], 0)">
         <template #icon>
           <DeleteOutlined />
         </template>
@@ -247,22 +239,15 @@ async function modelOk() {
       </a-button>
     </template>
     <template #table-content>
-      <a-modal v-model:open="modalInfo.open" :title="modalInfo.title" :confirm-loading="modalInfo.loading" width="400px" @ok="modelOk">
-        <a-form-item
-          label="分类名称"
-          name="categoryName"
-        >
+      <a-modal v-model:open="modalInfo.open" :title="modalInfo.title" :confirm-loading="modalInfo.loading" width="400px"
+        @ok="modelOk">
+        <a-form-item label="分类名称" name="categoryName">
           <a-input v-model:value="formData.categoryName" placeholder="请输入分类名称" show-count :maxlength="20" />
         </a-form-item>
       </a-modal>
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-      >
+        :row-key="record => record.categoryId" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'categoryName'">
             <a-tag color="#2db7f5">
@@ -275,18 +260,13 @@ async function modelOk() {
             </a-tag>
           </template>
           <template v-if="column.key === 'operation'">
-            <a-button type="link" style="padding: 0;" @click="updateOrInsertCategory(record.id)">
+            <a-button type="link" style="padding: 0;" @click="updateOrInsertCategory(record.categoryId)">
               <template #icon>
                 <FileSyncOutlined />
               </template>
               <span style="margin-inline-start:1px">修改</span>
             </a-button>
-            <a-popconfirm
-              title="是否确定删除"
-              ok-text="Yes"
-              cancel-text="No"
-              @confirm="deleteCategory([record.id])"
-            >
+            <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="deleteCategory([record.categoryId])">
               <a-button type="link" style="padding: 0;margin-left: 5px">
                 <template #icon>
                   <DeleteOutlined />
@@ -305,6 +285,4 @@ async function modelOk() {
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

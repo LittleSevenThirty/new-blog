@@ -96,12 +96,12 @@ public class WebsiteInfoServiceImpl extends ServiceImpl<WebsiteInfoMapper, Websi
                     log.info("删除旧图片成功,{}", avatarNames);
             }
             // 上传
-            String url = fileUploadUtils.upload_minio(uploadEnum, avatar);
+            String url = fileUploadUtils.upload(uploadEnum, avatar);
             switch (type) {
                 case 0 ->
-                        this.saveOrUpdate(WebsiteInfo.builder().webMasterAvatar(url).id(WebsiteInfoConst.WEBSITE_INFO_ID).build());
+                        this.saveOrUpdate(WebsiteInfo.builder().webmasterAvatar(url).id(WebsiteInfoConst.WEBSITE_INFO_ID).build());
                 case 1 ->
-                        this.saveOrUpdate(WebsiteInfo.builder().webMasterProfileBackground(url).id(WebsiteInfoConst.WEBSITE_INFO_ID).build());
+                        this.saveOrUpdate(WebsiteInfo.builder().webmasterProfileBackground(url).id(WebsiteInfoConst.WEBSITE_INFO_ID).build());
             }
 
             if (StringUtils.isNotNull(url))

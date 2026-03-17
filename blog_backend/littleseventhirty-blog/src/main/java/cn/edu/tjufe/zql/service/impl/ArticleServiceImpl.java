@@ -8,6 +8,7 @@ import cn.edu.tjufe.zql.domain.entity.*;
 import cn.edu.tjufe.zql.domain.response.ResponseResult;
 import cn.edu.tjufe.zql.domain.vo.*;
 import cn.edu.tjufe.zql.enums.*;
+import cn.edu.tjufe.zql.exception.FileUploadException;
 import cn.edu.tjufe.zql.mapper.*;
 import cn.edu.tjufe.zql.service.*;
 import cn.edu.tjufe.zql.utils.*;
@@ -19,7 +20,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -184,7 +184,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ResponseResult<String> uploadArticleImage(MultipartFile articleImage) {
         try {
-            String url = fileUploadUtils.upload_minio(UploadEnum.ARTICLE_IMAGE, articleImage);
+            String url = fileUploadUtils.upload(UploadEnum.ARTICLE_IMAGE, articleImage);
             if (StringUtils.isNotNull(url))
                 return ResponseResult.success(url);
             else
@@ -276,9 +276,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ResponseResult<String> uploadArticleCover(MultipartFile articleCover) {
         try {
+            System.out.println(articleCover.getOriginalFilename());
             String articleCoverUrl = null;
             try {
-                articleCoverUrl = fileUploadUtils.upload_minio(UploadEnum.ARTICLE_COVER, articleCover);
+                articleCoverUrl = fileUploadUtils.upload(UploadEnum.ARTICLE_COVER, articleCover);
             } catch (FileUploadException e) {
                 return ResponseResult.failure(e.getMessage());
             }
@@ -308,15 +309,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return ResponseResult.failure();
     }
 
-    @Value("${minio.bucketName}")
-    private String bucketName;
+    @Value("${aliyun.oss.urlPrefix}")
+    private String urlPrefix;
 
     @Override
     public ResponseResult<Void> deleteArticleCover(String articleCoverUrl) {
         try {
             // 提取图片名称
-            String articleCoverName = articleCoverUrl.substring(articleCoverUrl.indexOf(bucketName) + bucketName.length());
-            fileUploadUtils.deleteFiles_minio(List.of(articleCoverName));
+            String articleCoverName = articleCoverUrl.replace(urlPrefix + "/", "");
+            fileUploadUtils.deleteFiles(List.of(articleCoverName));
             return ResponseResult.success();
         } catch (Exception e) {
             log.error("删除文章封面失败", e);
@@ -431,7 +432,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         ArticleDTO articleDTO = articleMapper.selectById(id).asViewObject(ArticleDTO.class);
         if (StringUtils.isNotNull(articleDTO)) {
             // 查询文章标签
-            List<Long> tagIds = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, articleDTO.getId())).stream().map(ArticleTag::getTagId).toList();
+            List<Long> tagIds = articleTagMapper.selectList(new LambdaQueryWrapper<ArticleTag>().eq(ArticleTag::getArticleId, articleDTO.getArticleId())).stream().map(ArticleTag::getTagId).toList();
             articleDTO.setTagId(tagMapper.selectBatchIds(tagIds).stream().map(Tag::getTagId).toList());
             return articleDTO;
         }
@@ -441,16 +442,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Transactional
     @Override
     public ResponseResult<Void> deleteArticle(List<Long> ids) {
-        if (this.removeByIds(ids)) {
-            // 删除标签关系
-            articleTagMapper.delete(new LambdaQueryWrapper<ArticleTag>().in(ArticleTag::getArticleId, ids));
-            // 删除点赞、收藏、评论
-            likeMapper.delete(new LambdaQueryWrapper<Like>().eq(Like::getType, LikeEnum.LIKE_TYPE_ARTICLE.getType()).and(a -> a.in(Like::getTypeId, ids)));
-            favoriteMapper.delete(new LambdaQueryWrapper<Favorite>().eq(Favorite::getType, FavoriteEnum.FAVORITE_TYPE_ARTICLE.getType()).and(a -> a.in(Favorite::getTypeId, ids)));
-            commentMapper.delete(new LambdaQueryWrapper<Comment>().eq(Comment::getType, CommentEnum.COMMENT_TYPE_ARTICLE.getType()).and(a -> a.in(Comment::getTypeId, ids)));
-            return ResponseResult.success();
+        try {
+            boolean deleteResult = this.removeByIds(ids);
+            if (deleteResult) {
+                // 删除标签关系
+                articleTagMapper.delete(new LambdaQueryWrapper<ArticleTag>().in(ArticleTag::getArticleId, ids));
+                // 删除点赞、收藏、评论
+                likeMapper.delete(new LambdaQueryWrapper<Like>().eq(Like::getType, LikeEnum.LIKE_TYPE_ARTICLE.getType()).and(a -> a.in(Like::getTypeId, ids)));
+                favoriteMapper.delete(new LambdaQueryWrapper<Favorite>().eq(Favorite::getType, FavoriteEnum.FAVORITE_TYPE_ARTICLE.getType()).and(a -> a.in(Favorite::getTypeId, ids)));
+                commentMapper.delete(new LambdaQueryWrapper<Comment>().eq(Comment::getType, CommentEnum.COMMENT_TYPE_ARTICLE.getType()).and(a -> a.in(Comment::getTypeId, ids)));
+                return ResponseResult.success();
+            }
+            return ResponseResult.failure();
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseResult.failure();
         }
-        return ResponseResult.failure();
     }
 
     private <T> void setRedisCache(ArticleVO articleVO, String redisKey, CountTypeEnum countType) {

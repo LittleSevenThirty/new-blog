@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 public class ArticleDTO implements ViewObjectConvertible {
     // 文章id
-    private Long id;
+    private Long articleId;
     //分类id
     @NotNull(message = "分类id不能为空")
     private Long categoryId;

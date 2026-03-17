@@ -174,7 +174,8 @@ public class ArticleController {
     @AccessLimit(seconds = 60, maxCount = 5)
     @PostMapping("/upload/articleCover")
     public ResponseResult<String> uploadArticleCover(@RequestParam("articleCover") MultipartFile articleCover) {
-        return articleService.uploadArticleCover(articleCover);
+        ResponseResult<String> result=articleService.uploadArticleCover(articleCover);
+        return result;
     }
 
     @PreAuthorize("hasAnyAuthority('blog:publish:article')")

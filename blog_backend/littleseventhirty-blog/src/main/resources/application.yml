@@ -2,6 +2,13 @@ server:
   port: 8080
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      # 设置全局主键策略为数据库自增，不使用默认的雪花id算法生成
+      id-type: auto
+  # 控制台打印日志功能，测试时打开就行了
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
   level:
@@ -88,11 +95,20 @@ mail:
   message-reply-notice: false
 
 # 对象存储配置
+## 可选1使用minio存储
 minio:
   bucketName: bn
-  endpoint: http://localhost:9000
+  endpoint: http://xxx
   accessKey: minioadmin
   secretKey: minioadmin
+## 可选2使用阿里云OSS对象存储
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com  # 替换为您的 Bucket 所在地域https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?utm_source=chatgpt.com
+    access-key-id: LTAI5tNdNHKSR1RbbJvhLrW6
+    access-key-secret: dIDq92Xi5GPjRskZtssWwlAN2YS3vA
+    bucket-name: little-seven
+    urlPrefix: https://little-seven.oss-cn-beijing.aliyuncs.com  # 自定义属性，对象存储地址前缀
 
 web:
   index:

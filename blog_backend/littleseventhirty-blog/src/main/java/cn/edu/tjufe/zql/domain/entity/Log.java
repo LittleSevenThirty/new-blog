@@ -41,7 +41,7 @@ public class Log implements Serializable, ViewObjectConvertible {
     // 操作描述
     private String description;
     //操作人员
-    private String userName;
+    private String username;
     //ip地址
     private String ip;
     //操作地点

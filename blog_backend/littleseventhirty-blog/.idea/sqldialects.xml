@@ -20,5 +20,6 @@
     <file url="file://$PROJECT_DIR$/docs/sql/insert/t_like.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/docs/sql/insert/t_tag.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/docs/sql/insert/t_tree_hole.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/docs/sql/update.sql" dialect="MySQL" />
   </component>
 </project>

@@ -1,0 +1,39 @@
+# 出现数据库自增值被污染时使用该sql语句进行重置,请根据目前表中最大id+1
+ALTER TABLE sys_log
+    AUTO_INCREMENT = 1;
+ALTER TABLE sys_login_log
+    AUTO_INCREMENT = 1;
+ALTER TABLE sys_menu
+    AUTO_INCREMENT = 71;
+ALTER TABLE sys_permission
+    AUTO_INCREMENT = 149;
+ALTER TABLE sys_role
+    AUTO_INCREMENT = 4;
+ALTER TABLE sys_role_menu
+    AUTO_INCREMENT = 53;
+ALTER TABLE sys_role_permission
+    AUTO_INCREMENT = 270;
+ALTER TABLE sys_user
+    AUTO_INCREMENT = 2;
+ALTER TABLE sys_user_role
+    AUTO_INCREMENT = 2;
+ALTER TABLE sys_website_info
+    AUTO_INCREMENT = 2;
+ALTER TABLE t_article
+    AUTO_INCREMENT = 4;
+ALTER TABLE t_article_tag
+    AUTO_INCREMENT = 18;
+ALTER TABLE t_category
+    AUTO_INCREMENT = 11;
+ALTER TABLE t_comment
+    AUTO_INCREMENT = 13;
+ALTER TABLE t_favorite
+    AUTO_INCREMENT = 3;
+ALTER TABLE t_leave_word
+    AUTO_INCREMENT = 7;
+ALTER TABLE t_like
+    AUTO_INCREMENT = 8;
+ALTER TABLE t_tag
+    AUTO_INCREMENT = 6;
+ALTER TABLE t_tree_hole
+    AUTO_INCREMENT = 5;

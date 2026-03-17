@@ -63,7 +63,7 @@ function updateWebsiteInfo() {
   form.startTime = startTime
 
   updateWebInfo(form).then((res) => {
-    if (res.code === 200)
+    if (res.code == 200)
       message.success('保存成功')
   })
 }
@@ -118,16 +118,16 @@ function updateWebsiteInfo() {
         </a-button>
       </div>
     </a-form>
-    <Banners/>
+    <Banners />
   </div>
 </template>
 
 <style scoped lang="scss">
-.info{
+.info {
   width: 50%;
 }
 
-:deep(.ant-upload-list-picture-card){
+:deep(.ant-upload-list-picture-card) {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

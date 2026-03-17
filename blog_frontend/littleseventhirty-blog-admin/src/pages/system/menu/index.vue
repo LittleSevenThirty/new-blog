@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type {Ref, UnwrapRef} from 'vue'
-import {h} from 'vue'
-import type {TableColumnsType} from 'ant-design-vue'
-import {deleteRouteMenusApi, getRouteMenuByIdApi, getMenusApi, searchMenusApi} from '~/api/common/menu.ts'
-import type {MenuData} from '~/layouts/basic-layout/typing.ts'
-import {MenuDataItem} from "~/pages/system/menu/type.ts";
+import type { Ref, UnwrapRef } from 'vue'
+import { h } from 'vue'
+import type { TableColumnsType } from 'ant-design-vue'
+import { deleteRouteMenusApi, getRouteMenuByIdApi, getMenusApi, searchMenusApi } from '~/api/common/menu.ts'
+import type { MenuData } from '~/layouts/basic-layout/typing.ts'
+import { MenuDataItem } from "~/pages/system/menu/type.ts";
 import modal from './modal.vue'
-import {message} from "ant-design-vue";
+import { message } from "ant-design-vue";
 
-defineExpose({h})
+defineExpose({ h })
 
 // 是否加载中
 const isLoading = ref<boolean>(true)
@@ -28,7 +28,7 @@ async function onFinish(values: any) {
     return
   }
   isLoading.value = true
-  const {data} = await searchMenusApi(1, values.username, values.status)
+  const { data } = await searchMenusApi(1, values.username, values.status)
   isLoading.value = false
   menuDataList.value = data as any
 }
@@ -98,7 +98,7 @@ const newMenuData = ref()
  * 获取菜单列表
  */
 async function getMenuList() {
-  const {data} = await getMenusApi(1) as any
+  const { data } = await getMenusApi(1) as any
   menuData.value = data
   menuDataList.value = buildTree(data)
   newMenuData.value = buildTree(data)
@@ -112,7 +112,7 @@ async function getMenuList() {
 function buildTree(data: MenuDataItem[]) {
   let tree = data.filter(item => item.parentId === null);
   tree.forEach(root => {
-    root.key = root.id
+    root.key = root.menuId
     let children = buildChildren(root, data);
     if (children.length > 0) {
       root.children = children;
@@ -127,9 +127,9 @@ function buildTree(data: MenuDataItem[]) {
  * @param data 原始数据
  */
 function buildChildren(parent: MenuDataItem, data: MenuDataItem[]) {
-  let children = data.filter(item => item.parentId === parent.id);
+  let children = data.filter(item => item.parentId === parent.menuId);
   children.forEach(child => {
-    child.key = child.id
+    child.key = child.menuId
     let grandChildren = buildChildren(child, data);
     if (grandChildren.length > 0) {
       child.children = grandChildren;
@@ -149,7 +149,7 @@ function onExpandAll() {
     expand.value.expandedRowKeys = []
     expand.value.flag = false
   } else {
-    expand.value.expandedRowKeys = menuData.value.map(item => item.id)
+    expand.value.expandedRowKeys = menuData.value.map(item => item.menuId)
     expand.value.flag = true
   }
 }
@@ -215,7 +215,7 @@ const modalType: Ref<UnwrapRef<number | null>> = ref(null)
  * 修改
  */
 async function updateMenu(id: string) {
-  const {data} = await getRouteMenuByIdApi(id);
+  const { data } = await getRouteMenuByIdApi(id);
   if (!data.roleId) data.roleId = undefined
   formData.value = data
   showModal('update')
@@ -282,18 +282,11 @@ async function deleteMenu(id: string) {
 </script>
 
 <template>
-  <layout
-      @update:refreshFunc="refreshFunc"
-      @update:onFinish="onFinish"
-      @update:onFinishFailed="onFinishFailed"
-      :formState="formState"
-  >
+  <layout @update:refreshFunc="refreshFunc" @update:onFinish="onFinish" @update:onFinishFailed="onFinishFailed"
+    :formState="formState">
     <template #form-items>
-      <a-form-item
-          label="菜单名称"
-          name="username"
-      >
-        <a-input v-model:value="formState.username" placeholder="请输入菜单名称"/>
+      <a-form-item label="菜单名称" name="username">
+        <a-input v-model:value="formState.username" placeholder="请输入菜单名称" />
       </a-form-item>
 
       <a-form-item label="状态" name="status" style="width: 240px">
@@ -312,13 +305,13 @@ async function deleteMenu(id: string) {
       <div>
         <a-button @click="addMenu('add')" type="primary">
           <template #icon>
-            <PlusOutlined/>
+            <PlusOutlined />
           </template>
           新增
         </a-button>
         <a-button type="dashed" style="margin-bottom: 10px;color: grey" @click="onExpandAll">
           <template #icon>
-            <ArrowsAltOutlined/>
+            <ArrowsAltOutlined />
           </template>
           展开/折叠
         </a-button>
@@ -326,36 +319,26 @@ async function deleteMenu(id: string) {
     </template>
     <template #table-content>
       <div>
-        <a-table
-            :columns="columns"
-            :data-source="menuDataList"
-            :expanded-row-keys="expand.expandedRowKeys"
-            @expand="handleExpand"
-            :loading="isLoading"
-        >
-          <template #bodyCell="{ column,record  }">
+        <a-table :columns="columns" :data-source="menuDataList" :expanded-row-keys="expand.expandedRowKeys"
+          @expand="handleExpand" :loading="isLoading">
+          <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'operation'">
-              <a-button type="link" style="padding: 0;" @click="updateMenu(record.id)">
+              <a-button type="link" style="padding: 0;" @click="updateMenu(record.menuId)">
                 <template #icon>
-                  <FileSyncOutlined/>
+                  <FileSyncOutlined />
                 </template>
                 <span style="margin-inline-start:1px">修改</span>
               </a-button>
-              <a-button type="link" style="padding: 0;margin-left: 5px" @click="addMenu('add',record.parentId)">
+              <a-button type="link" style="padding: 0;margin-left: 5px" @click="addMenu('add', record.parentId)">
                 <template #icon>
-                  <PlusOutlined/>
+                  <PlusOutlined />
                 </template>
                 <span style="margin-inline-start:1px">新增</span>
               </a-button>
-              <a-popconfirm
-                  title="是否确定删除"
-                  ok-text="Yes"
-                  cancel-text="No"
-                  @confirm="deleteMenu(record.id)"
-              >
+              <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="deleteMenu(record.menuId)">
                 <a-button type="link" style="padding: 0;margin-left: 5px">
                   <template #icon>
-                    <DeleteOutlined/>
+                    <DeleteOutlined />
                   </template>
                   <span style="margin-inline-start:1px">删除</span>
                 </a-button>
@@ -371,20 +354,14 @@ async function deleteMenu(id: string) {
             </template>
             <template v-else-if="column.key === 'icon'">
               <!-- 图标 -->
-              <component :is="record.icon"/>
+              <component :is="record.icon" />
             </template>
           </template>
         </a-table>
       </div>
       <template v-if="menuDataList.length > 0">
-        <modal :modalOpen="modalOpen"
-               :modalTitle="modalTitle"
-               @update:modalOpen="handleModalOpenUpdate"
-               @add:success="handleAddSuccess"
-               :menuData="newMenuData"
-               :formData="formData"
-               :modalType="modalType"
-        />
+        <modal :modalOpen="modalOpen" :modalTitle="modalTitle" @update:modalOpen="handleModalOpenUpdate"
+          @add:success="handleAddSuccess" :menuData="newMenuData" :formData="formData" :modalType="modalType" />
       </template>
     </template>
   </layout>

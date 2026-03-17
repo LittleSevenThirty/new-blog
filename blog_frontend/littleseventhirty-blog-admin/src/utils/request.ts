@@ -157,7 +157,7 @@ function instancePromise<R = any, T = any>(options: AxiosOptions<T> & RequestCon
   const { loading } = options
   return new Promise((resolve, reject) => {
     instance.request(options).then((res: any) => {
-      if (res.code === '200' || res.code === 200)
+      if (res.code == '200' || res.code == 200)
         resolve(res as any)
       else
         reject(res.msg)

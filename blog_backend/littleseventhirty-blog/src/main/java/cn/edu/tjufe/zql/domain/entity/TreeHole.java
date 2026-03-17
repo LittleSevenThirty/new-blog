@@ -24,7 +24,7 @@ import java.util.Date;
 @TableName("t_tree_hole")
 public class TreeHole implements ViewObjectConvertible {
     // 树洞ID
-    @TableId("tree_hole_id")
+    @TableId(value = "tree_hole_id", type = IdType.AUTO)
     private Long treeHoleId;
     // 用户ID
     private Long userId;
@@ -33,11 +33,11 @@ public class TreeHole implements ViewObjectConvertible {
     // 是否通过
     private Integer isCheck;
     // 创建时间
-    @TableField(fill= FieldFill.INSERT)
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     // 更新时间
-    @TableField(fill= FieldFill.INSERT_UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
     // 是否删除(0未删除，1删除）
-    private Integer isDelete;
+    private Integer isDeleted;
 }

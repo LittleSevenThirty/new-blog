@@ -1,4 +1,4 @@
 export interface roleListType {
-  id: string
+  roleId: string
   roleName: string
 }

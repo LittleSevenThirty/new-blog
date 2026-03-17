@@ -174,7 +174,7 @@ function deleteUser(ids: string[]) {
     cancelText: '取消',
     onOk: () => {
       userDelete(ids).then((res) => {
-        if (res.code === 200) {
+        if (res.code == 200) {
           message.success('删除成功')
           state.selectedRowKeys = []
           refreshFunc()
@@ -204,22 +204,12 @@ function closeModalFunc() {
 </script>
 
 <template>
-  <layout
-    :form-state="formState"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formState" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
-      <a-form-item
-        label="用户名称"
-        name="username"
-      >
+      <a-form-item label="用户名称" name="username">
         <a-input v-model:value="formState.username" placeholder="请输入用户名称" style="width: 250px" />
       </a-form-item>
-      <a-form-item
-        label="用户邮箱"
-        name="email"
-      >
+      <a-form-item label="用户邮箱" name="email">
         <a-input v-model:value="formState.email" placeholder="请输入用户邮箱" style="width: 250px" />
       </a-form-item>
       <a-form-item label="状态" name="isDisable" style="width: 240px">
@@ -232,10 +222,7 @@ function closeModalFunc() {
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item
-        label="创建时间"
-        name="time"
-      >
+      <a-form-item label="创建时间" name="time">
         <a-range-picker v-model:value="formState.time" :placeholder="['开始时间', '结束时间']" />
       </a-form-item>
     </template>
@@ -246,7 +233,8 @@ function closeModalFunc() {
         </template>
         <span>详细</span>
       </a-button>
-      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)" @click="deleteUser(state.selectedRowKeys as string[])">
+      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)"
+        @click="deleteUser(state.selectedRowKeys as string[])">
         <template #icon>
           <DeleteOutlined />
         </template>
@@ -262,14 +250,9 @@ function closeModalFunc() {
     <template #table-content>
       <DetailModal :modal-open="detailModal" :data="userDetailData" @update:close:modal="closeModalFunc" />
       <InsertModal :modal-open="insertModal" @update:close:modal="insertModal = false" />
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-      >
+        :row-key="record => record.id" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'avatar'">
             <!-- 头像 -->
@@ -296,7 +279,8 @@ function closeModalFunc() {
               </template>
               <span style="margin-inline-start:1px">删除</span>
             </a-button>
-            <a-button type="link" style="padding: 0;margin-left: 5px" @click="$router.push({ path: '/user/role', query: { id: record.id, name: record.roleName } })">
+            <a-button type="link" style="padding: 0;margin-left: 5px"
+              @click="$router.push({ path: '/user/role', query: { id: record.id, name: record.roleName } })">
               <template #icon>
                 <KeyOutlined />
               </template>
@@ -313,6 +297,4 @@ function closeModalFunc() {
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

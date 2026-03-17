@@ -15,11 +15,11 @@ public enum ResponseEnum {
     /**
      * 请求成功
      */
-    SUCCESS("200","success（成功）"),
+    SUCCESS("200", "success（成功）"),
     /**
      * 请求失败
      */
-    FAILURE("500","failure（失败）"),
+    FAILURE("500", "failure（失败）"),
     /**
      * 用户名或密码错误
      */
@@ -32,6 +32,10 @@ public enum ResponseEnum {
      * 没有权限
      */
     NO_PERMISSION("1003", "没有权限"),
+    /**
+     * 请求频繁
+     */
+    REQUEST_FREQUENTLY("1004", "请求频繁"),
     /**
      * 验证码错误
      */
@@ -49,10 +53,21 @@ public enum ResponseEnum {
      */
     OTHER_ERROR("1008", "其他故障"),
     /**
+     * 会话数量已达上限
+     */
+    SESSION_LIMIT("1009", "会话数量已达上限"),
+    /**
+     * 未删除子菜单
+     */
+    NO_DELETE_CHILD_MENU("1010", "请先删除子菜单"),
+    /**
      * 文件上传错误
      */
     FILE_UPLOAD_ERROR("1011", "文件上传错误"),
-    ;
+    /**
+     * 账号被封禁
+     */
+    BLACK_LIST_ERROR("1012", "账号被封禁");;
 
     private final String code;
 

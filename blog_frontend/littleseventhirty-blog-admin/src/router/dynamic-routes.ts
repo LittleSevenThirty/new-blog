@@ -150,14 +150,14 @@ export default [
           hideInMenu: true,
         },
       },
-      {
-        path: '/blog/link',
-        name: 'Link',
-        component: () => import('~/pages/blog/link/index.vue'),
-        meta: {
-          title: '友情链接',
-        },
-      },
+      // {
+      //   path: '/blog/link',
+      //   name: 'Link',
+      //   component: () => import('~/pages/blog/link/index.vue'),
+      //   meta: {
+      //     title: '友情链接',
+      //   },
+      // },
       {
         path: '/blog/collect',
         name: 'Collect',
@@ -190,14 +190,14 @@ export default [
           title: '树洞管理',
         },
       },
-      {
-        path: '/blog/black-list',
-        name: 'BlackList',
-        component: () => import('~/pages/blog/black-list/index.vue'),
-        meta: {
-          title: '黑名单管理',
-        },
-      },
+      // {
+      //   path: '/blog/black-list',
+      //   name: 'BlackList',
+      //   component: () => import('~/pages/blog/black-list/index.vue'),
+      //   meta: {
+      //     title: '黑名单管理',
+      //   },
+      // },
     ],
   },
   {

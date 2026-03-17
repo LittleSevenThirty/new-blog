@@ -134,7 +134,7 @@ function deleteLoginLog(ids: string[]) {
     cancelText: '取消',
     onOk: () => {
       deleteLoginLogByIds(ids).then((res) => {
-        if (res.code === 200) {
+        if (res.code == 200) {
           message.success('删除成功')
           state.selectedRowKeys = []
           refreshFunc()
@@ -158,7 +158,7 @@ function deleteAll() {
     cancelText: '取消',
     onOk: () => {
       deleteLoginLogByIds(ids).then((res) => {
-        if (res.code === 200) {
+        if (res.code == 200) {
           message.success('清空成功')
           refreshFunc()
         }
@@ -169,22 +169,12 @@ function deleteAll() {
 </script>
 
 <template>
-  <layout
-    :form-state="formState"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formState" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
-      <a-form-item
-        label="登录地址"
-        name="address"
-      >
+      <a-form-item label="登录地址" name="address">
         <a-input v-model:value="formState.address" placeholder="请输入登录地址" style="width: 250px" />
       </a-form-item>
-      <a-form-item
-        label="用户名称"
-        name="userName"
-      >
+      <a-form-item label="用户名称" name="userName">
         <a-input v-model:value="formState.userName" placeholder="请输入用户名称" style="width: 250px" />
       </a-form-item>
       <a-form-item label="状态" name="state" style="margin-left: 1.8rem">
@@ -197,15 +187,14 @@ function deleteAll() {
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item
-        label="登录时间"
-        name="time"
-      >
-        <a-range-picker v-model:value="formState.time" placement="topLeft" :placeholder="['开始时间', '结束时间']" style="width: 250px" />
+      <a-form-item label="登录时间" name="time">
+        <a-range-picker v-model:value="formState.time" placement="topLeft" :placeholder="['开始时间', '结束时间']"
+          style="width: 250px" />
       </a-form-item>
     </template>
     <template #operate-btn>
-      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)" @click="deleteLoginLog(state.selectedRowKeys as string[])">
+      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)"
+        @click="deleteLoginLog(state.selectedRowKeys as string[])">
         <template #icon>
           <DeleteOutlined />
         </template>
@@ -225,31 +214,28 @@ function deleteAll() {
       </a-button>
     </template>
     <template #table-content>
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-      >
+        :row-key="record => record.id" size="small">
         <template #bodyCell="{ column, record }">
-          <template v-if="column.dataIndex === 'userName' && record.userName.length > 10 ">
+          <template v-if="column.dataIndex === 'userName' && record.userName.length > 10">
             <a-tooltip placement="top">
               <template #title>
                 <span>{{ record.userName }}</span>
               </template>
-              <span style="width: 100px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <span
+                style="width: 100px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                 {{ record.userName }}
               </span>
             </a-tooltip>
           </template>
-          <template v-if="column.dataIndex === 'message' && record.message.length > 10 ">
+          <template v-if="column.dataIndex === 'message' && record.message.length > 10">
             <a-tooltip placement="top">
               <template #title>
                 <span>{{ record.message }}</span>
               </template>
-              <span style="width: 100px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <span
+                style="width: 100px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                 {{ record.message }}
               </span>
             </a-tooltip>
@@ -289,6 +275,4 @@ function deleteAll() {
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

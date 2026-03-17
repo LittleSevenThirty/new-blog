@@ -24,13 +24,13 @@ import java.util.Date;
 public class WebsiteInfo implements ViewObjectConvertible {
     private Long id;
     // 站长头像地址
-    private String webMasterAvatar;
+    private String webmasterAvatar;
     // 站长名称
-    private String webMasterName;
+    private String webmasterName;
     // 站长个人简介
-    private String webMasterCopy;
+    private String webmasterCopy;
     // 站长个人主页背景图片
-    private String webMasterProfileBackground;
+    private String webmasterProfileBackground;
     // 站长的 Gitee 代码仓库链接
     private String giteeLink;
     // 站长的 GitHub 代码仓库链接

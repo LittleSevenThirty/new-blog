@@ -2,6 +2,7 @@ package cn.edu.tjufe.zql.domain.entity;
 
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -24,7 +25,7 @@ import java.util.Date;
 @Data
 public class Article implements ViewObjectConvertible {
     // 文章标识
-    @TableId("article_id")  // 自定义主键需要告诉mapper否则mybatis的一些关于id方法会出错
+    @TableId(value = "article_id", type = IdType.AUTO) // 自定义主键需要告诉mapper否则mybatis的一些关于id方法会出错
     private Long articleId;
 
     // 作者ID

@@ -2,6 +2,7 @@ package cn.edu.tjufe.zql.utils;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,29 @@ public class RedisCache {
         Boolean hasKey = redisTemplate.hasKey(key);
         if (hasKey != null && hasKey) return true;
         else return false;
+    }
+
+    /**
+     * 获取Hash中的数据
+     *
+     * @param key  Redis键
+     * @param hKey Hash键
+     * @return Hash中的对象
+     */
+    public <T> T getCacheMapValue(final String key, final String hKey) {
+        HashOperations<String, String, T> opsForHash = redisTemplate.opsForHash();
+        return opsForHash.get(key, hKey);
+    }
+
+    /**
+     * 删除Hash中的数据
+     *
+     * @param key
+     * @param hkey
+     */
+    public void delCacheMapValue(final String key, final String hkey) {
+        HashOperations hashOperations = redisTemplate.opsForHash();
+        hashOperations.delete(key, hkey);
     }
 
     /**
@@ -109,5 +133,17 @@ public class RedisCache {
      */
     public <T> void setCacheObject(final String key, final T value) {
         redisTemplate.opsForValue().set(key, value);
+    }
+
+    /**
+     * 设置有效时间
+     *
+     * @param key     Redis键
+     * @param timeout 超时时间
+     * @param unit    时间单位
+     * @return true=设置成功；false=设置失败
+     */
+    public boolean expire(final String key, final long timeout, final TimeUnit unit) {
+        return Boolean.TRUE.equals(redisTemplate.expire(key, timeout, unit));
     }
 }

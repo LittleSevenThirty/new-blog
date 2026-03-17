@@ -49,8 +49,8 @@ public class PublicServiceImpl implements IPublicService {
             // 保存到redis，设置过期时间为5分钟
             redisCache.setCacheObject(RedisConst.VERIFY_CODE + type + RedisConst.SEPARATOR + email, verifyCode, RedisConst.VERIFY_CODE_EXPIRATION, TimeUnit.MINUTES);
             // 发送邮件
-            Map<String, Object> senEmail = Map.of("email", email, "code", verifyCode, "type", type);
-            rabbitTemplate.convertAndSend(exchange, routingKey, senEmail);
+            Map<String, Object> sendEmail = Map.of("email", email, "code", verifyCode, "type", type);
+            rabbitTemplate.convertAndSend(exchange, routingKey, sendEmail);
 
             return "验证码已发送，请注意查收！";
         }

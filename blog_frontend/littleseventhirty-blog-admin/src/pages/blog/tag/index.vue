@@ -13,7 +13,7 @@ const formState = reactive({
 })
 
 interface DataType {
-  id: string
+  tagId: string
   title: string
   key: string
   orderNum: number
@@ -24,7 +24,7 @@ interface DataType {
 const columns: any = [
   {
     title: '标签编号',
-    dataIndex: 'id',
+    dataIndex: 'tagId',
     align: 'center',
   },
   {
@@ -134,7 +134,7 @@ function deleteTag(ids: string[], type?: number) {
       cancelText: '取消',
       onOk: () => {
         deleteTagByIds(ids).then((res) => {
-          if (res.code === 200) {
+          if (res.code == 200) {
             message.success('删除成功')
             state.selectedRowKeys = []
             refreshFunc()
@@ -145,7 +145,7 @@ function deleteTag(ids: string[], type?: number) {
     return
   }
   deleteTagByIds(ids).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success('删除成功')
       state.selectedRowKeys = []
       refreshFunc()
@@ -172,17 +172,17 @@ async function updateOrInsertTag(id?: string) {
 // 确定
 async function modelOk() {
   modalInfo.loading = true
-  if (formData.value.id) {
+  if (formData.value.tagId) {
     await updateTag(formData.value).then((res) => {
       modalInfo.loading = false
-      if (res.code === 200)
+      if (res.code == 200)
         message.success('修改成功')
     }).catch()
   }
   else {
     await addTag(formData.value).then((res) => {
       modalInfo.loading = false
-      if (res.code === 200)
+      if (res.code == 200)
         message.success('添加成功')
     }).catch(() => modalInfo.loading = false)
   }
@@ -192,22 +192,12 @@ async function modelOk() {
 </script>
 
 <template>
-  <layout
-    :form-state="formState"
-    @update:refresh-func="refreshFunc"
-    @update:on-finish="onFinish"
-  >
+  <layout :form-state="formState" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
-      <a-form-item
-        label="标签名称"
-        name="tagName"
-      >
+      <a-form-item label="标签名称" name="tagName">
         <a-input v-model:value="formState.tagName" placeholder="请输入标签名称" style="width: 250px" />
       </a-form-item>
-      <a-form-item
-        label="创建时间"
-        name="time"
-      >
+      <a-form-item label="创建时间" name="time">
         <a-range-picker v-model:value="formState.time" :placeholder="['开始时间', '结束时间']" />
       </a-form-item>
     </template>
@@ -224,7 +214,8 @@ async function modelOk() {
         </template>
         修改
       </a-button>
-      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)" @click="deleteTag(state.selectedRowKeys as string[], 0)">
+      <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)"
+        @click="deleteTag(state.selectedRowKeys as string[], 0)">
         <template #icon>
           <DeleteOutlined />
         </template>
@@ -238,22 +229,15 @@ async function modelOk() {
       </a-button>
     </template>
     <template #table-content>
-      <a-modal v-model:open="modalInfo.open" :title="modalInfo.title" :confirm-loading="modalInfo.loading" width="400px" @ok="modelOk">
-        <a-form-item
-          label="标签名称"
-          name="tagName"
-        >
+      <a-modal v-model:open="modalInfo.open" :title="modalInfo.title" :confirm-loading="modalInfo.loading" width="400px"
+        @ok="modelOk">
+        <a-form-item label="标签名称" name="tagName">
           <a-input v-model:value="formData.tagName" placeholder="请输入标签名称" show-count :maxlength="20" />
         </a-form-item>
       </a-modal>
-      <a-table
-        :columns="columns"
-        :data-source="tabData"
-        :loading="loading"
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
         :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-        :row-key="record => record.id"
-        size="small"
-      >
+        :row-key="record => record.tagId" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'tagName'">
             <a-tag color="blue">
@@ -266,18 +250,13 @@ async function modelOk() {
             </a-tag>
           </template>
           <template v-if="column.key === 'operation'">
-            <a-button type="link" style="padding: 0;" @click="updateOrInsertTag(record.id)">
+            <a-button type="link" style="padding: 0;" @click="updateOrInsertTag(record.tagId)">
               <template #icon>
                 <FileSyncOutlined />
               </template>
               <span style="margin-inline-start:1px">修改</span>
             </a-button>
-            <a-popconfirm
-              title="是否确定删除"
-              ok-text="Yes"
-              cancel-text="No"
-              @confirm="deleteTag([record.id])"
-            >
+            <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="deleteTag([record.tagId])">
               <a-button type="link" style="padding: 0;margin-left: 5px">
                 <template #icon>
                   <DeleteOutlined />
@@ -296,6 +275,4 @@ async function modelOk() {
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

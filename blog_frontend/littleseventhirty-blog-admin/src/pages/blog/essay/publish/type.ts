@@ -1,12 +1,12 @@
 // 文章分类
 export interface CategoryType {
-  id: number
+  categoryId: string
   categoryName: string
 }
 
 // 文章标签
 export interface TagType {
-  id: number
+  tagId: number
   tagName: string
 }
 
@@ -20,4 +20,5 @@ export interface ArticleType {
   articleType: number
   isTop: number
   status: number
+  articleId?: string
 }

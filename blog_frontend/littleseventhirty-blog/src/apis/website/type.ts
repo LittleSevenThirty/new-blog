@@ -1,15 +1,15 @@
 interface WebsiteInfo {
     // 站长头像地址
-    webMasteravatar: string,
+    webmasteravatar: string,
 
     // 站长名称
-    webMasterName: string,
+    webmasterName: string,
 
     // 站长个人简介
-    webMasterCopy: string,
+    webmasterCopy: string,
 
     // 站长个人主页背景图片
-    webMasterProfileBackground: string,
+    webmasterProfileBackground: string,
 
     // 站长的 Gitee 代码仓库链接
     giteeLink: string,

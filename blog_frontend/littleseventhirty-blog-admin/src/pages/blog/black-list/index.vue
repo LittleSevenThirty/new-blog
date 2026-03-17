@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type {Ref, UnwrapRef} from 'vue'
-import {createVNode} from 'vue'
-import {message, Modal} from 'ant-design-vue'
-import {ExclamationCircleOutlined} from '@ant-design/icons-vue'
-import {deleteCategoryByIds,} from '~/api/blog/category'
-import {addCategory} from '~/api/blog/article'
-import {addBlackList, blackList, deleteBlackList, updateBlackList} from "~/api/blog/black-list";
-import dayjs, {Dayjs} from "dayjs";
-import {debounce} from 'lodash-es';
-import {userSearch} from "~/api/user";
+import type { Ref, UnwrapRef } from 'vue'
+import { createVNode } from 'vue'
+import { message, Modal } from 'ant-design-vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import { deleteCategoryByIds, } from '~/api/blog/category'
+import { addCategory } from '~/api/blog/article'
+import { addBlackList, blackList, deleteBlackList, updateBlackList } from "~/api/blog/black-list";
+import dayjs, { Dayjs } from "dayjs";
+import { debounce } from 'lodash-es';
+import { userSearch } from "~/api/user";
 
 interface FormState {
   userName: string,
@@ -79,7 +79,7 @@ onMounted(() => {
 
 async function refreshFunc(searchData?: object) {
   loading.value = true
-  const {data} = await blackList(searchData)
+  const { data } = await blackList(searchData)
   tabData.value = data
   loading.value = false
 }
@@ -135,7 +135,7 @@ function deleteBlackListFunc(ids: string[], type?: number) {
       cancelText: '取消',
       onOk: () => {
         deleteBlackList(ids).then((res) => {
-          if (res.code === 200) {
+          if (res.code == 200) {
             message.success('删除成功')
             state.selectedRowKeys = []
             refreshFunc()
@@ -146,7 +146,7 @@ function deleteBlackListFunc(ids: string[], type?: number) {
     return
   }
   deleteBlackList(ids).then((res) => {
-    if (res.code === 200) {
+    if (res.code == 200) {
       message.success('删除成功')
       state.selectedRowKeys = []
       refreshFunc()
@@ -204,7 +204,7 @@ async function modelOk() {
     }
     updateData.expiresTime = dayjs(updateOrInsertModal.value.expiresTime).format('YYYY-MM-DD HH:mm:ss')
     await updateBlackList(updateData).then((res) => {
-      if (res.code === 200) {
+      if (res.code == 200) {
         modalInfo.loading = false
         message.success('修改成功')
       }
@@ -224,7 +224,7 @@ async function modelOk() {
     })
     console.log('添加', insertData)
     await addBlackList(insertData).then((res) => {
-      if (res.code === 200) {
+      if (res.code == 200) {
         modalInfo.loading = false
         message.success('添加成功')
       }
@@ -243,7 +243,7 @@ const fetchUser = debounce(value => {
   const fetchId = lastFetchId;
   userState.data = [];
   userState.fetching = true;
-  userSearch({username: value}).then((res) => {
+  userSearch({ username: value }).then((res) => {
     if (fetchId !== lastFetchId) {
       // for fetch callback order
       return;
@@ -264,36 +264,19 @@ watch(userState.value, () => {
 </script>
 
 <template>
-  <layout
-      :form-state="formState"
-      @update:refresh-func="refreshFunc"
-      @update:on-finish="onFinish"
-  >
+  <layout :form-state="formState" @update:refresh-func="refreshFunc" @update:on-finish="onFinish">
     <template #form-items>
-      <a-form-item
-          label="用户名称"
-          name="userName"
-      >
-        <a-input v-model:value="formState.userName" placeholder="请输入用户名称" style="width: 150px"/>
+      <a-form-item label="用户名称" name="userName">
+        <a-input v-model:value="formState.userName" placeholder="请输入用户名称" style="width: 150px" />
       </a-form-item>
-      <a-form-item
-          label="封禁时间"
-          name="time"
-      >
-        <a-range-picker v-model:value="formState.time" :placeholder="['开始时间', '结束时间']"/>
+      <a-form-item label="封禁时间" name="time">
+        <a-range-picker v-model:value="formState.time" :placeholder="['开始时间', '结束时间']" />
       </a-form-item>
-      <a-form-item
-          label="封禁理由"
-          name="reason"
-      >
-        <a-input v-model:value="formState.reason" placeholder="请输入封禁理由" style="width: 200px"/>
+      <a-form-item label="封禁理由" name="reason">
+        <a-input v-model:value="formState.reason" placeholder="请输入封禁理由" style="width: 200px" />
       </a-form-item>
       <a-form-item label="封禁类型" name="type" style="margin-right: 1rem">
-        <a-select
-            style="width: 7em"
-            placeholder="封禁类型"
-            v-model:value="formState.type"
-        >
+        <a-select style="width: 7em" placeholder="封禁类型" v-model:value="formState.type">
           <a-select-option :value="1">
             手动封禁
           </a-select-option>
@@ -306,68 +289,55 @@ watch(userState.value, () => {
     <template #operate-btn>
       <a-button type="primary" @click="updateOrInsertBlackList()">
         <template #icon>
-          <PlusOutlined/>
+          <PlusOutlined />
         </template>
         新增
       </a-button>
       <a-button class="green" :disabled="!hasSelected"
-                @click="updateOrInsertBlackList(state.selectedRowKeys[0] as string)">
+        @click="updateOrInsertBlackList(state.selectedRowKeys[0] as string)">
         <template #icon>
-          <FileSyncOutlined/>
+          <FileSyncOutlined />
         </template>
         修改
       </a-button>
       <a-button type="dashed" danger ghost :disabled="!(state.selectedRowKeys.length > 0)"
-                @click="deleteBlackListFunc(state.selectedRowKeys as string[], 0)">
+        @click="deleteBlackListFunc(state.selectedRowKeys as string[], 0)">
         <template #icon>
-          <DeleteOutlined/>
+          <DeleteOutlined />
         </template>
         删除
       </a-button>
       <a-button class="orange" @click="message.warn('别点了，有空再写')">
         <template #icon>
-          <VerticalAlignBottomOutlined/>
+          <VerticalAlignBottomOutlined />
         </template>
         导出
       </a-button>
     </template>
     <template #table-content>
       <a-modal v-model:open="modalInfo.open" :title="modalInfo.title" :confirm-loading="modalInfo.loading" width="400px"
-               @ok="modelOk">
+        @ok="modelOk">
         <a-form-item label="用户名称" v-show="userState.isInsert">
-          <a-select
-              v-model:value="userState.value"
-              mode="multiple"
-              label-in-value
-              placeholder="搜索用户"
-              style="width: 100%"
-              :filter-option="false"
-              :not-found-content="userState.fetching ? undefined : null"
-              :options="userState.data"
-              @search="fetchUser"
-          >
+          <a-select v-model:value="userState.value" mode="multiple" label-in-value placeholder="搜索用户"
+            style="width: 100%" :filter-option="false" :not-found-content="userState.fetching ? undefined : null"
+            :options="userState.data" @search="fetchUser">
             <template v-if="userState.fetching" #notFoundContent>
-              <a-spin size="small"/>
+              <a-spin size="small" />
             </template>
           </a-select>
         </a-form-item>
         <a-form-item label="解封时间">
           <a-date-picker style="width: 100%" show-time v-model:value="updateOrInsertModal.expiresTime"
-                         placeholder="解封时间"/>
+            placeholder="解封时间" />
         </a-form-item>
         <a-form-item label="封禁理由">
           <a-textarea :showCount="true" v-model:value="updateOrInsertModal.reason" placeholder="请输入封禁理由"
-                      style="width: 100%;max-height: 100px"/>
+            style="width: 100%;max-height: 100px" />
         </a-form-item>
       </a-modal>
-      <a-table
-          :columns="columns"
-          :data-source="tabData"
-          :loading="loading"
-          :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
-          :row-key="record => record.id"
-          size="small"
-      >
+      <a-table :columns="columns" :data-source="tabData" :loading="loading"
+        :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
+        :row-key="record => record.id" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'type'">
             <a-tag :color="record.type == 1 ? '#87d068' : '#f50'">
@@ -396,19 +366,14 @@ watch(userState.value, () => {
           <template v-if="column.key === 'operation'">
             <a-button type="link" style="padding: 0;" @click="updateOrInsertBlackList(record.id)">
               <template #icon>
-                <FileSyncOutlined/>
+                <FileSyncOutlined />
               </template>
               <span style="margin-inline-start:1px">修改</span>
             </a-button>
-            <a-popconfirm
-                title="是否确定删除"
-                ok-text="Yes"
-                cancel-text="No"
-                @confirm="deleteBlackListFunc([record.id])"
-            >
+            <a-popconfirm title="是否确定删除" ok-text="Yes" cancel-text="No" @confirm="deleteBlackListFunc([record.id])">
               <a-button type="link" style="padding: 0;margin-left: 5px">
                 <template #icon>
-                  <DeleteOutlined/>
+                  <DeleteOutlined />
                 </template>
                 <span style="margin-inline-start:1px">删除</span>
               </a-button>
@@ -416,7 +381,7 @@ watch(userState.value, () => {
           </template>
           <template v-else-if="column.key === 'icon'">
             <!-- 图标 -->
-            <component :is="record.icon"/>
+            <component :is="record.icon" />
           </template>
         </template>
       </a-table>
@@ -424,6 +389,4 @@ watch(userState.value, () => {
   </layout>
 </template>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

@@ -144,9 +144,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                     .eq(StringUtils.isNotNull(searchDTO.getIsCheck()), Comment::getIsCheck, searchDTO.getIsCheck());
         }
 
-        return commentMapper.selectList(wrapper.orderByDesc(Comment::getCreateTime)).stream().map(comment -> comment.asViewObject(CommentListVO.class,
-                v -> v.setCommentUserName(userMapper.selectById(comment.getCommentUserId()).getUsername()))).collect(Collectors.toList());
-
+        List<CommentListVO> vos = commentMapper.selectList(wrapper.orderByDesc(Comment::getCreateTime)).stream().map(comment -> comment.asViewObject(CommentListVO.class, v -> v.setCommentUserName(userMapper.selectById(comment.getCommentUserId()).getUsername()))).collect(Collectors.toList());
+        return vos;
     }
 
     @Override

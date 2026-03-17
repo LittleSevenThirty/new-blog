@@ -5,7 +5,7 @@ import type { VNodeChild } from 'vue'
  */
 export interface MenuDataItem {
   // 唯一id
-  id?: string | number
+  menuId?: string | number
   // 菜单唯一key
   key?: string | number
   // 标题
@@ -58,7 +58,7 @@ export interface MenuDataItem {
  * 添加菜单数据类型
  */
 export interface formType {
-  id: string
+  menuId: string
   // 上级菜单
   parentId: string
   // 菜单标题
