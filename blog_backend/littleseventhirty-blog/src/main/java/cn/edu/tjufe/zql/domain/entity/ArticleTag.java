@@ -3,6 +3,7 @@ package cn.edu.tjufe.zql.domain.entity;
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,8 @@ import java.util.Date;
 @TableName("t_article_tag")
 public class ArticleTag implements ViewObjectConvertible {
     // 关系表id
-    private Long id;
+    @TableId("article_tag_id")
+    private Long articleTagId;
     // 文章id
     private Long articleId;
     // 标签id
@@ -32,6 +34,6 @@ public class ArticleTag implements ViewObjectConvertible {
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     //是否删除（0：未删除，1：已删除）
-    private Integer isDelete;
+    private Integer isDeleted;
 }
 

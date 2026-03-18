@@ -26,9 +26,15 @@ const useWebsiteStore = defineStore("website", () => {
 
     //// getInfo获取网站信息改写，让其看起来更像线性代码
     const getInfo = async () => {
-        let res = await getWebsiteInfo();
-        res.data.lastUpdatetime = returnTime(res.data.lastUpdatetime) as string;
-        webInfo.value = res.data;
+        console.log('开始获取网站信息');
+        try {
+            let res = await getWebsiteInfo();
+            console.log('获取网站信息成功:', res);
+            res.data.lastUpdatetime = returnTime(res.data.lastUpdatetime) as string;
+            webInfo.value = res.data;
+        } catch (error) {
+            console.error('获取网站信息失败:', error);
+        }
     }
 
     // 获取网站标题

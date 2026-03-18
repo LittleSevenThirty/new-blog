@@ -1,14 +1,14 @@
 // 有这么个联系线，Mock是为了响应前端请求所以对应了api/website/index.ts对应方法，而data对应了api/website/type.ts
 import Mock from 'mockjs';
 
-Mock.mock("/api/websiteInfo/front","get",{
+Mock.mock("/api/websiteInfo/front", "get", {
   code: 200,
   status: "success",
   data: {
-    webMasterAvater: "https://example.com/avatar.jpg",
-    webMasterName: "张三",
-    webMasterCopy: "热爱开源、前端开发与写作的独立开发者。",
-    webMasterProfileBackground: "https://example.com/background.jpg",
+    webmasterAvatar: "/src/assets/images/avatar.jpg",
+    webmasterName: "张三",
+    webmasterCopy: "热爱开源、前端开发与写作的独立开发者。",
+    webmasterProfileBackground: "https://ts1.tc.mm.bing.net/th/id/R-C.22fc123aa05330a4f68c998766f43e94?rik=lCrVWHF%2fQMpiLA&riu=http%3a%2f%2fimg-download.pchome.net%2fdownload%2f1k1%2fee%2f2k%2folyjst-mvf.jpg&ehk=i84XSCytuXQg0nab4oH5qgZX6ckUsCCvIPIbEH8fu6Y%3d&risl=&pid=ImgRaw&r=0",
     giteeLink: "https://gitee.com/zhangsan",
     githubLink: "https://github.com/zhangsan",
     websiteName: "小小七的博客",
@@ -25,10 +25,10 @@ Mock.mock("/api/websiteInfo/front","get",{
   }
 });
 
-Mock.mock("/api/banner/slideshow","get",{
-  code:200,
-  status:"success",
-  data:[
+Mock.mock("/api/banner/slideshow", "get", {
+  code: 200,
+  status: "success",
+  data: [
     "https://ts1.tc.mm.bing.net/th/id/R-C.22fc123aa05330a4f68c998766f43e94?rik=lCrVWHF%2fQMpiLA&riu=http%3a%2f%2fimg-download.pchome.net%2fdownload%2f1k1%2fee%2f2k%2folyjst-mvf.jpg&ehk=i84XSCytuXQg0nab4oH5qgZX6ckUsCCvIPIbEH8fu6Y%3d&risl=&pid=ImgRaw&r=0",
     "https://ts1.tc.mm.bing.net/th/id/R-C.dbeb051cb8c30e2a068326381be5e6df?rik=rMVE%2fiTjFvF80g&riu=http%3a%2f%2fwww.sucaijishi.com%2fuploadfile%2f2023%2f0327%2f20230327011849352.jpeg%3fimageMogr2%2fformat%2fjpg%2fblur%2f1x0%2fquality%2f60&ehk=MM4vaiZOTjfyd9IuMC7AkfcwxbSxAlG9PJhjZ7cMzrs%3d&risl=&pid=ImgRaw&r=0",
     "https://tse4.mm.bing.net/th/id/OIP.ISwMTgLKjg_Okojx035MsAHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",

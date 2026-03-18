@@ -2,7 +2,9 @@ package cn.edu.tjufe.zql.domain.entity;
 
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,20 +18,21 @@ import java.util.Date;
  * @description: 目前文章表就这些了，后续更新数据库表再同步更新实体类
  * @date: 2025/12/12-11:51
  **/
-@TableName("T_Article")
+@TableName("t_article")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
 public class Article implements ViewObjectConvertible {
-    // 数据库表标识
-    private Long id;
-
     // 文章标识
+    @TableId(value = "article_id", type = IdType.AUTO) // 自定义主键需要告诉mapper否则mybatis的一些关于id方法会出错
     private Long articleId;
 
     // 作者ID
     private Long userId;
+
+    // 文章缩略图
+    private String articleCover;
 
     // 分类ID
     private Long categoryId;
@@ -44,7 +47,7 @@ public class Article implements ViewObjectConvertible {
     private Long visitedCount;
 
     // 文章类型(1原创，2翻译，3转载）
-    private Short articleType;
+    private Integer articleType;
 
     // 文章是否置顶
     private Integer isTop;

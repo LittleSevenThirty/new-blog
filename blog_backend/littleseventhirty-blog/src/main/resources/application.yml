@@ -2,6 +2,13 @@ server:
   port: 8080
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      # 设置全局主键策略为数据库自增，不使用默认的雪花id算法生成
+      id-type: auto
+  # 控制台打印日志功能，测试时打开就行了
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 logging:
   level:
@@ -10,7 +17,7 @@ logging:
 # spring配置
 spring:
   profiles:
-    active: "@profiles.active@"
+    active: "dev"
   datasource:
     password: Zql@20040712
     username: root
@@ -22,3 +29,88 @@ spring:
       password: ""         # 本地无密码可空；云服务（如 Azure Redis）必填！
       database: 0          # Redis 有 16 个库（0～15），开发常用 0
       timeout: 2000ms      # 操作超时时间
+  # spring email配置，根据配置自动在spring里创建
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 3100649706@qq.com
+    password: jwggashwraezdfdf
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+  # thymeleaf配置
+  thymeleaf:
+    cache: false  # 开发时关闭缓存
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+  security:
+    jwt:
+      key: jwt-key
+      expire: 7 # 有效时间
+  rabbitmq:
+    # rabbitmq配置
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true # 允许消费者重试
+          max-attempts: 3 # 最大重试次数
+          initial-interval: 6000 # 重试间隔时间
+          multiplier: 2 # 乘子*间隔时间=下一次重试时间，不能超过最大间隔时间
+          max-interval: 10000ms # 最大间隔时间
+    # 信息配置
+    # 交换机，相当于分拣中心
+    exchange:
+      email: email_exchange
+      log: log_exchange
+    # 队列，相当于仓库货架
+    queue:
+      email: email_queue
+      log-login: log_login_queue
+      log-system: log_system_queue
+    # 路由健，相当于货架上的标签
+    routingKey:
+      log-login: log_routing_key_login
+      log-system: log_routing_key_system
+      email: email_routing_key
+
+# 邮件配置
+mail:
+  link:
+    apply:
+      redirect-uri: http://localhost:8080/link/email/apply
+      # 邮箱审核友链回调地址（如果不开启）apply-notice 则无需在意该配置，随便填写即可
+      # redirect-uri: http://[(后端地址:端口)/(域名)]/link/email/apply
+  article-email-notice: false
+  message-email-notice: false
+  article-reply-notice: false
+  message-reply-notice: false
+
+# 对象存储配置
+## 可选1使用minio存储
+minio:
+  bucketName: bn
+  endpoint: http://xxx
+  accessKey: minioadmin
+  secretKey: minioadmin
+## 可选2使用阿里云OSS对象存储
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com  # 替换为您的 Bucket 所在地域https://help.aliyun.com/zh/oss/user-guide/regions-and-endpoints?utm_source=chatgpt.com
+    access-key-id: LTAI5tNdNHKSR1RbbJvhLrW6
+    access-key-secret: dIDq92Xi5GPjRskZtssWwlAN2YS3vA
+    bucket-name: little-seven
+    urlPrefix: https://little-seven.oss-cn-beijing.aliyuncs.com  # 自定义属性，对象存储地址前缀
+
+web:
+  index:
+    # 网站前端首页
+    path: http://localhost:70/

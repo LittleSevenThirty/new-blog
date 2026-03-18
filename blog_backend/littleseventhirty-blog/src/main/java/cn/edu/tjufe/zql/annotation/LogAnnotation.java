@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * @author: littleseventhirty
- * @description:
+ * @description: 操作日志注解，该注解只适用于方法放回结果是cn.edu.tjufe.zql.domain.response.ResponseReuslt
  * @date: 2026/1/22-13:18
  **/
 @Target(ElementType.METHOD)

@@ -3,7 +3,7 @@
 // 对接前端使用axios访问后端接口时，但后端没准备好
 // 前端接口处于apis/article/index
 import Mock from "mockjs"
-import {data1,data2} from  "./articleMock";
+import { data1, data2 } from "./articleMock";
 
 // 模拟文章数据（基于你的 insert.sql 转换，补充了分类名称）
 const articleList = [
@@ -211,7 +211,7 @@ Mock.mock("/api/article/random", "get", () => {
     articleId: Number(article.articleId), // 匹配VO的Long类型
     articleTitle: article.articleTitle,   // String类型
     visitedCount: Number(article.visitedCount), // 匹配VO的Long类型
-    createTime: new Date().getDate()
+    createTime: new Date()
   }));
 
   return Mock.mock({
@@ -264,9 +264,147 @@ Mock.mock("/api/article/recommend", "get", {
   ]
 })
 
-// 假全文章推荐列表
-let random=0;
-Mock.mock(RegExp('/api/article/list' + '.*'),"get", () => {
-  random+=1;
-  return random%2==0?data1:data2;
+Mock.mock("/api/article/timeline", "get", {
+  'code': 200,
+  'msg': '操作成功',
+  'data|10': [{ // 生成 10 条数据
+    'articleId|+1': 1, // 文章ID，从1开始自增
+    'articleCover': '@IMAGE("200x100", "#50BFF9", "缩略图")', // 模拟图片链接
+    'articleContent': '@CSENTENCE(50, 100)', // 模拟文章内容，50-100个汉字
+    'createTime': '@DATETIME("yyyy-MM-dd HH:mm:ss")' // 模拟创建时间
+  }]
 });
+
+// 搜索文章
+Mock.mock(/\/api\/article\/list\/\d+\/\d+/, "get", {
+  // 这里假设 code 为 200 表示成功
+  code: 200,
+  msg: '请求成功',
+  // data 是一个数组，使用 Mock.js 的数组语法，生成 3-6 篇相关文章
+  'data|3-6': [{
+    // 文章 ID，生成随机数字
+    'articleId|+1': 1000,
+    // 文章缩略图，使用 Mock.js 的图片占位符服务
+    'articleCover': "@image('200x120', '#4A7BF7', '#FFF', 'png', '缩略图')",
+    // 文章标题，生成随机的中文句子
+    'articleTitle': "@ctitle(10, 20)",
+    // 创建时间，生成随机日期，格式为 YYYY-MM-DD HH:mm:ss
+    'createTime': new Date().getDate().toString()
+  }] // 提取数组部分
+})
+
+// 假全文章推荐列表
+let random = 0;
+Mock.mock(RegExp('/api/article/list' + '.*'), "get", () => {
+  random += 1;
+  return random % 2 == 0 ? data1 : data2;
+});
+
+const articleListByTypeUrl = /\/api\/article\/type\/list\/\w+.*/
+
+// 获取分类或分标签的文章
+Mock.mock(articleListByTypeUrl, 'get', {
+  "code": 200,
+  "msg": "操作成功",
+  // data 是 List<CategoryArticleVO>，模拟生成 6 到 10 篇文章
+  "data|6-10": [
+    {
+      // --- CategoryArticleVO 字段 ---
+
+      // articleId: Long -> 模拟文章 ID
+      "articleId|+1": 10000,
+
+      // categoryId: Long -> 模拟分类 ID
+      "categoryId": "@integer(100, 200)",
+
+      // articleTitle: String -> 模拟文章标题 (10-20个字)
+      "articleTitle": "@ctitle(10, 20)",
+
+      // articleCover: String -> 模拟图片 URL
+      // Mock.js 自带生成占位图功能：大小, 背景色, 文字
+      "articleCover": "@image('300x200', '#50B347', '#FFF', 'ArticleCover')",
+
+      // visitedCount: Long -> 访问量
+      "visitedCount": "@integer(100, 9999)",
+
+      // createTime: Date -> 文章创建时间
+      "createTime": "@datetime('yyyy-MM-dd HH:mm:ss')",
+
+      // --- 嵌套 TagVO 列表 (List<TagVO>) ---
+      // tags: 模拟每篇文章包含 1 到 3 个标签
+      "tags|1-3": [
+        {
+          // tagId: Long
+          "tagId|+1": 500,
+
+          // tagName: String -> 标签名 (2-4个字)
+          "tagName": "@ctitle(2, 4)",
+
+          // articleCount: Long -> 该标签下的文章数
+          "articleCount": "@integer(10, 1000)",
+
+          // createTime & updateTime
+          "createTime": "@datetime('yyyy-MM-dd HH:mm:ss')",
+          "updateTime": "@datetime('yyyy-MM-dd HH:mm:ss')"
+        }
+      ]
+    }
+  ]
+})
+
+// 模拟数据模板 (基于你的 ArticleDetailVO)
+const articleDetailTemplate = {
+  'articleId|+1': 1, // 自增ID
+  'userId|1000-9999': 1,
+  'categoryName': '@ctitle(4, 8)',
+  'categoryId|1-10': 1,
+  'tags|1-3': [
+    {
+      'tagName': '@ctitle(2, 4)',
+      'tagId|+1': 100
+    }
+  ],
+  'articleCover': '@image("200x100", "#89CFF0", "#fff", "png", "封面")',
+  'articleTitle': '@ctitle(10, 20)',
+  'articleContent': '@cparagraph(10, 20)',
+  'articleType|1-3': 1,
+  'isTop|0-1': 1,
+  'visitCount|100-10000': 1,
+  'commentCount|0-500': 1,
+  'likeCount|0-2000': 1,
+  'favoriteCount|0-800': 1,
+  'preArticleId|1-100': 1,
+  'preArticleTitle': '@ctitle(6, 12)',
+  'nextArticleTitle': '@ctitle(6, 12)',
+  'nextArticleId|1-100': 1,
+  'createTime': '@datetime',
+  'updateTime': '@datetime'
+}
+
+// 1. 获取文章详情接口 Mock
+// 注意：后端是 /detail/{id}，这里用正则匹配任意id
+Mock.mock(RegExp('/api/article/detail' + '.*'), 'get', (options) => {
+  // 从 URL 中提取 id (简单处理，可根据实际情况调整)
+  let id = 1;
+  const url = options.url;
+  const idMatch = url.match(/id=(\d+)/);
+  if (idMatch) {
+    id = parseInt(idMatch[1]);
+  }
+
+  return {
+    code: 200,
+    msg: 'success',
+    data: Mock.mock(articleDetailTemplate)
+  }
+})
+
+// 2. 文章访问量+1接口 Mock
+// 后端是 /visit/{id}，Mock 只需返回成功即可，无需真正加1
+Mock.mock(RegExp('/api/article/visit' + '.*'), 'get', (options) => {
+  return {
+    code: 200,
+    msg: 'success',
+    data: null
+  }
+})

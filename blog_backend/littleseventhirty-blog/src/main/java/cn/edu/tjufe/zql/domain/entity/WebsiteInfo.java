@@ -24,7 +24,7 @@ import java.util.Date;
 public class WebsiteInfo implements ViewObjectConvertible {
     private Long id;
     // 站长头像地址
-    private String webmasterAvater;
+    private String webmasterAvatar;
     // 站长名称
     private String webmasterName;
     // 站长个人简介
@@ -34,11 +34,11 @@ public class WebsiteInfo implements ViewObjectConvertible {
     // 站长的 Gitee 代码仓库链接
     private String giteeLink;
     // 站长的 GitHub 代码仓库链接
-    private String giehubLink;
+    private String githubLink;
     // 站点的名称
     private String websiteName;
     // 站点头部的通知文案
-    private String headerNotifation;
+    private String headerNotification;
     // 站点侧边通知
     private String sidebarAnnouncement;
     // 站点的备案信息
@@ -47,10 +47,10 @@ public class WebsiteInfo implements ViewObjectConvertible {
     private Date startTime;
     // 创建时间
     @TableField(fill = FieldFill.INSERT)
-    private Date createTIme;
+    private Date createTime;
     // 最近更新时间
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
     // 是否删除(0：未删除，1：已删除）
-    private Integer isDelete;
+    private Integer isDeleted;
 }

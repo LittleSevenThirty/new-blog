@@ -2,7 +2,9 @@ package cn.edu.tjufe.zql.domain.entity;
 
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +25,7 @@ import java.util.Date;
 @TableName("t_tag")
 public class Tag implements ViewObjectConvertible {
     // 标签id
+    @TableId(value = "tag_id", type = IdType.AUTO)
     private Long tagId;
     // 标签名称
     private String tagName;
@@ -33,5 +36,5 @@ public class Tag implements ViewObjectConvertible {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
     // 是否删除
-    private Integer isDelete;
+    private Integer isDeleted;
 }

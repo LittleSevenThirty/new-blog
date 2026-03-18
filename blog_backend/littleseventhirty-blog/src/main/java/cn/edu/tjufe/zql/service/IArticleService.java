@@ -1,8 +1,14 @@
 package cn.edu.tjufe.zql.service;
 
+import cn.edu.tjufe.zql.domain.dto.ArticleDTO;
+import cn.edu.tjufe.zql.domain.dto.SearchArticleDTO;
 import cn.edu.tjufe.zql.domain.entity.Article;
+import cn.edu.tjufe.zql.domain.response.ResponseResult;
+import cn.edu.tjufe.zql.domain.vo.ArticleDetailVO;
 import cn.edu.tjufe.zql.domain.vo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,12 +27,25 @@ public interface IArticleService extends IService<Article> {
     List<InitSearchTitleVO> initSearchByTitle();
 
     /**
+     * 增加文章访问量
+     * @param id 文章id
+     */
+    void addVisitCount(Long id);
+
+    /**
      * 根据搜索内容返回对应结果
      *
      * @param content 被搜索目标
      * @return
      */
     List<SearchArticleByContentVO> searchArticleByContent(String content);
+
+    /**
+     * 搜索文章列表
+     * @param searchArticleDTO 搜索条件
+     * @return 结果
+     */
+    List<ArticleListVO> searchArticle(SearchArticleDTO searchArticleDTO);
 
     /**
      * 获得前5热门文章
@@ -50,6 +69,36 @@ public interface IArticleService extends IService<Article> {
     List<RecommendArticleVO> getRecommendArticles();
 
     /**
+     * 文章图片上传
+     * @param articleImage 文章图片
+     * @return url
+     */
+    ResponseResult<String> uploadArticleImage(MultipartFile articleImage);
+
+    /**
+     * 上传文章封面
+     *
+     * @param articleCover 文章封面
+     * @return 是否成功
+     */
+    ResponseResult<String> uploadArticleCover(MultipartFile articleCover);
+
+    /**
+     * 发布文章
+     *
+     * @param articleDTO 文章信息
+     * @return 是否成功
+     */
+    ResponseResult<Void> publish(ArticleDTO articleDTO);
+
+    /**
+     * 发布错误删除封面
+     * @param articleCoverUrl 文章封面
+     * @return 是否成功
+     */
+    ResponseResult<Void> deleteArticleCover(String articleCoverUrl);
+
+    /**
      * 获取所有文章
      *
      * @param pageNum
@@ -57,4 +106,69 @@ public interface IArticleService extends IService<Article> {
      * @return
      */
     PageVO<List<ArticleVO>> allArticleList(Integer pageNum, Integer pageSize);
+
+    /**
+     * 获取相关文章服务接口
+     * @param categoryId
+     * @param articleId
+     * @return
+     */
+    List<RelatedArticleVO> getRelatedArticles(@NotNull Integer categoryId, @NotNull Integer articleId);
+
+    /**
+     * 获取时间轴数据
+     * @return
+     */
+    List<TimelineVO> listTimeline();
+
+    /**
+     * 获取分类文章列表
+     * @param typeId
+     * @param type type==1从分类中找，2从tag标签中找
+     * @return
+     */
+    List<CategoryArticleVO> getCategoryArticleList(@NotNull Integer type, @NotNull Integer typeId);
+
+    /**
+     * 获取文章详情
+     * @param id 文章id
+     * @return 文章相关数据
+     */
+    ArticleDetailVO getArticleDetail(Integer id);
+
+    /**
+     * 后台文章列表
+     * @return 文章列表
+     */
+    List<ArticleListVO> listArticle();
+
+    /**
+     * 修改文章状态
+     * @param id 文章id
+     * @param status 状态
+     * @return 是否成功
+     */
+    ResponseResult<Void> updateStatus(Long id, Integer status);
+
+    /**
+     * 修改文章是否顶置
+     * @param id 文章id
+     * @param isTop 是否顶置
+     * @return 是否成功
+     */
+    ResponseResult<Void> updateIsTop(Long id, Integer isTop);
+
+    /**
+     * 回显文章数据
+     * @param id 文章id
+     * @return 数据
+     */
+    ArticleDTO getArticleDTO(Long id);
+
+    /**
+     * 删除文章
+     * @param id 文章id
+     * @return 是否成功
+     */
+    ResponseResult<Void> deleteArticle(List<Long> id);
 }

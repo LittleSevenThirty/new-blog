@@ -18,9 +18,9 @@ const scrollDown = () => {
 
 onMounted(async () => {
   const res: any = await getSoup();
-  // console.log("一言:");
-  // console.log(res);
-  // const yiYanString=res?.hitokoto;
+  console.log("一言:");
+  console.log(res);
+  const yiYanString = res?.hitokoto;
   typedInstance = new Typed(typed.value, {
     strings: [res?.hitokoto],
     typeSpeed: 150,        // 打字速度（毫秒/字符）

@@ -2,7 +2,9 @@ package cn.edu.tjufe.zql.domain.entity;
 
 import cn.edu.tjufe.zql.domain.ViewObjectConvertible;
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,9 +22,8 @@ import java.util.Date;
 @NoArgsConstructor
 @TableName("t_category")
 public class Category implements ViewObjectConvertible {
-    // 数据库标识
-    private Long id;
     // 分类ID
+    @TableId(value = "category_id", type = IdType.AUTO)
     private Long categoryId;
     // 分类名称
     private String categoryName;

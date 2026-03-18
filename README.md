@@ -14,3 +14,7 @@ This project is a new blog transformed from an old one, and it is currently bein
 <p>这是一个问题：软件开发全流程是咋样的，软件开发我能不能理解也叫项目开发</p>
 https://blog.csdn.net/weixin_69553582/article/details/129630880
 本项目优先使用MVC架构，再使用DDD架构
+
+
+
+企业级开发权限
