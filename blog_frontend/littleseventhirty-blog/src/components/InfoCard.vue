@@ -4,16 +4,17 @@ import useWebsiteStore from "../pinia/store/modules/website.ts";
 const websiteStore = useWebsiteStore();
 
 console.log("infoCard");
-console.log(websiteStore.webInfo?.webmasterProfileBackground);
+console.log(websiteStore.webInfo?.webmasterAvatar);
 </script>
 
 <template>
   <div v-slide-in class="info_container">
     <!-- 背景图片 -->
-    <div class="background_image" :style="`background-image: url(${websiteStore.webInfo?.ProfileBackground});`"></div>
+    <div class="background_image"
+      :style="`background-image: url(${websiteStore.webInfo?.webmasterProfileBackground});`"></div>
     <!-- 头像 -->
     <div class="avatar_wrapper">
-      <el-avatar :src="websiteStore.webInfo?.webM\masteravatar" size="large" />
+      <el-avatar :src="websiteStore.webInfo?.webmasterAvatar" size="large" />
     </div>
     <!-- 站点信息 -->
     <div class="webmaster_name">

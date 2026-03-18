@@ -1,6 +1,6 @@
 interface WebsiteInfo {
     // 站长头像地址
-    webmasteravatar: string,
+    webmasterAvatar: string,
 
     // 站长名称
     webmasterName: string,

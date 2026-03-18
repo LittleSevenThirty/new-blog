@@ -12,13 +12,13 @@ import java.util.Date;
 @Data
 public class WebsiteInfoVO {
     //站长头像
-    private String webMasterAvatar;
+    private String webmasterAvatar;
     //站长名称
-    private String webMasterName;
+    private String webmasterName;
     //站长文案
-    private String webMasterCopy;
+    private String webmasterCopy;
     //站长资料卡背景图
-    private String webMasterProfileBackground;
+    private String webmasterProfileBackground;
     //gitee链接
     private String giteeLink;
     //github链接
